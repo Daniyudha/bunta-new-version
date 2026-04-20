@@ -41,6 +41,13 @@ interface CropData {
   updatedAt: string;
 }
 
+interface IrrigationProfile {
+  id: string;
+  name: string;
+  description?: string;
+  location?: string;
+}
+
 type DataType = 'water-level' | 'rainfall' | 'crop' | 'farmer' | 'all';
 
 type CombinedData =
@@ -60,6 +67,8 @@ export default function DataManagementClient() {
   const [cropData, setCropData] = useState<CropData[]>([]);
   const [farmerData, setFarmerData] = useState<Farmer[]>([]);
   const [combinedData, setCombinedData] = useState<CombinedData[]>([]);
+  const [selectedLocation, setSelectedLocation] = useState<string>('all');
+  const [locations, setLocations] = useState<IrrigationProfile[]>([]);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -68,8 +77,25 @@ export default function DataManagementClient() {
   }, [status, router]);
 
   useEffect(() => {
+    const fetchLocations = async () => {
+      try {
+        const response = await fetch('/api/irrigation-profiles?limit=100');
+        if (response.ok) {
+          const data = await response.json();
+          setLocations(data.profiles || []);
+        } else {
+          console.error('Failed to fetch irrigation profiles');
+        }
+      } catch (err) {
+        console.error('Error fetching irrigation profiles', err);
+      }
+    };
+    fetchLocations();
+  }, []);
+
+  useEffect(() => {
     fetchData();
-  }, [dataType]);
+  }, [dataType, selectedLocation]);
 
   useEffect(() => {
     // Ensure import modal is hidden when component mounts
@@ -86,20 +112,21 @@ export default function DataManagementClient() {
     try {
       if (dataType === 'all') {
         // Fetch all data types concurrently
+        const locationQuery = selectedLocation !== 'all' ? `?location=${encodeURIComponent(selectedLocation)}` : '';
         const [waterLevelResponse, rainfallResponse, cropResponse, farmerResponse] = await Promise.all([
-          fetch('/api/admin/data/water-level', {
+          fetch(`/api/admin/data/water-level${locationQuery}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
           }),
-          fetch('/api/admin/data/rainfall', {
+          fetch(`/api/admin/data/rainfall${locationQuery}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
           }),
-          fetch('/api/admin/data/crops', {
+          fetch(`/api/admin/data/crops${locationQuery}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
           }),
-          fetch('/api/admin/farmers', {
+          fetch(`/api/admin/farmers${locationQuery}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
           }),
@@ -110,14 +137,17 @@ export default function DataManagementClient() {
           return;
         }
 
-        const [waterLevelData, rainfallData, cropData, farmerResponseData] = await Promise.all([
+        const [waterLevelResponseData, rainfallResponseData, cropResponseData, farmerResponseData] = await Promise.all([
           waterLevelResponse.json(),
           rainfallResponse.json(),
           cropResponse.json(),
           farmerResponse.json(),
         ]);
 
-        // Extract farmer data from the response structure { data: Farmer[], pagination: {...} }
+        // Extract data from response structure { data: [...], pagination: {...} }
+        const waterLevelData = waterLevelResponseData.data || [];
+        const rainfallData = rainfallResponseData.data || [];
+        const cropData = cropResponseData.data || [];
         const farmerData = farmerResponseData.data || [];
 
         // Combine all data with type information
@@ -150,6 +180,9 @@ export default function DataManagementClient() {
           default:
             throw new Error('Invalid data type');
         }
+        if (selectedLocation !== 'all') {
+          apiUrl += `?location=${encodeURIComponent(selectedLocation)}`;
+        }
 
         const response = await fetch(apiUrl, {
           method: 'GET',
@@ -159,20 +192,20 @@ export default function DataManagementClient() {
         });
 
         if (response.ok) {
-          const data = await response.json();
+          const result = await response.json();
           switch (dataType) {
             case 'water-level':
-              setWaterLevelData(data);
+              setWaterLevelData(result.data || []);
               break;
             case 'rainfall':
-              setRainfallData(data);
+              setRainfallData(result.data || []);
               break;
             case 'crop':
-              setCropData(data);
+              setCropData(result.data || []);
               break;
             case 'farmer':
               // Farmers API returns { data: Farmer[], pagination: {...} }
-              setFarmerData(data.data || []);
+              setFarmerData(result.data || []);
               break;
           }
         } else {
@@ -465,21 +498,40 @@ export default function DataManagementClient() {
           <p className="text-gray-600 mt-2">Kelola data ketinggian air dan curah hujan</p>
         </div>
 
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Tipe Data
-          </label>
-          <select
-            value={dataType}
-            onChange={(e) => setDataType(e.target.value as DataType)}
-            className="w-full md:w-64 px-3 py-2 bg-white text-black border border-gray-400 rounded-md focus:outline-none focus:ring-1 focus:ring-black"
-          >
-            <option value="all">Semua Data</option>
-            <option value="water-level">Data Ketinggian Air (TMA)</option>
-            <option value="rainfall">Data Curah Hujan</option>
-            <option value="crop">Data Tanaman</option>
-            <option value="farmer">Data Kelompok Tani</option>
-          </select>
+        <div className="mb-6 flex flex-col md:flex-row md:items-end gap-4">
+          <div className="flex-1">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Tipe Data
+            </label>
+            <select
+              value={dataType}
+              onChange={(e) => setDataType(e.target.value as DataType)}
+              className="w-full px-3 py-2 bg-white text-black border border-gray-400 rounded-md focus:outline-none focus:ring-1 focus:ring-black"
+            >
+              <option value="all">Semua Data</option>
+              <option value="water-level">Data Ketinggian Air (TMA)</option>
+              <option value="rainfall">Data Curah Hujan</option>
+              <option value="crop">Data Tanaman</option>
+              <option value="farmer">Data Kelompok Tani</option>
+            </select>
+          </div>
+          <div className="flex-1">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Filter Lokasi
+            </label>
+            <select
+              value={selectedLocation}
+              onChange={(e) => setSelectedLocation(e.target.value)}
+              className="w-full px-3 py-2 bg-white text-black border border-gray-400 rounded-md focus:outline-none focus:ring-1 focus:ring-black"
+            >
+              <option value="all">Semua Lokasi</option>
+              {locations.map((profile) => (
+                <option key={profile.id} value={profile.location || profile.name}>
+                  {profile.name}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         {error && (

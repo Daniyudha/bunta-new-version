@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import Image from 'next/image'; // Pastikan Image diimport jika digunakan di komponen lain
 import WaterLevelChart from '@/components/charts/WaterLevelChart';
 import RainfallChart from '@/components/charts/RainfallChart';
 import { WaterLevelData as ChartWaterLevelData, RainfallData as ChartRainfallData } from '@/types/data';
@@ -12,15 +11,12 @@ interface DbWaterLevelData { id: string; location: string; value: number; unit: 
 interface DbRainfallData { id: string; location: string; value: number; unit: string; measuredAt: string; }
 interface DbCropData { id: string; crop: string; area: number; production: number; season: string; location: string | null; createdAt: string; }
 interface DbFarmerData { id: string; name: string; group: string; chairman: string; members: string[]; createdAt: string; }
-
-// Data Statis untuk Dropdown Display
-const MOCK_LOCATIONS = [
-  { id: 'all', name: 'Semua Lokasi', description: 'Menampilkan data gabungan' },
-  { id: '1', name: 'Irigasi Bunta I', description: 'Desa Bunta' },
-  { id: '2', name: 'Irigasi Salodik', description: 'Kec. Luwuk' },
-  { id: '3', name: 'Bendungan Mentawa', description: 'Desa Mentawa' },
-  { id: '4', name: 'Saluran Sekunder Toili', description: 'Dataran Toili' },
-];
+interface IrrigationProfileApi {
+  id: string;
+  name: string;
+  description?: string;
+  location?: string;
+}
 
 export default function DataPage() {
   const [activeTab, setActiveTab] = useState('water');
@@ -30,29 +26,63 @@ export default function DataPage() {
   const [farmerData, setFarmerData] = useState<DbFarmerData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [locations, setLocations] = useState<{ id: string; name: string; description: string; location?: string }[]>([]);
 
   // State untuk Dropdown Search
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedLocationId, setSelectedLocationId] = useState('all');
 
+  // Fetch irrigation profiles (locations) on mount
+  useEffect(() => {
+    const fetchLocations = async () => {
+      try {
+        const response = await fetch('/api/irrigation-profiles?limit=100');
+        if (response.ok) {
+          const result = await response.json();
+          const profiles = result.profiles || [];
+          // Transform to location items
+          const locationItems = [
+            { id: 'all', name: 'Semua Lokasi', description: 'Menampilkan data gabungan' },
+            ...profiles.map((profile: IrrigationProfileApi) => ({
+              id: profile.id,
+              name: profile.name,
+              description: profile.description || profile.location || '',
+              location: profile.location,
+            })),
+          ];
+          setLocations(locationItems);
+        } else {
+          console.error('Failed to fetch irrigation profiles');
+        }
+      } catch (error) {
+        console.error('Error fetching locations:', error);
+      }
+    };
+    fetchLocations();
+  }, []);
+
   // Filter Lokasi Statis
   const filteredLocations = useMemo(() => {
-    return MOCK_LOCATIONS.filter((loc) =>
+    return locations.filter((loc) =>
       loc.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-  }, [searchTerm]);
+  }, [locations, searchTerm]);
 
-  const selectedLocation = MOCK_LOCATIONS.find(l => l.id === selectedLocationId);
+  const selectedLocation = locations.find(l => l.id === selectedLocationId);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       setError('');
       try {
-        // ... Logika fetch data Anda tetap sama ...
+        // Build location query param
+        const locationParam = selectedLocationId !== 'all' && selectedLocation
+          ? `?location=${encodeURIComponent(selectedLocation.name)}`
+          : '';
+        
         if (activeTab === 'water') {
-          const response = await fetch('/api/data/water-level');
+          const response = await fetch(`/api/data/water-level${locationParam}`);
           if (response.ok) {
             const data: DbWaterLevelData[] = await response.json();
             const transformedData: ChartWaterLevelData[] = data.map(item => ({
@@ -63,7 +93,7 @@ export default function DataPage() {
             setChartWaterData(transformedData);
           } else { setError('Gagal mengambil data level air'); }
         } else if (activeTab === 'rainfall') {
-          const response = await fetch('/api/data/rainfall');
+          const response = await fetch(`/api/data/rainfall${locationParam}`);
           if (response.ok) {
             const data: DbRainfallData[] = await response.json();
             const transformedData: ChartRainfallData[] = data.map(item => ({
@@ -87,7 +117,7 @@ export default function DataPage() {
       }
     };
     fetchData();
-  }, [activeTab]);
+  }, [activeTab, selectedLocationId, selectedLocation]);
 
   const tabs = [
     { id: 'water', label: 'Level Air', icon: '💧' },

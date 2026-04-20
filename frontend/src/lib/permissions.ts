@@ -33,11 +33,11 @@ export const permissionMap = {
   'storage:delete': ['/admin/storage'],
 
   // Data Management
-  'data:read': ['/admin/data/management', '/admin/data/historical', '/admin/data/validation'],
-  'data:create': ['/admin/data/management'],
-  'data:edit': ['/admin/data/management'],
-  'data:delete': ['/admin/data/management'],
-  'data:export': ['/admin/data/management'],
+  'data:read': ['/admin/data/management', '/admin/data/historical', '/admin/data/validation', '/admin/data/locations'],
+  'data:create': ['/admin/data/management', '/admin/data/locations'],
+  'data:edit': ['/admin/data/management', '/admin/data/locations'],
+  'data:delete': ['/admin/data/management', '/admin/data/locations'],
+  'data:export': ['/admin/data/management', '/admin/data/locations'],
   
   // Irrigation Data specific permissions
   'irrigation:read': ['/admin/data/irrigation'],
@@ -131,10 +131,10 @@ export const getAccessibleNavigation = (userPermissions: string[]) => {
       title: 'DATA',
       items: [
         { name: 'Data Irigasi', href: '/admin/data/management', icon: 'Database' },
+        { name: 'Manajemen Lokasi', href: '/admin/data/locations', icon: 'Database' },
         { name: 'Histori Data', href: '/admin/data/historical', icon: 'History' },
         { name: 'Validasi Data', href: '/admin/data/validation', icon: 'BadgeCheck' },
         { name: 'Kelompok Tani', href: '/admin/farmer-groups', icon: 'Users' },
-        { name: 'Data Kepegawaian', href: '/admin/employees', icon: 'Users' }
       ].filter(item => hasAccessToRoute(userPermissions, item.href))
     },
     {

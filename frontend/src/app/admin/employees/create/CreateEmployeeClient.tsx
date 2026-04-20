@@ -19,14 +19,38 @@ export default function CreateEmployeeClient() {
     department: '',
     age: '',
     workRegion: '',
-    order: '',
+    whatsapp: '',
+    location: '',
+    pangkat_golongan: '',
+    nip: '',
   });
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>('');
+  const [uploading, setUploading] = useState(false);
+  const [locations, setLocations] = useState([]);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.push('/login');
     }
   }, [status, router]);
+
+  useEffect(() => {
+    const fetchLocations = async () => {
+      try {
+        const response = await fetch('/api/irrigation-profiles?limit=100');
+        if (response.ok) {
+          const data = await response.json();
+          setLocations(data.profiles || []);
+        } else {
+          console.error('Failed to fetch irrigation profiles');
+        }
+      } catch (err) {
+        console.error('Error fetching irrigation profiles', err);
+      }
+    };
+    fetchLocations();
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -36,22 +60,65 @@ export default function CreateEmployeeClient() {
     }));
   };
 
+  const handleImageUpload = async (file: File): Promise<string> => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await fetch('/api/admin/employees/upload', {
+      method: 'POST',
+      body: formData,
+      credentials: 'include',
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to upload image');
+    }
+
+    const data = await response.json();
+    return data.url;
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      // Create preview
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImagePreview(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
     try {
+      // Upload image first if selected
+      let imageUrl = formData.photo;
+      if (imageFile) {
+        setUploading(true);
+        imageUrl = await handleImageUpload(imageFile);
+        setUploading(false);
+      }
+
       const payload = {
         name: formData.name,
         position: formData.position,
         education: formData.education || null,
         status: formData.status,
-        photo: formData.photo || null,
+        photo: imageUrl || null,
         department: formData.department || null,
         age: formData.age ? parseInt(formData.age) : null,
         workRegion: formData.workRegion || null,
-        order: formData.order ? parseInt(formData.order) : null,
+        whatsapp: formData.whatsapp || null,
+        location: formData.location || null,
+        pangkat_golongan: formData.pangkat_golongan || null,
+        nip: formData.nip || null,
       };
 
       const response = await fetch('/api/admin/employees', {
@@ -213,34 +280,95 @@ export default function CreateEmployeeClient() {
             </div>
 
             <div>
-              <label htmlFor="order" className="block text-sm font-medium text-gray-700 mb-2">
-                Urutan Tampilan
-              </label>
-              <input
-                type="number"
-                id="order"
-                name="order"
-                value={formData.order}
-                onChange={handleInputChange}
-                className="w-full px-3 py-2 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="0"
-              />
-            </div>
-
-            <div className="md:col-span-2">
-              <label htmlFor="photo" className="block text-sm font-medium text-gray-700 mb-2">
-                Foto (URL)
+              <label htmlFor="pangkat_golongan" className="block text-sm font-medium text-gray-700 mb-2">
+                Pangkat/Golongan
               </label>
               <input
                 type="text"
-                id="photo"
-                name="photo"
-                value={formData.photo}
+                id="pangkat_golongan"
+                name="pangkat_golongan"
+                value={formData.pangkat_golongan}
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="https://example.com/photo.jpg"
+                placeholder="Contoh: III/a"
               />
-              <p className="text-sm text-gray-500 mt-1">Masukkan URL gambar atau path ke file upload.</p>
+            </div>
+
+            <div>
+              <label htmlFor="nip" className="block text-sm font-medium text-gray-700 mb-2">
+                NIP
+              </label>
+              <input
+                type="text"
+                id="nip"
+                name="nip"
+                value={formData.nip}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Contoh: 197001012000011001"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="whatsapp" className="block text-sm font-medium text-gray-700 mb-2">
+                Nomor WhatsApp
+              </label>
+              <input
+                type="text"
+                id="whatsapp"
+                name="whatsapp"
+                value={formData.whatsapp}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Contoh: +6281234567890"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">
+                Lokasi (Profil Irigasi)
+              </label>
+              <select
+                id="location"
+                name="location"
+                value={formData.location}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Pilih lokasi</option>
+                {locations.map((profile) => (
+                  <option key={profile.id} value={profile.name}>
+                    {profile.name} - {profile.location}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+
+            <div className="md:col-span-2">
+              <label htmlFor="photo" className="block text-sm font-medium text-gray-700 mb-2">
+                Foto
+              </label>
+              <input
+                type="file"
+                id="photo"
+                name="photo"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="w-full px-3 py-2 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              {imagePreview && (
+                <div className="mt-4">
+                  <p className="text-sm font-medium text-gray-700 mb-2">Preview:</p>
+                  <div className="relative w-32 h-32 rounded-md overflow-hidden">
+                    <img src={imagePreview} alt="Preview" className="object-cover w-full h-full" />
+                  </div>
+                </div>
+              )}
+              {uploading && (
+                <p className="text-sm text-blue-600 mt-2">Uploading image...</p>
+              )}
+              <p className="text-sm text-gray-500 mt-1">Unggah gambar (JPG, PNG, maks 10MB).</p>
             </div>
           </div>
 

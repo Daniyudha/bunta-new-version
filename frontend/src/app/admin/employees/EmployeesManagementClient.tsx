@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Search, X, User } from 'lucide-react';
+import { Search, X, User, Pencil, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 
 export const dynamic = 'force-dynamic';
@@ -19,6 +19,10 @@ interface Employee {
   department: string | null;
   age: number | null;
   workRegion: string | null;
+  pangkat_golongan: string | null;
+  nip: string | null;
+  whatsapp: string | null;
+  location: string | null;
   order: number | null;
   createdAt: string;
   updatedAt: string;
@@ -138,7 +142,7 @@ export default function EmployeesManagementClient() {
 
   return (
     <div className="min-h-screen">
-      <div className="max-w-7xl mx-auto">
+      <div className="mx-auto">
         <div className="mb-8 flex justify-between items-center">
           <div>
             <h1 className="text-3xl font-bold text-gray-800">Manajemen Data Kepegawaian</h1>
@@ -199,6 +203,7 @@ export default function EmployeesManagementClient() {
             </div>
           </div>
 
+          <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
@@ -210,6 +215,12 @@ export default function EmployeesManagementClient() {
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Posisi
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Pangkat/Golongan
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  NIP
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Pendidikan
@@ -227,10 +238,16 @@ export default function EmployeesManagementClient() {
                   Wilayah Kerja
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Urutan
+                  WhatsApp
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Lokasi
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Dibuat
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Terakhir Diupdate
                 </th>
                 <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Aksi
@@ -264,6 +281,12 @@ export default function EmployeesManagementClient() {
                     {employee.position}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {employee.pangkat_golongan || '-'}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {employee.nip || '-'}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {employee.education || '-'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -286,29 +309,38 @@ export default function EmployeesManagementClient() {
                     {employee.workRegion || '-'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {employee.order ?? '-'}
+                    {employee.whatsapp || '-'}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {employee.location || '-'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {new Date(employee.createdAt).toLocaleDateString()}
                   </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {new Date(employee.updatedAt).toLocaleDateString()}
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-2">
                     <Link
                       href={`/admin/employees/edit/${employee.id}`}
-                      className="bg-blue-600 text-white px-3 py-1 rounded text-xs hover:bg-blue-700 cursor-pointer"
+                      className="inline-flex items-center justify-center p-2 bg-blue-600 text-white rounded hover:bg-blue-700 cursor-pointer"
+                      title="Edit"
                     >
-                      Ubah
+                      <Pencil size={16} />
                     </Link>
                     <button
                       onClick={() => handleDelete(employee.id)}
-                      className="bg-red-600 text-white px-3 py-1 rounded text-xs hover:bg-red-700 cursor-pointer"
+                      className="inline-flex items-center justify-center p-2 bg-red-600 text-white rounded hover:bg-red-700 cursor-pointer"
+                      title="Delete"
                     >
-                      Hapus
+                      <Trash2 size={16} />
                     </button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+          </div>
 
           {/* Pagination */}
           {totalPages > 1 && (

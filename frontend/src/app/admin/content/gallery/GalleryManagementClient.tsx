@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { galleryCategories } from '@/types/gallery';
-import { Search, X } from 'lucide-react';
+import { Search, X, Pencil, Trash2, Eye, EyeOff } from 'lucide-react';
 
 interface GalleryItem {
   id: string;
@@ -326,25 +326,28 @@ export default function GalleryManagementClient() {
                   <td className="px-6 py-4 text-center whitespace-nowrap text-sm font-medium space-x-2">
                     <button
                       onClick={() => handleToggleActive(item.id, item.active)}
-                      className={`${
+                      className={`inline-flex items-center justify-center p-2 rounded ${
                         item.active
                           ? 'bg-yellow-600 hover:bg-yellow-700'
                           : 'bg-green-600 hover:bg-green-700'
-                      } text-white px-3 py-1 rounded text-xs`}
+                      } text-white cursor-pointer`}
+                      title={item.active ? 'Nonaktifkan' : 'Aktifkan'}
                     >
-                      {item.active ? 'Nonaktifkan' : 'Aktifkan'}
+                      {item.active ? <EyeOff size={16} /> : <Eye size={16} />}
                     </button>
                     <Link
                       href={`/admin/content/gallery/edit/${item.id}`}
-                      className="bg-blue-600 text-white px-3 py-1 rounded text-xs hover:bg-blue-700"
+                      className="inline-flex items-center justify-center p-2 bg-blue-600 text-white rounded hover:bg-blue-700 cursor-pointer"
+                      title="Edit"
                     >
-                      Edit
+                      <Pencil size={16} />
                     </Link>
                     <button
                       onClick={() => handleDelete(item.id)}
-                      className="bg-red-600 text-white px-3 py-1 rounded text-xs hover:bg-red-700"
+                      className="inline-flex items-center justify-center p-2 bg-red-600 text-white rounded hover:bg-red-700 cursor-pointer"
+                      title="Delete"
                     >
-                      Hapus
+                      <Trash2 size={16} />
                     </button>
                   </td>
                 </tr>

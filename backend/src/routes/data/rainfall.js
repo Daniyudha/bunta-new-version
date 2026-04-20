@@ -5,7 +5,11 @@ const prisma = require('../../lib/prisma');
 // GET /api/data/rainfall
 router.get('/', async (req, res) => {
   try {
+    const { location } = req.query;
+    const where = location ? { location: { contains: location } } : {};
+
     const rainfallData = await prisma.rainfallData.findMany({
+      where,
       orderBy: { measuredAt: 'desc' },
       take: 100, // Limit to 100 most recent entries for public access
     });

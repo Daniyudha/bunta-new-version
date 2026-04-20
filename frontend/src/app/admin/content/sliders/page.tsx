@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { Pencil, Trash2, Eye, EyeOff } from 'lucide-react';
 
 interface Slider {
   id: string;
@@ -183,27 +184,30 @@ export default function SlidersManagementPage() {
                 <td className="px-6 py-4 whitespace-nowrap">
                   <button
                     onClick={() => toggleActive(slider.id, slider.active)}
-                    className={`px-3 py-1 rounded-full text-xs font-medium ${
+                    className={`inline-flex items-center justify-center p-2 rounded-full ${
                       slider.active
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-red-100 text-red-800'
-                    }`}
+                        ? 'bg-green-100 text-green-800 hover:bg-green-200'
+                        : 'bg-red-100 text-red-800 hover:bg-red-200'
+                    } cursor-pointer`}
+                    title={slider.active ? 'Nonaktifkan' : 'Aktifkan'}
                   >
-                    {slider.active ? 'Aktif' : 'Nonaktif'}
+                    {slider.active ? <Eye size={16} /> : <EyeOff size={16} />}
                   </button>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                   <Link
                     href={`/admin/content/sliders/edit/${slider.id}`}
-                    className="text-indigo-600 hover:text-indigo-900 mr-3"
+                    className="inline-flex items-center justify-center p-2 bg-blue-600 text-white rounded hover:bg-blue-700 cursor-pointer"
+                    title="Edit"
                   >
-                    Ubah
+                    <Pencil size={16} />
                   </Link>
                   <button
                     onClick={() => handleDelete(slider.id)}
-                    className="text-red-600 hover:text-red-900 cursor-pointer"
+                    className="inline-flex items-center justify-center p-2 bg-red-600 text-white rounded hover:bg-red-700 cursor-pointer"
+                    title="Delete"
                   >
-                    Hapus
+                    <Trash2 size={16} />
                   </button>
                 </td>
               </tr>

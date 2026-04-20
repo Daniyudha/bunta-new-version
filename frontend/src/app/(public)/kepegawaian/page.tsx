@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 interface Employee {
   id: string;
@@ -12,6 +13,10 @@ interface Employee {
   department: string | null;
   age: number | null;
   workRegion: string | null;
+  whatsapp: string | null;
+  location: string | null;
+  pangkat_golongan: string | null;
+  nip: string | null;
   order: number | null;
   createdAt: string;
   updatedAt: string;
@@ -21,6 +26,26 @@ export default function KepegawaianPage() {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
+
+  const filteredEmployees = employees.filter(emp =>
+    emp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    emp.position.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const totalPages = Math.ceil(filteredEmployees.length / itemsPerPage);
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedEmployees = filteredEmployees.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm]);
 
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -113,37 +138,151 @@ export default function KepegawaianPage() {
                     Tidak ada data pegawai.
                   </div>
                 ) : (
-                  <div className="overflow-x-auto">
-                    <table className="min-w-full bg-white border border-gray-200">
-                      <thead>
-                        <tr className="bg-gray-50">
-                          <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700 border-b">No</th>
-                          <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700 border-b">Jabatan</th>
-                          <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700 border-b">Nama Pegawai</th>
-                          <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700 border-b">Pendidikan</th>
-                          <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700 border-b">Umur</th>
-                          <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700 border-b">Wilayah Kerja</th>
-                          <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700 border-b">Status</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {employees.map((pegawai, index) => (
-                          <tr key={pegawai.id} className="hover:bg-gray-50">
-                            <td className="py-3 px-4 border-b text-gray-700">{index + 1}</td>
-                            <td className="py-3 px-4 border-b text-gray-700">{pegawai.position}</td>
-                            <td className="py-3 px-4 border-b text-gray-700 font-medium">{pegawai.name}</td>
-                            <td className="py-3 px-4 border-b text-gray-700">{pegawai.education || '-'}</td>
-                            <td className="py-3 px-4 border-b text-gray-700">{pegawai.age ? pegawai.age + ' tahun' : '-'}</td>
-                            <td className="py-3 px-4 border-b text-gray-700">{pegawai.workRegion || '-'}</td>
-                            <td className="py-3 px-4 border-b">
-                              <span className={`px-3 py-1 rounded-full text-xs font-semibold ${pegawai.status === 'PNS' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
-                                {pegawai.status}
-                              </span>
-                            </td>
-                          </tr>
+                  <div>
+                    {/* Search filter */}
+                    <div className="mb-6">
+                      <input
+                        type="text"
+                        placeholder="Cari pegawai berdasarkan nama atau jabatan..."
+                        className="w-full px-4 py-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                      />
+                    </div>
+                    {filteredEmployees.length === 0 && employees.length > 0 && (
+                      <div className="text-center py-8 text-gray-500">
+                        {/* eslint-disable-next-line react/no-unescaped-entities */}
+                        Tidak ada pegawai yang sesuai dengan pencarian '{searchTerm}'.
+                      </div>
+                    )}
+                    {filteredEmployees.length > 0 && (
+                      <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-6">
+                        {paginatedEmployees.map((pegawai) => (
+                          <div
+                          key={pegawai.id}
+                          className="flex bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-300"
+                        >
+                          {/* Photo - LEFT */}
+                          <div className="relative w-40 h-full bg-gray-100 flex-shrink-0">
+                            {pegawai.photo ? (
+                              <Image
+                                src={pegawai.photo}
+                                alt={pegawai.name}
+                                fill
+                                className="object-cover"
+                              />
+                            ) : (
+                              <div className="flex items-center justify-center h-full w-full bg-blue-100 text-blue-800">
+                                <div className="text-3xl font-bold">
+                                  {pegawai.name.charAt(0)}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Details - RIGHT */}
+                          <div className="p-6 flex flex-col justify-between w-full">
+                            <div>
+                              <div className="flex justify-between items-start mb-2">
+                                <h3 className="text-lg font-bold text-gray-800">
+                                  {pegawai.name}
+                                </h3>
+                                <span
+                                  className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                                    pegawai.status === 'PNS'
+                                      ? 'bg-green-100 text-green-800'
+                                      : 'bg-yellow-100 text-yellow-800'
+                                  }`}
+                                >
+                                  {pegawai.status}
+                                </span>
+                              </div>
+
+                              <div className="space-y-1 text-sm text-gray-600">
+                                <div>
+                                  <span className="font-bold text-black">Jabatan:</span>{' '}
+                                  {pegawai.position}
+                                </div>
+                                <div>
+                                  <span className="font-bold text-black">Umur:</span>{' '}
+                                  {pegawai.age ? `${pegawai.age} tahun` : '-'}
+                                </div>
+                                <div>
+                                  <span className="font-bold text-black">Wilayah:</span>{' '}
+                                  {pegawai.workRegion || '-'}
+                                </div>
+                                <div>
+                                  <span className="font-bold text-black">Lokasi:</span>{' '}
+                                  {pegawai.location || '-'}
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* WhatsApp Button */}
+                            {pegawai.whatsapp && pegawai.whatsapp.trim() !== '' && (
+                            <a
+                              href={`https://wa.me/${pegawai.whatsapp.replace(/\D/g, '').replace(/^0/, '62')}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="mt-3 inline-flex items-center gap-2 text-green-600 hover:text-green-700 text-sm font-medium"
+                            >
+                              {/* Icon WhatsApp */}
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="currentColor"
+                                className="w-5 h-5"
+                              >
+                                <path d="M20.52 3.48A11.83 11.83 0 0012.06 0C5.5 0 .1 5.4.1 12c0 2.1.55 4.16 1.6 5.98L0 24l6.23-1.63A11.9 11.9 0 0012.06 24h.01c6.56 0 11.96-5.4 11.96-12 0-3.2-1.25-6.21-3.51-8.52zM12.07 21.8c-1.8 0-3.56-.48-5.1-1.39l-.37-.22-3.7.97.99-3.6-.24-.38A9.76 9.76 0 012.3 12c0-5.4 4.38-9.8 9.77-9.8 2.6 0 5.04 1.01 6.88 2.84A9.7 9.7 0 0121.8 12c0 5.4-4.38 9.8-9.73 9.8zm5.39-7.3c-.3-.15-1.78-.88-2.06-.98-.28-.1-.48-.15-.68.15-.2.3-.78.98-.96 1.18-.18.2-.36.22-.66.07-.3-.15-1.28-.47-2.43-1.5-.9-.8-1.5-1.78-1.68-2.08-.18-.3-.02-.46.13-.6.13-.13.3-.34.45-.5.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.68-1.64-.93-2.25-.24-.58-.5-.5-.68-.5h-.58c-.2 0-.52.07-.8.37-.28.3-1.05 1.02-1.05 2.48s1.08 2.88 1.23 3.08c.15.2 2.13 3.25 5.17 4.55.72.31 1.28.5 1.72.64.72.23 1.38.2 1.9.12.58-.09 1.78-.73 2.03-1.44.25-.7.25-1.3.17-1.44-.08-.13-.28-.2-.58-.35z" />
+                              </svg>
+
+                              <span>WhatsApp | <span className="text-black"> {pegawai.whatsapp}</span></span>
+                            </a>
+                          )}
+                          </div>
+                        </div>
                         ))}
-                      </tbody>
-                    </table>
+                      </div>
+                    )}
+                  </div>
+                )}
+                {totalPages > 1 && (
+                  <div className="flex justify-center mt-8 gap-2 flex-wrap">
+                    
+                    {/* Prev */}
+                    <button
+                      onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                      className="px-3 py-1 bg-white rounded-lg shadow-md border border-gray-200 text-sm text-black bg-white hover:bg-gray-100"
+                      disabled={currentPage === 1}
+                    >
+                      Prev
+                    </button>
+
+                    {/* Page numbers */}
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                      <button
+                        key={page}
+                        onClick={() => setCurrentPage(page)}
+                        className={`px-3 py-1 rounded-lg shadow-md border border-gray-200 text-sm text-black ${
+                          currentPage === page
+                            ? 'bg-blue-800 text-white'
+                            : 'bg-white hover:bg-gray-100'
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    ))}
+
+                    {/* Next */}
+                    <button
+                      onClick={() =>
+                        setCurrentPage((p) => Math.min(p + 1, totalPages))
+                      }
+                      className="px-3 py-1 bg-white rounded-lg shadow-md border border-gray-200 text-sm text-black bg-white hover:bg-gray-100"
+                      disabled={currentPage === totalPages}
+                    >
+                      Next
+                    </button>
                   </div>
                 )}
                 <p className="text-gray-600 text-sm mt-4">

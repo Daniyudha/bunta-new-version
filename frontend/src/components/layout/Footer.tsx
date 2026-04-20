@@ -8,6 +8,7 @@ const footerNavigation = {
         { name: 'Tentang Kami', href: '/about' },
         { name: 'Profil Irigasi', href: '/irrigation' },
         { name: 'Data & Statistik', href: '/data' },
+        { name: 'Kepegawaian', href: '/kepegawaian' },
         { name: 'Berita', href: '/news' },
         { name: 'Galeri', href: '/gallery' },
         { name: 'Kontak', href: '/contact' },
@@ -99,7 +100,7 @@ export default function Footer() {
                             <h4 className="text-sm font-semibold mb-3">Ikuti Kami</h4>
                             <div className="flex space-x-4">
                                 <div className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors cursor-pointer">
-                                    <a target='_blank' href="https://www.instagram.com/irigasi_bunta"><Instagram size={20} /></a>
+                                    <a target='_blank' href="https://www.instagram.com/cikasda.sulteng"><Instagram size={20} /></a>
                                 </div>
                             </div>
                         </div>
@@ -111,7 +112,7 @@ export default function Footer() {
                     <p className="text-gray-400 text-sm">
                         © {new Date().getFullYear()} Kantor Pengamatan Irigasi Bunta. Hak cipta dilindungi.
                     </p>
-                    <p className="text-gray-400 text-sm">Didukung oleh <span><a className="text-lg font-bold text-blue-400 hover:text-blue-300" href="https://www.gegacreative.com/" target='_blank'>Gega Creative</a></span></p>
+                    <p className="text-gray-400 text-sm">Didukung oleh <span><a className="text-md font-bold text-blue-400 hover:text-blue-300" href="https://www.gegacreative.com/" target='_blank'>PT. Gega Creative Ideas</a></span></p>
 
                 </div>
             </div>

@@ -43,6 +43,14 @@ export default async function IrrigationData() {
               Input Data
             </a>
           </div>
+
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h3 className="text-xl font-semibold mb-4 text-orange-600">Location Management</h3>
+            <p className="text-gray-600 mb-4">Manage irrigation locations (profiles)</p>
+            <a href="/admin/data/locations" className="block w-full bg-orange-600 text-white py-2 px-4 rounded hover:bg-orange-700 transition-colors text-center">
+              Manage Locations
+            </a>
+          </div>
         </div>
       </div>
     </div>
