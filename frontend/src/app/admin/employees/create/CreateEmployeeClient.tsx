@@ -27,7 +27,7 @@ export default function CreateEmployeeClient() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
   const [uploading, setUploading] = useState(false);
-  const [locations, setLocations] = useState([]);
+  const [locations, setLocations] = useState<Array<{id: string, name: string, location: string | null}>>([]);
 
   useEffect(() => {
     if (status === 'unauthenticated') {

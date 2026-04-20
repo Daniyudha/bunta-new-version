@@ -252,7 +252,7 @@ export default function KepegawaianPage() {
                     {/* Prev */}
                     <button
                       onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-                      className="px-3 py-1 bg-white rounded-lg shadow-md border border-gray-200 text-sm text-black bg-white hover:bg-gray-100"
+                      className="px-3 py-1 rounded-lg shadow-md border border-gray-200 text-sm text-black bg-white hover:bg-gray-100"
                       disabled={currentPage === 1}
                     >
                       Prev
@@ -278,7 +278,7 @@ export default function KepegawaianPage() {
                       onClick={() =>
                         setCurrentPage((p) => Math.min(p + 1, totalPages))
                       }
-                      className="px-3 py-1 bg-white rounded-lg shadow-md border border-gray-200 text-sm text-black bg-white hover:bg-gray-100"
+                      className="px-3 py-1 rounded-lg shadow-md border border-gray-200 text-sm text-black bg-white hover:bg-gray-100"
                       disabled={currentPage === totalPages}
                     >
                       Next

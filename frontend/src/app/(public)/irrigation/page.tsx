@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ReactNode } from 'react';
 import IrrigationMap from '@/components/maps/IrrigationMap';
 import Select from 'react-select';
 import Image from 'next/image';
@@ -97,7 +97,7 @@ export default function IrrigationPage() {
           coordinates: p.latitude && p.longitude ? [p.latitude, p.longitude] : [0, 0],
           area: p.area || 0,
           waterLevel: p.waterLevel || 0,
-          status: ['normal','low','high','critical'].includes(p.status) ? p.status as any : 'normal',
+          status: (['normal','low','high','critical'].includes(p.status) ? p.status : 'normal') as 'normal' | 'low' | 'high' | 'critical',
           lastUpdate: p.lastUpdate,
           canals: p.canals || 0,
           gates: p.gates || 0,
@@ -249,7 +249,7 @@ function Stat({ label, value }: { label: string; value: string }) {
   );
 }
 
-function Detail({ label, value }: { label: string; value: any }) {
+function Detail({ label, value }: { label: string; value: ReactNode }) {
   return (
     <div className="flex justify-between border-b border-b-gray-200 pb-1">
       <span className="text-black">{label}</span>
