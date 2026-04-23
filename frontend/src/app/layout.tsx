@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Bunta Bunta - Irrigation Information System",
-  description: "Bunta Irrigation Monitoring Office provides comprehensive water management and irrigation information services for farmers and stakeholders in the region.",
+  title: "Cikasda UPT PSDA Wilayah II - Sulawesi Tengah",
+  description: "Pengembangan dan Pengelolaan Jaringan Irigasi dan Rawa, serta Pengelolaan dan Konservasi Sungai, Danau, Pantai dan Air Baku di Wilayah Provinsi Sulawesi Tengah.",
 };
 
 export default function RootLayout({

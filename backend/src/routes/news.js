@@ -81,4 +81,51 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET /api/news/:slug
+router.get('/:slug', async (req, res) => {
+  try {
+    const { slug } = req.params;
+
+    const article = await prisma.news.findUnique({
+      where: { slug },
+      include: {
+        category: {
+          select: {
+            name: true,
+          },
+        },
+        author: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+
+    if (!article || !article.published) {
+      return res.status(404).json({ message: 'Article not found' });
+    }
+
+    // Transform to frontend-friendly format
+    const transformed = {
+      id: article.id,
+      title: article.title,
+      slug: article.slug,
+      excerpt: article.excerpt,
+      content: article.content,
+      image: article.image,
+      category: article.category,
+      createdAt: article.createdAt,
+      published: article.published,
+      author: article.author?.name || 'Admin',
+      tags: [],
+    };
+
+    res.json(transformed);
+  } catch (error) {
+    console.error('Error fetching article:', error);
+    res.status(500).json({ message: 'Error fetching article' });
+  }
+});
+
 module.exports = router;

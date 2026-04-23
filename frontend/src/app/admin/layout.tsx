@@ -10,6 +10,6 @@ export default function AdminRootLayout({ children }: AdminRootLayoutProps) {
 }
 
 export const metadata = {
-  title: 'Panel Admin - Irigasi Bunta Bunta',
-  description: 'Dashboard administrasi untuk Sistem Irigasi Bunta Bunta',
+  title: "Panel Admin - Cikasda UPT PSDA Wilayah II",
+  description: "Pengembangan dan Pengelolaan Jaringan Irigasi dan Rawa, serta Pengelolaan dan Konservasi Sungai, Danau, Pantai dan Air Baku di Wilayah Provinsi Sulawesi Tengah.",
 };

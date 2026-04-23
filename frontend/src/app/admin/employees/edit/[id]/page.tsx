@@ -427,7 +427,7 @@ export default function EditEmployee() {
                 name="photo"
                 accept="image/*"
                 onChange={handleImageChange}
-                className="w-full px-3 py-2 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full file:px-3 file:py-2 file:bg-gray-300 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               {imagePreview && (
                 <div className="mt-4">
