@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Cikasda UPT PSDA Wilayah II - Sulawesi Tengah",
-  description: "Pengembangan dan Pengelolaan Jaringan Irigasi dan Rawa, serta Pengelolaan dan Konservasi Sungai, Danau, Pantai dan Air Baku di Wilayah Provinsi Sulawesi Tengah.",
+  title: "DIMENSI - Cikasda UPT PSDA Wilayah II",
+  description: "DIGITALISASI MANAJEMEN KEPEGAWAIAN DAN PENDAMPING SISTEM IRIGASI UNTUK MENDUKUNG PENGELOLAAN IRIGASI YANG LEBIH EFEKTIF DAN EFISIEN DI WILAYAH PROVINSI SULAWESI TENGAH.",
 };
 
 export default function RootLayout({
