@@ -37,6 +37,100 @@ const upload = multer({
   }
 });
 
+/**
+ * @openapi
+ * /api/admin/news:
+ *   get:
+ *     tags:
+ *       - Admin
+ *     summary: Get all news (admin)
+ *     description: Retrieve a paginated list of all news articles (including unpublished) with search
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *         description: Search term for title, slug, or content
+ *     responses:
+ *       200:
+ *         description: A paginated list of news articles
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 news:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/NewsArticle'
+ *                 totalPages:
+ *                   type: integer
+ *                 totalCount:
+ *                   type: integer
+ *                 currentPage:
+ *                   type: integer
+ *                 hasNext:
+ *                   type: boolean
+ *                 hasPrev:
+ *                   type: boolean
+ *       500:
+ *         description: Internal server error
+ *   post:
+ *     tags:
+ *       - Admin
+ *     summary: Create a news article
+ *     description: Create a new news article
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - title
+ *               - slug
+ *               - content
+ *             properties:
+ *               title:
+ *                 type: string
+ *               slug:
+ *                 type: string
+ *               content:
+ *                 type: string
+ *               excerpt:
+ *                 type: string
+ *               image:
+ *                 type: string
+ *               categoryId:
+ *                 type: string
+ *               published:
+ *                 type: boolean
+ *     responses:
+ *       201:
+ *         description: News article created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/NewsArticle'
+ *       400:
+ *         description: Validation error
+ *       500:
+ *         description: Internal server error
+ */
 // GET /api/admin/news
 router.get('/', async (req, res) => {
   try {
@@ -140,6 +234,95 @@ router.post('/', async (req, res) => {
   }
 });
 
+/**
+ * @openapi
+ * /api/admin/news/{id}:
+ *   get:
+ *     tags:
+ *       - Admin
+ *     summary: Get news article by ID (admin)
+ *     description: Retrieve a single news article by ID (including unpublished)
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: News article ID
+ *     responses:
+ *       200:
+ *         description: News article details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/NewsArticle'
+ *       404:
+ *         description: News not found
+ *       500:
+ *         description: Internal server error
+ *   patch:
+ *     tags:
+ *       - Admin
+ *     summary: Update a news article
+ *     description: Update a news article by ID
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               slug:
+ *                 type: string
+ *               content:
+ *                 type: string
+ *               excerpt:
+ *                 type: string
+ *               image:
+ *                 type: string
+ *               categoryId:
+ *                 type: string
+ *               published:
+ *                 type: boolean
+ *     responses:
+ *       200:
+ *         description: News article updated
+ *       404:
+ *         description: News not found
+ *       500:
+ *         description: Internal server error
+ *   delete:
+ *     tags:
+ *       - Admin
+ *     summary: Delete a news article
+ *     description: Delete a news article by ID
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: News deleted successfully
+ *       404:
+ *         description: News not found
+ *       500:
+ *         description: Internal server error
+ */
 // GET /api/admin/news/:id
 router.get('/:id', async (req, res) => {
   try {

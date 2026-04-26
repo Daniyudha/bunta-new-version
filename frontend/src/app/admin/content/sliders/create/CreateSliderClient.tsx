@@ -1,9 +1,10 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useRef } from 'react';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { useState, useEffect, useRef } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Trash2 } from "lucide-react";
 
 interface FormData {
   title: string;
@@ -24,26 +25,30 @@ export default function CreateSliderClient() {
   const [error, setError] = useState<string | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [formData, setFormData] = useState<FormData>({
-    title: '',
-    subtitle: '',
+    title: "",
+    subtitle: "",
     image: null,
-    link: '',
-    buttonText: 'Pelajari Lebih Lanjut',
+    link: "",
+    buttonText: "Pelajari Lebih Lanjut",
     order: 0,
     active: true,
   });
 
   // Use useEffect for authentication check to avoid React render phase issues
   useEffect(() => {
-    if (status === 'loading') return;
+    if (status === "loading") return;
 
     // Check if user is authenticated and has admin or super admin role
-    if (!session || !session.user || (session.user.role !== 'ADMIN' && session.user.role !== 'SUPER_ADMIN')) {
-      router.push('/login');
+    if (
+      !session ||
+      !session.user ||
+      (session.user.role !== "ADMIN" && session.user.role !== "SUPER_ADMIN")
+    ) {
+      router.push("/login");
     }
   }, [session, status, router]);
 
-  if (status === 'loading') {
+  if (status === "loading") {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
@@ -52,7 +57,11 @@ export default function CreateSliderClient() {
   }
 
   // Return null if not authenticated (will redirect via useEffect)
-  if (!session || !session.user || (session.user.role !== 'ADMIN' && session.user.role !== 'SUPER_ADMIN')) {
+  if (
+    !session ||
+    !session.user ||
+    (session.user.role !== "ADMIN" && session.user.role !== "SUPER_ADMIN")
+  ) {
     return null;
   }
 
@@ -63,48 +72,51 @@ export default function CreateSliderClient() {
 
     try {
       if (!formData.image) {
-        throw new Error('Image is required');
+        throw new Error("Image is required");
       }
 
       const formDataToSend = new FormData();
-      formDataToSend.append('title', formData.title);
-      formDataToSend.append('subtitle', formData.subtitle);
-      formDataToSend.append('link', formData.link);
-      formDataToSend.append('buttonText', formData.buttonText);
-      formDataToSend.append('order', formData.order.toString());
-      formDataToSend.append('active', formData.active.toString());
-      formDataToSend.append('image', formData.image);
+      formDataToSend.append("title", formData.title);
+      formDataToSend.append("subtitle", formData.subtitle);
+      formDataToSend.append("link", formData.link);
+      formDataToSend.append("buttonText", formData.buttonText);
+      formDataToSend.append("order", formData.order.toString());
+      formDataToSend.append("active", formData.active.toString());
+      formDataToSend.append("image", formData.image);
 
-      const response = await fetch('/api/admin/sliders', {
-        method: 'POST',
+      const response = await fetch("/api/admin/sliders", {
+        method: "POST",
         body: formDataToSend,
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to create slider');
+        throw new Error(errorData.message || "Failed to create slider");
       }
 
-      router.push('/admin/content/sliders');
+      router.push("/admin/content/sliders");
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value, type } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
+      [name]:
+        type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
     }));
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
-    setFormData(prev => ({ ...prev, image: file }));
+    setFormData((prev) => ({ ...prev, image: file }));
 
     if (file) {
       const url = URL.createObjectURL(file);
@@ -115,10 +127,10 @@ export default function CreateSliderClient() {
   };
 
   const removeImage = () => {
-    setFormData(prev => ({ ...prev, image: null }));
+    setFormData((prev) => ({ ...prev, image: null }));
     setPreviewUrl(null);
     if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = "";
     }
   };
 
@@ -131,7 +143,9 @@ export default function CreateSliderClient() {
         >
           ← Kembali ke Sliders
         </Link>
-        <h1 className="mt-6 text-3xl font-bold text-gray-800">Buat Slider Baru</h1>
+        <h1 className="mt-6 text-3xl font-bold text-gray-800">
+          Buat Slider Baru
+        </h1>
       </div>
 
       {error && (
@@ -140,7 +154,10 @@ export default function CreateSliderClient() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-lg p-6">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white shadow-md rounded-lg p-6"
+      >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -175,40 +192,61 @@ export default function CreateSliderClient() {
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Gambar *
             </label>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              required
-              className="w-full file:px-3 file:py-2 file:bg-gray-300 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <p className="text-sm text-gray-500 mt-1">
-              Unggah gambar untuk slider (disarankan: 1200x600px)
-            </p>
-          </div>
 
-          {previewUrl && (
-        <div className="md:col-span-2">
-          <h3 className="text-sm text-gray-500 mb-2">Pratinjau:</h3>
-          <div className="rounded-lg relative">
-            <img
-              src={previewUrl}
-              alt="Preview"
-              className="w-full h-64 object-cover rounded"
-            />
-            <button
-              type="button"
-              onClick={removeImage}
-              className="absolute top-2 right-2 bg-red-600 text-white p-1 rounded-full hover:bg-red-700 cursor-pointer"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+            {previewUrl ? (
+              <div className="relative w-full h-full rounded-lg overflow-hidden border border-gray-200 bg-gray-50 group">
+                <img
+                  src={previewUrl}
+                  alt="Preview"
+                  className="w-full h-full object-cover"
+                />
+
+                {/* Overlay Hapus */}
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                  <button
+                    type="button"
+                    onClick={removeImage}
+                    className="inline-flex items-center justify-center p-3 rounded-full hover:bg-white/20 transition shadow cursor-pointer"
+                    title="Hapus gambar"
+                  >
+                    <Trash2 className="w-5 h-5 text-white" />
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <label className="w-full h-60 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50 cursor-pointer hover:bg-gray-100 transition">
+                <div className="text-center">
+                  <svg
+                    className="mx-auto h-10 w-10 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    />
+                  </svg>
+                  <p className="mt-2 text-sm text-gray-500">
+                    Klik untuk upload gambar
+                  </p>
+                  <p className="text-xs text-gray-400">
+                    Disarankan: 1200x600px
+                  </p>
+                </div>
+
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
+              </label>
+            )}
           </div>
-        </div>
-      )}
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -260,9 +298,7 @@ export default function CreateSliderClient() {
               onChange={handleChange}
               className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
             />
-            <label className="ml-2 block text-sm text-gray-900">
-              Aktif
-            </label>
+            <label className="ml-2 block text-sm text-gray-900">Aktif</label>
           </div>
         </div>
 
@@ -278,7 +314,7 @@ export default function CreateSliderClient() {
             disabled={loading || !formData.image}
             className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
           >
-            {loading ? 'Membuat...' : 'Buat Slider'}
+            {loading ? "Membuat..." : "Buat Slider"}
           </button>
         </div>
       </form>

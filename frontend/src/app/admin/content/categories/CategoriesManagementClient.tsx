@@ -207,7 +207,7 @@ export default function CategoriesManagementClient() {
                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Dibuat
                 </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Aksi
                 </th>
               </tr>
@@ -227,17 +227,17 @@ export default function CategoriesManagementClient() {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {new Date(category.createdAt).toLocaleDateString()}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2 text-center">
                     <Link
                       href={`/admin/content/categories/edit/${category.id}`}
-                      className="inline-flex items-center justify-center p-2 bg-blue-600 text-white rounded hover:bg-blue-700 cursor-pointer"
+                      className="inline-flex items-center justify-center p-2 rounded text-blue-600 hover:bg-blue-500/10 transition cursor-pointer"
                       title="Edit"
                     >
                       <Pencil size={16} />
                     </Link>
                     <button
                       onClick={() => handleDelete(category.id)}
-                      className="inline-flex items-center justify-center p-2 bg-red-600 text-white rounded hover:bg-red-700 cursor-pointer"
+                      className="inline-flex items-center justify-center p-2 rounded text-red-600 hover:bg-red-500/10 transition cursor-pointer"
                       title="Delete"
                     >
                       <Trash2 size={16} />

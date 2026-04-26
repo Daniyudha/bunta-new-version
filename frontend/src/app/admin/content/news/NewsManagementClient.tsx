@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
-import Link from 'next/link';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { Search, X, Pencil, Trash2, Eye, EyeOff } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { Search, X, Pencil, Trash2, Eye, EyeOff } from "lucide-react";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 interface News {
   id: string;
@@ -26,8 +26,8 @@ export default function NewsManagementClient() {
   const router = useRouter();
   const [news, setNews] = useState<News[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [error, setError] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
@@ -35,40 +35,43 @@ export default function NewsManagementClient() {
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState(searchQuery);
 
   useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/login');
+    if (status === "unauthenticated") {
+      router.push("/login");
     }
   }, [status, router]);
 
-  const fetchNews = useCallback(async (page = currentPage, query = debouncedSearchQuery) => {
-    try {
-      setError('');
-      const url = new URL('/api/admin/news', window.location.origin);
-      url.searchParams.append('page', page.toString());
-      url.searchParams.append('limit', itemsPerPage.toString());
-      if (query) {
-        url.searchParams.append('search', query);
-      }
+  const fetchNews = useCallback(
+    async (page = currentPage, query = debouncedSearchQuery) => {
+      try {
+        setError("");
+        const url = new URL("/api/admin/news", window.location.origin);
+        url.searchParams.append("page", page.toString());
+        url.searchParams.append("limit", itemsPerPage.toString());
+        if (query) {
+          url.searchParams.append("search", query);
+        }
 
-      const response = await fetch(url.toString());
-      if (response.ok) {
-        const data = await response.json();
-        setNews(data.news || []);
-        setTotalPages(data.totalPages || 1);
-        setTotalItems(data.totalCount || 0);
-      } else {
-        const errorData = await response.json().catch(() => ({}));
-        setError(errorData.message || 'Failed to fetch news');
+        const response = await fetch(url.toString());
+        if (response.ok) {
+          const data = await response.json();
+          setNews(data.news || []);
+          setTotalPages(data.totalPages || 1);
+          setTotalItems(data.totalCount || 0);
+        } else {
+          const errorData = await response.json().catch(() => ({}));
+          setError(errorData.message || "Failed to fetch news");
+        }
+      } catch (error) {
+        setError("Network error: Unable to fetch news");
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      setError('Network error: Unable to fetch news');
-    } finally {
-      setLoading(false);
-    }
-  }, [currentPage, itemsPerPage, debouncedSearchQuery]);
+    },
+    [currentPage, itemsPerPage, debouncedSearchQuery],
+  );
 
   useEffect(() => {
-    if (status === 'authenticated') {
+    if (status === "authenticated") {
       fetchNews();
     }
   }, [status, fetchNews]);
@@ -86,11 +89,10 @@ export default function NewsManagementClient() {
 
   // Fetch news when debounced search query or page changes
   useEffect(() => {
-    if (status === 'authenticated') {
+    if (status === "authenticated") {
       fetchNews(currentPage, debouncedSearchQuery);
     }
   }, [debouncedSearchQuery, currentPage, status, fetchNews]);
-
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -98,7 +100,7 @@ export default function NewsManagementClient() {
   };
 
   const clearSearch = () => {
-    setSearchQuery('');
+    setSearchQuery("");
     setCurrentPage(1);
   };
 
@@ -109,29 +111,29 @@ export default function NewsManagementClient() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this news article?')) return;
+    if (!confirm("Are you sure you want to delete this news article?")) return;
 
     try {
       const response = await fetch(`/api/admin/news/${id}`, {
-        method: 'DELETE',
+        method: "DELETE",
       });
 
       if (response.ok) {
-        setNews(news.filter(item => item.id !== id));
+        setNews(news.filter((item) => item.id !== id));
       } else {
-        setError('Failed to delete news');
+        setError("Failed to delete news");
       }
     } catch (error) {
-      setError('Error deleting news');
+      setError("Error deleting news");
     }
   };
 
   const handlePublish = async (id: string, publish: boolean) => {
     try {
       const response = await fetch(`/api/admin/news/${id}`, {
-        method: 'PATCH',
+        method: "PATCH",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ published: publish }),
       });
@@ -139,14 +141,14 @@ export default function NewsManagementClient() {
       if (response.ok) {
         fetchNews(); // Refresh the list
       } else {
-        setError('Failed to update news');
+        setError("Failed to update news");
       }
     } catch (error) {
-      setError('Error updating news');
+      setError("Error updating news");
     }
   };
 
-  if (status === 'loading' || loading) {
+  if (status === "loading" || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
@@ -159,7 +161,9 @@ export default function NewsManagementClient() {
       <div className="max-w-7xl mx-auto">
         <div className="mb-8 flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-gray-800">Manajemen Berita</h1>
+            <h1 className="text-3xl font-bold text-gray-800">
+              Manajemen Berita
+            </h1>
             <p className="text-gray-600 mt-2">Tulis dan kelola berita.</p>
           </div>
           <Link
@@ -181,9 +185,14 @@ export default function NewsManagementClient() {
             {/* Results Info */}
             <div className="px-6 py-4 ">
               <p className="text-sm text-gray-600">
-                Menampilkan {(currentPage - 1) * itemsPerPage + 1} sd {Math.min(currentPage * itemsPerPage, totalItems)} dari {totalItems} hasil
+                Menampilkan {(currentPage - 1) * itemsPerPage + 1} sd{" "}
+                {Math.min(currentPage * itemsPerPage, totalItems)} dari{" "}
+                {totalItems} hasil
                 {searchQuery && (
-                  <span> for &ldquo;<strong>{searchQuery}</strong>&rdquo;</span>
+                  <span>
+                    {" "}
+                    for &ldquo;<strong>{searchQuery}</strong>&rdquo;
+                  </span>
                 )}
               </p>
             </div>
@@ -257,20 +266,23 @@ export default function NewsManagementClient() {
                     )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">{item.title}</div>
+                    <div className="text-sm font-medium text-gray-900">
+                      {item.title}
+                    </div>
                     <div className="text-sm text-gray-500">{item.slug}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {item.category?.name || 'Uncategorized'}
+                    {item.category?.name || "Uncategorized"}
                   </td>
                   <td className="px-6 py-4 text-center whitespace-nowrap">
                     <span
-                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${item.published
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-gray-100 text-gray-800'
-                        }`}
+                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                        item.published
+                          ? "bg-green-100 text-green-800"
+                          : "bg-gray-100 text-gray-800"
+                      }`}
                     >
-                      {item.published ? 'Published' : 'Draft'}
+                      {item.published ? "Published" : "Draft"}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-center text-gray-500">
@@ -279,25 +291,29 @@ export default function NewsManagementClient() {
                   <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-2">
                     <button
                       onClick={() => handlePublish(item.id, !item.published)}
-                      className={`inline-flex items-center justify-center p-2 rounded ${
+                      className={`inline-flex items-center justify-center p-2 rounded transition cursor-pointer ${
                         item.published
-                          ? 'bg-yellow-600 hover:bg-yellow-700'
-                          : 'bg-green-600 hover:bg-green-700'
-                      } text-white cursor-pointer`}
-                      title={item.published ? 'Unpublish' : 'Publish'}
+                          ? "text-yellow-600 hover:bg-yellow-500/10"
+                          : "text-green-600 hover:bg-green-500/10"
+                      }`}
+                      title={item.published ? "Unpublish" : "Publish"}
                     >
-                      {item.published ? <EyeOff size={16} /> : <Eye size={16} />}
+                      {item.published ? (
+                        <EyeOff size={16} />
+                      ) : (
+                        <Eye size={16} />
+                      )}
                     </button>
                     <Link
                       href={`/admin/content/news/edit/${item.id}`}
-                      className="inline-flex items-center justify-center p-2 bg-blue-600 text-white rounded hover:bg-blue-700 cursor-pointer"
+                      className="inline-flex items-center justify-center p-2 rounded text-blue-600 hover:bg-blue-100 transition cursor-pointer"
                       title="Edit"
                     >
                       <Pencil size={16} />
                     </Link>
                     <button
                       onClick={() => handleDelete(item.id)}
-                      className="inline-flex items-center justify-center p-2 bg-red-600 text-white rounded hover:bg-red-700 cursor-pointer"
+                      className="inline-flex items-center justify-center p-2 rounded text-red-600 hover:bg-red-100 transition cursor-pointer"
                       title="Delete"
                     >
                       <Trash2 size={16} />
@@ -309,7 +325,9 @@ export default function NewsManagementClient() {
           </table>
           {news.length === 0 && !loading && (
             <div className="text-center py-8 text-gray-500">
-              {searchQuery ? 'Tidak ditemukan artikel berita yang sesuai dengan pencarian Anda.' : 'Tidak ada artikel berita yang ditemukan. Buat artikel pertama Anda!'}
+              {searchQuery
+                ? "Tidak ditemukan artikel berita yang sesuai dengan pencarian Anda."
+                : "Tidak ada artikel berita yang ditemukan. Buat artikel pertama Anda!"}
             </div>
           )}
 
@@ -329,18 +347,21 @@ export default function NewsManagementClient() {
                 >
                   Previous
                 </button>
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                  <button
-                    key={page}
-                    onClick={() => handlePageChange(page)}
-                    className={`px-3 py-1 text-sm rounded-md ${currentPage === page
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300 cursor-pointer'
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                  (page) => (
+                    <button
+                      key={page}
+                      onClick={() => handlePageChange(page)}
+                      className={`px-3 py-1 text-sm rounded-md ${
+                        currentPage === page
+                          ? "bg-blue-600 text-white"
+                          : "bg-gray-200 text-gray-700 hover:bg-gray-300 cursor-pointer"
                       }`}
-                  >
-                    {page}
-                  </button>
-                ))}
+                    >
+                      {page}
+                    </button>
+                  ),
+                )}
                 <button
                   onClick={() => handlePageChange(currentPage + 1)}
                   disabled={currentPage === totalPages}

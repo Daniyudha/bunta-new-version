@@ -1,7 +1,54 @@
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     Farmer:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *         name:
+ *           type: string
+ *         group:
+ *           type: string
+ *         chairman:
+ *           type: string
+ *         members:
+ *           type: array
+ *           items:
+ *             type: object
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ */
+
 const express = require('express');
 const router = express.Router();
 const prisma = require('../../lib/prisma');
 
+/**
+ * @openapi
+ * /api/data/farmers:
+ *   get:
+ *     tags:
+ *       - Farmers
+ *     summary: Get farmer data
+ *     description: Retrieve farmer/groups data
+ *     responses:
+ *       200:
+ *         description: A list of farmer groups
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Farmer'
+ *       500:
+ *         description: Internal server error
+ */
 // GET /api/data/farmers
 router.get('/', async (req, res) => {
   try {
@@ -47,6 +94,27 @@ router.get('/', async (req, res) => {
   }
 });
 
+/**
+ * @openapi
+ * /api/data/farmers/count:
+ *   get:
+ *     tags:
+ *       - Farmers
+ *     summary: Get farmer data count
+ *     description: Retrieve the total count of farmer records
+ *     responses:
+ *       200:
+ *         description: Record count
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 count:
+ *                   type: integer
+ *       500:
+ *         description: Internal server error
+ */
 // GET /api/data/farmers/count
 router.get('/count', async (req, res) => {
   try {

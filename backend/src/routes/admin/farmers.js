@@ -2,6 +2,152 @@ const express = require('express');
 const router = express.Router();
 const prisma = require('../../lib/prisma');
 
+/**
+ * @openapi
+ * /api/admin/farmers:
+ *   get:
+ *     tags:
+ *       - Admin
+ *     summary: Get all farmers (admin)
+ *     description: Retrieve a paginated list of all farmer groups with search
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: A paginated list of farmer groups
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Farmer'
+ *                 pagination:
+ *                   type: object
+ *                   properties:
+ *                     page:
+ *                       type: integer
+ *                     limit:
+ *                       type: integer
+ *                     total:
+ *                       type: integer
+ *                     totalPages:
+ *                       type: integer
+ *       500:
+ *         description: Internal server error
+ *   post:
+ *     tags:
+ *       - Admin
+ *     summary: Create a farmer group
+ *     description: Create a new farmer group record
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - group
+ *               - chairman
+ *               - members
+ *             properties:
+ *               name:
+ *                 type: string
+ *               group:
+ *                 type: string
+ *               chairman:
+ *                 type: string
+ *               members:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *     responses:
+ *       201:
+ *         description: Farmer group created
+ *       400:
+ *         description: Validation error
+ *       500:
+ *         description: Internal server error
+ *   put:
+ *     tags:
+ *       - Admin
+ *     summary: Update a farmer group
+ *     description: Update an existing farmer group record
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - id
+ *               - name
+ *               - group
+ *               - chairman
+ *               - members
+ *             properties:
+ *               id:
+ *                 type: string
+ *               name:
+ *                 type: string
+ *               group:
+ *                 type: string
+ *               chairman:
+ *                 type: string
+ *               members:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *     responses:
+ *       200:
+ *         description: Farmer group updated
+ *       400:
+ *         description: Validation error
+ *       500:
+ *         description: Internal server error
+ *   delete:
+ *     tags:
+ *       - Admin
+ *     summary: Delete a farmer group
+ *     description: Delete a farmer group by ID
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Farmer group deleted
+ *       400:
+ *         description: ID parameter is required
+ *       500:
+ *         description: Internal server error
+ */
 // GET /api/admin/farmers
 router.get('/', async (req, res) => {
   try {

@@ -4,9 +4,9 @@ import { useState, useEffect, useMemo } from 'react';
 import WaterLevelChart from '@/components/charts/WaterLevelChart';
 import RainfallChart from '@/components/charts/RainfallChart';
 import { WaterLevelData as ChartWaterLevelData, RainfallData as ChartRainfallData } from '@/types/data';
-import { Search, ChevronDown, Check, BarChart3, CloudRain, Sprout, Users, Droplets, ChartBar } from 'lucide-react';
+import { Search, ChevronDown, Check, BarChart3, CloudRain, Sprout, Users, Droplets, ChartBar, Map, Image as ImageIcon, Table2 } from 'lucide-react';
+import Image from 'next/image';
 
-// ... Interface tetap sama seperti kode Anda ...
 interface DbWaterLevelData { id: string; location: string; value: number; unit: string; measuredAt: string; }
 interface DbRainfallData { id: string; location: string; value: number; unit: string; measuredAt: string; }
 interface DbCropData { id: string; crop: string; area: number; production: number; season: string; location: string | null; createdAt: string; }
@@ -16,6 +16,12 @@ interface IrrigationProfileApi {
   name: string;
   description?: string;
   location?: string;
+  buildingScheme?: string | null;
+  networkScheme?: string | null;
+  p3aGroupList?: any;
+  farmingBusinessAnalysis?: any;
+  rttg?: string | null;
+  plantingSchedule?: string | null;
 }
 
 const tabConfig = [
@@ -23,6 +29,7 @@ const tabConfig = [
   { id: 'rainfall', label: 'Curah Hujan', icon: CloudRain, color: 'cyan' },
   { id: 'crops', label: 'Data Tanaman', icon: Sprout, color: 'green' },
   { id: 'farmers', label: 'Data Petani', icon: Users, color: 'orange' },
+  { id: 'irrigationData', label: 'Data Irigasi', icon: Map, color: 'indigo' },
 ];
 
 const quickStats = [
@@ -41,6 +48,10 @@ export default function DataPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [locations, setLocations] = useState<{ id: string; name: string; description: string; location?: string }[]>([]);
+
+  // State untuk data irigasi detail
+  const [irrigationDetail, setIrrigationDetail] = useState<IrrigationProfileApi | null>(null);
+  const [irrigationLoading, setIrrigationLoading] = useState(false);
 
   // State untuk Dropdown Search
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -81,6 +92,31 @@ export default function DataPage() {
 
   const selectedLocation = locations.find(l => l.id === selectedLocationId);
 
+  // Fetch irrigation detail when tab is irrigationData and a specific location is selected
+  useEffect(() => {
+    if (activeTab === 'irrigationData' && selectedLocationId !== 'all' && selectedLocation) {
+      setIrrigationLoading(true);
+      setIrrigationDetail(null);
+      const fetchIrrigationDetail = async () => {
+        try {
+          const response = await fetch(`/api/irrigation-profiles/${selectedLocationId}`);
+          if (response.ok) {
+            const data = await response.json();
+            setIrrigationDetail(data);
+          }
+        } catch (err) {
+          console.error('Error fetching irrigation detail:', err);
+        } finally {
+          setIrrigationLoading(false);
+        }
+      };
+      fetchIrrigationDetail();
+    } else if (activeTab === 'irrigationData') {
+      setIrrigationDetail(null);
+      setIrrigationLoading(false);
+    }
+  }, [activeTab, selectedLocationId, selectedLocation]);
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -118,6 +154,10 @@ export default function DataPage() {
         } else if (activeTab === 'farmers') {
             const response = await fetch('/api/data/farmers');
             if (response.ok) setFarmerData(await response.json());
+        } else if (activeTab === 'irrigationData') {
+          // Data is fetched separately above
+          setLoading(false);
+          return;
         }
       } catch {
         setError('Error mengambil data');
@@ -127,6 +167,117 @@ export default function DataPage() {
     };
     fetchData();
   }, [activeTab, selectedLocationId, selectedLocation]);
+
+  const renderIrrigationImages = () => {
+    if (!irrigationDetail) return null;
+    const imageFields = [
+      { key: 'buildingScheme', label: 'Building Scheme' },
+      { key: 'networkScheme', label: 'Network Scheme' },
+      { key: 'rttg', label: 'RTTG' },
+      { key: 'plantingSchedule', label: 'Planting Schedule' },
+    ];
+
+    const hasImages = imageFields.some(f => irrigationDetail[f.key as keyof IrrigationProfileApi]);
+
+    if (!hasImages) {
+      return (
+        <div className="text-center py-8 text-gray-400">
+          <ImageIcon className="w-12 h-12 mx-auto mb-2 opacity-50" />
+          <p>Tidak ada gambar tersedia untuk lokasi ini</p>
+        </div>
+      );
+    }
+
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {imageFields.map(field => {
+          const value = irrigationDetail[field.key as keyof IrrigationProfileApi] as string | null;
+          if (!value) return null;
+          return (
+            <div key={field.key} className="bg-gray-50 rounded-lg p-4">
+              <h4 className="text-sm font-semibold text-gray-700 mb-3">{field.label}</h4>
+              <div className="relative h-48 rounded-md overflow-hidden border border-gray-200 bg-white">
+                <Image
+                  src={value}
+                  alt={field.label}
+                  fill
+                  className="object-contain"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                    if (target.parentElement) {
+                      target.parentElement.innerHTML = '<div class="flex items-center justify-center h-full text-gray-400"><p>Gambar tidak dapat dimuat</p></div>';
+                    }
+                  }}
+                />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
+  const renderIrrigationTables = () => {
+    if (!irrigationDetail) return null;
+
+    const tableFields = [
+      { key: 'p3aGroupList', label: 'P3A Group List' },
+      { key: 'farmingBusinessAnalysis', label: 'Farming Business Analysis' },
+    ];
+
+    const hasTables = tableFields.some(f => {
+      const data = irrigationDetail[f.key as keyof IrrigationProfileApi];
+      return Array.isArray(data) && data.length > 0;
+    });
+
+    if (!hasTables) {
+      return (
+        <div className="text-center py-8 text-gray-400">
+          <Table2 className="w-12 h-12 mx-auto mb-2 opacity-50" />
+          <p>Tidak ada data tabel tersedia untuk lokasi ini</p>
+        </div>
+      );
+    }
+
+    return (
+      <div className="space-y-8">
+        {tableFields.map(field => {
+          const data = irrigationDetail[field.key as keyof IrrigationProfileApi];
+          if (!Array.isArray(data) || data.length === 0) return null;
+          const columns = Object.keys(data[0] || {});
+
+          return (
+            <div key={field.key}>
+              <h4 className="text-sm font-semibold text-gray-700 mb-3">{field.label}</h4>
+              <div className="overflow-x-auto border rounded-md">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      {columns.map(col => (
+                        <th key={col} className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          {col}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {data.map((item: any, idx: number) => (
+                      <tr key={idx} className={idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                        {columns.map(col => (
+                          <td key={col} className="px-4 py-3 text-sm text-gray-700">{String(item[col] ?? '')}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -180,6 +331,46 @@ export default function DataPage() {
                 ))}
               </tbody>
             </table>
+          </div>
+        );
+      case 'irrigationData':
+        return (
+          <div className="space-y-8">
+            {selectedLocationId === 'all' ? (
+              <div className="text-center py-12 text-gray-400">
+                <Map className="w-16 h-16 mx-auto mb-4 opacity-50" />
+                <h3 className="text-lg font-medium text-gray-500 mb-2">Pilih Lokasi Terlebih Dahulu</h3>
+                <p className="text-sm">Silakan pilih lokasi spesifik dari dropdown di atas untuk melihat data irigasi detail</p>
+              </div>
+            ) : irrigationLoading ? (
+              <div className="flex items-center justify-center h-64">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+              </div>
+            ) : irrigationDetail ? (
+              <>
+                {/* Section: Gambar */}
+                <div>
+                  <h3 className="text-lg font-bold text-gray-800 mb-4 pb-2 border-b border-gray-200 flex items-center gap-2">
+                    <ImageIcon className="w-5 h-5 text-indigo-600" />
+                    Gambar & Dokumen
+                  </h3>
+                  {renderIrrigationImages()}
+                </div>
+
+                {/* Section: Tabel */}
+                <div>
+                  <h3 className="text-lg font-bold text-gray-800 mb-4 pb-2 border-b border-gray-200 flex items-center gap-2">
+                    <Table2 className="w-5 h-5 text-indigo-600" />
+                    Data Tabel
+                  </h3>
+                  {renderIrrigationTables()}
+                </div>
+              </>
+            ) : (
+              <div className="text-center py-8 text-gray-400">
+                <p>Gagal memuat data irigasi</p>
+              </div>
+            )}
           </div>
         );
       default: return null;
@@ -343,7 +534,7 @@ export default function DataPage() {
 
               {/* Content Area */}
               <div className="min-h-80">
-                {loading ? (
+                {loading && activeTab !== 'irrigationData' ? (
                   <div className="flex items-center justify-center h-64">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
                   </div>

@@ -1,7 +1,63 @@
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     WaterLevelData:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *         location:
+ *           type: string
+ *         value:
+ *           type: number
+ *           format: float
+ *         unit:
+ *           type: string
+ *           default: cm
+ *         measuredAt:
+ *           type: string
+ *           format: date-time
+ *         recordedBy:
+ *           type: string
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ */
+
 const express = require('express');
 const router = express.Router();
 const prisma = require('../../lib/prisma');
 
+/**
+ * @openapi
+ * /api/data/water-level:
+ *   get:
+ *     tags:
+ *       - Water Level
+ *     summary: Get water level data
+ *     description: Retrieve water level measurements with optional location filtering
+ *     parameters:
+ *       - in: query
+ *         name: location
+ *         schema:
+ *           type: string
+ *         description: Filter by location name
+ *     responses:
+ *       200:
+ *         description: A list of water level data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/WaterLevelData'
+ *       500:
+ *         description: Internal server error
+ */
 // GET /api/data/water-level
 router.get('/', async (req, res) => {
   try {
@@ -25,6 +81,27 @@ router.get('/', async (req, res) => {
   }
 });
 
+/**
+ * @openapi
+ * /api/data/water-level/count:
+ *   get:
+ *     tags:
+ *       - Water Level
+ *     summary: Get water level data count
+ *     description: Retrieve the total count of water level records
+ *     responses:
+ *       200:
+ *         description: Record count
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 count:
+ *                   type: integer
+ *       500:
+ *         description: Internal server error
+ */
 // GET /api/data/water-level/count
 router.get('/count', async (req, res) => {
   try {

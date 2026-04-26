@@ -64,10 +64,10 @@ export default function SliderCarousel() {
         <div className="absolute inset-0 bg-black/50"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center justify-center h-full">
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            Sistem Irigasi Bunta
+            Sistem CIKASDA UPT PSDA Wilayah II
           </h1>
           <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-            Informasi lengkap manajemen air dan irigasi untuk petani dan pemangku kepentingan di wilayah Bunta.
+            DIGITALISASI MANAJEMEN KEPEGAWAIAN DAN PENDAMPING SISTEM IRIGASI UNTUK MENDUKUNG PENGELOLAAN IRIGASI YANG LEBIH EFEKTIF DAN EFISIEN DI WILAYAH PROVINSI SULAWESI TENGAH.
           </p>
         </div>
       </section>

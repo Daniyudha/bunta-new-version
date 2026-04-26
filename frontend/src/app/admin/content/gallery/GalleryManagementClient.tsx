@@ -326,25 +326,25 @@ export default function GalleryManagementClient() {
                   <td className="px-6 py-4 text-center whitespace-nowrap text-sm font-medium space-x-2">
                     <button
                       onClick={() => handleToggleActive(item.id, item.active)}
-                      className={`inline-flex items-center justify-center p-2 rounded ${
+                      className={`inline-flex items-center justify-center p-2 rounded transition cursor-pointer ${
                         item.active
-                          ? 'bg-yellow-600 hover:bg-yellow-700'
-                          : 'bg-green-600 hover:bg-green-700'
-                      } text-white cursor-pointer`}
+                          ? 'text-yellow-600 hover:bg-yellow-500/10'
+                          : 'text-green-600 hover:bg-green-500/10'
+                      }`}
                       title={item.active ? 'Nonaktifkan' : 'Aktifkan'}
                     >
                       {item.active ? <EyeOff size={16} /> : <Eye size={16} />}
                     </button>
                     <Link
                       href={`/admin/content/gallery/edit/${item.id}`}
-                      className="inline-flex items-center justify-center p-2 bg-blue-600 text-white rounded hover:bg-blue-700 cursor-pointer"
+                      className="inline-flex items-center justify-center p-2 rounded text-blue-600 hover:bg-blue-500/10 transition cursor-pointer"
                       title="Edit"
                     >
                       <Pencil size={16} />
                     </Link>
                     <button
                       onClick={() => handleDelete(item.id)}
-                      className="inline-flex items-center justify-center p-2 bg-red-600 text-white rounded hover:bg-red-700 cursor-pointer"
+                      className="inline-flex items-center justify-center p-2 rounded text-red-600 hover:bg-red-500/10 transition cursor-pointer"
                       title="Delete"
                     >
                       <Trash2 size={16} />

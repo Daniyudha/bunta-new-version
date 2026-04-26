@@ -75,7 +75,7 @@ export default function Lightbox({
 
   return (
     <div 
-      className="fixed inset-0 bg-black/90 flex flex-col items-center justify-center z-50"
+      className="fixed inset-0 bg-black/90 flex flex-col items-center justify-center z-[60]"
       onClick={onClose}
     >
       {/* Close Button - Top Right */}

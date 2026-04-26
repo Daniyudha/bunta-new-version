@@ -3,6 +3,8 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./swagger');
 
 dotenv.config();
 
@@ -51,8 +53,47 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Health check
+/**
+ * @openapi
+ * /api/health:
+ *   get:
+ *     tags:
+ *       - Health
+ *     summary: Health check endpoint
+ *     description: Returns the server health status
+ *     responses:
+ *       200:
+ *         description: Server is healthy
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: ok
+ *                 timestamp:
+ *                   type: string
+ *                   format: date-time
+ */
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+// Swagger API Documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  customSiteTitle: 'DIMENSI API Documentation',
+  customfavIcon: 'https://irigasibunta.com/favicon.ico',
+  customCss: '.swagger-ui .topbar { display: none }',
+  swaggerOptions: {
+    persistAuthorization: true,
+  },
+}));
+
+// Serve swagger JSON spec
+app.get('/api-docs.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
 });
 
 // Mount routes
@@ -65,6 +106,7 @@ app.use('/api/contact', require('./routes/contact'));
 app.use('/api/storage', require('./routes/storage'));
 app.use('/api/employees', require('./routes/employees'));
 app.use('/api/irrigation-profiles', require('./routes/irrigation-profiles'));
+app.use('/api/auth', require('./routes/auth'));
 
 // Default 404
 app.use('*', (req, res) => {
@@ -79,4 +121,5 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
   console.log(`Backend server running on port ${PORT}`);
+  console.log(`API Docs available at http://localhost:${PORT}/api-docs`);
 });

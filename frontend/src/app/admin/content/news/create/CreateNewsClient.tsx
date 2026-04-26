@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import CustomCKEditor from '@/components/editor/CKEditor';
+import { Trash2, Pencil } from 'lucide-react';
 
 interface Category {
   id: string;
@@ -251,37 +252,110 @@ export default function CreateNewsClient() {
             </div>
 
             <div>
-              <label htmlFor="image" className="block text-sm font-medium text-gray-700 mb-2">
-                Image Upload
-              </label>
-              <input
-                type="file"
-                id="image"
-                name="image"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="w-full text-black border border-gray-300 rounded-md file:mr-4 file:py-2 file:px-4 file:border-0 file:bg-gray-200 file:text-sm file:font-semibold file:bg-light-gray file:text-gray-blue hover:file:bg-slate/20"
+  <label className="block text-sm font-medium text-gray-700 mb-2">
+    Image Upload
+  </label>
+
+  {imagePreview ? (
+    <div className="relative w-full h-full rounded-lg overflow-hidden border border-gray-200 bg-gray-50 group">
+      <img
+        src={imagePreview}
+        alt="Preview"
+        className="w-full h-full object-cover"
+      />
+
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-3">
+        {/* Replace */}
+        <label className="inline-flex items-center justify-center p-3 rounded-full hover:bg-white/20 transition shadow cursor-pointer">
+          <Pencil className="w-5 h-5 text-white" />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="hidden"
+          />
+        </label>
+
+        {/* Delete */}
+        <button
+          type="button"
+          onClick={() => {
+            setImageFile(null);
+            setImagePreview('');
+          }}
+          className="inline-flex items-center justify-center p-3 rounded-full hover:bg-white/20 transition shadow cursor-pointer"
+          title="Hapus gambar"
+        >
+          <Trash2 className="w-5 h-5 text-white" />
+        </button>
+      </div>
+    </div>
+  ) : (
+    <label className="w-full h-60 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50 cursor-pointer hover:bg-gray-100 transition">
+      <div className="text-center">
+        {uploading ? (
+          <div className="flex flex-col items-center gap-2 text-gray-400">
+            <svg
+              className="animate-spin h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
               />
-              {imagePreview && (
-                <div className="mt-4">
-                  <img
-                    src={imagePreview}
-                    alt="Preview"
-                    className="w-32 h-32 object-cover rounded-md"
-                  />
-                </div>
-              )}
-              {uploading && (
-                <div className="mt-2 text-sm text-blue-600">Uploading image...</div>
-              )}
-              {/* Keep hidden input for existing URL if needed */}
-              <input
-                type="hidden"
-                name="imageUrl"
-                value={formData.image}
-                onChange={handleInputChange}
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
               />
-            </div>
+            </svg>
+            <p className="text-xs">Uploading...</p>
+          </div>
+        ) : (
+          <>
+            <svg
+              className="mx-auto h-10 w-10 text-gray-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+              />
+            </svg>
+            <p className="mt-2 text-sm text-gray-500">
+              Klik untuk upload gambar
+            </p>
+          </>
+        )}
+      </div>
+
+      <input
+        type="file"
+        accept="image/*"
+        onChange={handleImageChange}
+        className="hidden"
+      />
+    </label>
+  )}
+
+  {/* Hidden input untuk backend */}
+  <input
+    type="hidden"
+    name="imageUrl"
+    value={formData.image}
+    onChange={handleInputChange}
+  />
+</div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">

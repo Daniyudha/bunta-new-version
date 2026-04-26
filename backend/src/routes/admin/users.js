@@ -3,6 +3,65 @@ const prisma = require('../../lib/prisma');
 
 const router = express.Router();
 
+/**
+ * @openapi
+ * /api/admin/users:
+ *   get:
+ *     tags:
+ *       - Admin
+ *     summary: Get all users
+ *     description: Retrieve a list of all users with their roles
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: A list of users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                   name:
+ *                     type: string
+ *                   email:
+ *                     type: string
+ *                   roleId:
+ *                     type: string
+ *                   role:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                       name:
+ *                         type: string
+ *                   createdAt:
+ *                     type: string
+ *                     format: date-time
+ *                   updatedAt:
+ *                     type: string
+ *                     format: date-time
+ *                   _count:
+ *                     type: object
+ *                     properties:
+ *                       news:
+ *                         type: integer
+ *       500:
+ *         description: Internal server error
+ *   post:
+ *     tags:
+ *       - Admin
+ *     summary: Create user (placeholder)
+ *     description: Create a new user (not yet implemented)
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       501:
+ *         description: Not implemented
+ */
 // GET /api/admin/users
 router.get('/', async (req, res) => {
   try {

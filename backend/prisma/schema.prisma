@@ -298,21 +298,45 @@ model Employee {
 }
 
 model IrrigationProfile {
-  id          String   @id @default(cuid())
-  name        String
-  description String?
-  location    String?
-  latitude    Float?
-  longitude   Float?
-  area        Float
-  waterLevel  Float?
-  status      String   @default("normal")
-  canals      Int?
-  gates       Int?
-  waterSource String?
-  lastUpdate  DateTime @default(now())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id                String   @id @default(cuid())
+  name              String
+  description       String?
+  location          String?
+  latitude          Float?
+  longitude         Float?
+  area              Float
+  waterLevel        Float?
+  status            String   @default("normal")
+  canals            Int?
+  gates             Int?
+  waterSource       String?
+  regency           String?
+  constructionYear  Int?
+  servedVillages    String?
+  potentialArea     Float?
+  functionalArea    Float?
+  dischargeCapacity Float?
+  channelLength     Float?
+  watershedArea     Float?
+  productivity      String?
+  totalStructures   Int?
+  mainStructure     String?
+  divisionStructure Int?
+  intakeStructure   Int?
+  dropStructure     Int?
+  aqueduct          Int?
+  drainageCulvert   Int?
+  roadCulvert       Int?
+  slopingDrain      Int?
+  buildingScheme    String?
+  networkScheme     String?
+  p3aGroupList      Json?
+  farmingBusinessAnalysis Json?
+  rttg              String?
+  plantingSchedule  String?
+  lastUpdate        DateTime @default(now())
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
   @@map("irrigation_profiles")
 }

@@ -384,20 +384,21 @@ export default function GalleryPage() {
           </div>
         )}
 
-        {/* Lightbox */}
-        <Lightbox
-          isOpen={isLightboxOpen}
-          onClose={closeLightbox}
-          imageUrl={selectedImage || ''}
-          title={getSelectedImageData()?.title || ''}
-          description={getSelectedImageData()?.description || ''}
-          type={selectedImageType}
-          onNext={handleNext}
-          onPrev={handlePrev}
-          hasNext={selectedImageIndex < filteredItems.length - 1}
-          hasPrev={selectedImageIndex > 0}
-        />
       </div>
+
+      {/* Lightbox - placed outside relative z-20 wrapper to prevent stacking context conflict with Header (z-50) */}
+      <Lightbox
+        isOpen={isLightboxOpen}
+        onClose={closeLightbox}
+        imageUrl={selectedImage || ''}
+        title={getSelectedImageData()?.title || ''}
+        description={getSelectedImageData()?.description || ''}
+        type={selectedImageType}
+        onNext={handleNext}
+        onPrev={handlePrev}
+        hasNext={selectedImageIndex < filteredItems.length - 1}
+        hasPrev={selectedImageIndex > 0}
+      />
     </div>
   );
 }

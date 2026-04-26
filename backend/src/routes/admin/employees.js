@@ -37,6 +37,108 @@ const upload = multer({
   }
 });
 
+/**
+ * @openapi
+ * /api/admin/employees:
+ *   get:
+ *     tags:
+ *       - Admin
+ *     summary: Get all employees (admin)
+ *     description: Retrieve a paginated list of all employees with search
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: A paginated list of employees
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Employee'
+ *                 pagination:
+ *                   type: object
+ *                   properties:
+ *                     page:
+ *                       type: integer
+ *                     limit:
+ *                       type: integer
+ *                     total:
+ *                       type: integer
+ *                     pages:
+ *                       type: integer
+ *       500:
+ *         description: Internal server error
+ *   post:
+ *     tags:
+ *       - Admin
+ *     summary: Create an employee
+ *     description: Create a new employee record
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - position
+ *             properties:
+ *               name:
+ *                 type: string
+ *               position:
+ *                 type: string
+ *               education:
+ *                 type: string
+ *               status:
+ *                 type: string
+ *                 default: PNS
+ *               photo:
+ *                 type: string
+ *               department:
+ *                 type: string
+ *               age:
+ *                 type: integer
+ *               workRegion:
+ *                 type: string
+ *               order:
+ *                 type: integer
+ *               pangkat_golongan:
+ *                 type: string
+ *               nip:
+ *                 type: string
+ *               whatsapp:
+ *                 type: string
+ *               location:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Employee created
+ *       400:
+ *         description: Validation error
+ *       500:
+ *         description: Internal server error
+ */
 // GET /api/admin/employees
 router.get('/', async (req, res) => {
   try {
@@ -84,6 +186,110 @@ router.get('/', async (req, res) => {
   }
 });
 
+/**
+ * @openapi
+ * /api/admin/employees/{id}:
+ *   get:
+ *     tags:
+ *       - Admin
+ *     summary: Get employee by ID (admin)
+ *     description: Retrieve a single employee by ID
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Employee details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Employee'
+ *       404:
+ *         description: Employee not found
+ *       500:
+ *         description: Internal server error
+ *   put:
+ *     tags:
+ *       - Admin
+ *     summary: Update an employee
+ *     description: Update an existing employee record
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - position
+ *             properties:
+ *               name:
+ *                 type: string
+ *               position:
+ *                 type: string
+ *               education:
+ *                 type: string
+ *               status:
+ *                 type: string
+ *               photo:
+ *                 type: string
+ *               department:
+ *                 type: string
+ *               age:
+ *                 type: integer
+ *               workRegion:
+ *                 type: string
+ *               order:
+ *                 type: integer
+ *               pangkat_golongan:
+ *                 type: string
+ *               nip:
+ *                 type: string
+ *               whatsapp:
+ *                 type: string
+ *               location:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Employee updated
+ *       404:
+ *         description: Employee not found
+ *       500:
+ *         description: Internal server error
+ *   delete:
+ *     tags:
+ *       - Admin
+ *     summary: Delete an employee
+ *     description: Delete an employee record by ID
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       204:
+ *         description: Employee deleted
+ *       404:
+ *         description: Employee not found
+ *       500:
+ *         description: Internal server error
+ */
 // GET /api/admin/employees/:id
 router.get('/:id', async (req, res) => {
   try {

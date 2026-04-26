@@ -2,6 +2,152 @@ const express = require('express');
 const router = express.Router();
 const prisma = require('../../lib/prisma');
 
+/**
+ * @openapi
+ * /api/admin/data/rainfall:
+ *   get:
+ *     tags:
+ *       - Admin
+ *     summary: Get rainfall data (admin)
+ *     description: Retrieve a paginated list of rainfall data entries with location filtering
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: location
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 100
+ *     responses:
+ *       200:
+ *         description: A paginated list of rainfall data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/RainfallData'
+ *                 pagination:
+ *                   type: object
+ *                   properties:
+ *                     page:
+ *                       type: integer
+ *                     limit:
+ *                       type: integer
+ *                     total:
+ *                       type: integer
+ *                     totalPages:
+ *                       type: integer
+ *       500:
+ *         description: Internal server error
+ *   post:
+ *     tags:
+ *       - Admin
+ *     summary: Create rainfall data entry
+ *     description: Create a new rainfall data record
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - location
+ *               - value
+ *               - measuredAt
+ *             properties:
+ *               location:
+ *                 type: string
+ *               value:
+ *                 type: number
+ *                 format: float
+ *               unit:
+ *                 type: string
+ *                 default: mm
+ *               measuredAt:
+ *                 type: string
+ *                 format: date-time
+ *     responses:
+ *       201:
+ *         description: Rainfall data created
+ *       400:
+ *         description: Validation error
+ *       500:
+ *         description: Internal server error
+ *   put:
+ *     tags:
+ *       - Admin
+ *     summary: Update rainfall data entry
+ *     description: Update an existing rainfall data record
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - id
+ *               - location
+ *               - value
+ *               - measuredAt
+ *             properties:
+ *               id:
+ *                 type: string
+ *               location:
+ *                 type: string
+ *               value:
+ *                 type: number
+ *                 format: float
+ *               unit:
+ *                 type: string
+ *                 default: mm
+ *               measuredAt:
+ *                 type: string
+ *                 format: date-time
+ *     responses:
+ *       200:
+ *         description: Rainfall data updated
+ *       400:
+ *         description: Validation error
+ *       500:
+ *         description: Internal server error
+ *   delete:
+ *     tags:
+ *       - Admin
+ *     summary: Delete rainfall data entry
+ *     description: Delete a rainfall data record by ID
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Data deleted successfully
+ *       400:
+ *         description: ID parameter is required
+ *       500:
+ *         description: Internal server error
+ */
 // GET /api/admin/data/rainfall
 router.get('/', async (req, res) => {
   try {

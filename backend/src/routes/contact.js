@@ -1,3 +1,41 @@
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     ContactSubmission:
+ *       type: object
+ *       required:
+ *         - name
+ *         - email
+ *         - subject
+ *         - message
+ *       properties:
+ *         id:
+ *           type: string
+ *         name:
+ *           type: string
+ *         email:
+ *           type: string
+ *           format: email
+ *         subject:
+ *           type: string
+ *         message:
+ *           type: string
+ *         phone:
+ *           type: string
+ *           nullable: true
+ *         status:
+ *           type: string
+ *           enum: [unread, read, replied]
+ *           default: unread
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ */
+
 const express = require('express');
 const router = express.Router();
 const prisma = require('../lib/prisma');
@@ -14,6 +52,54 @@ router.options('/', (req, res) => {
   res.set(corsHeaders).status(200).json({});
 });
 
+/**
+ * @openapi
+ * /api/contact:
+ *   post:
+ *     tags:
+ *       - Contact
+ *     summary: Submit a contact form
+ *     description: Submit a contact form message to the system
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - email
+ *               - subject
+ *               - message
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               subject:
+ *                 type: string
+ *               message:
+ *                 type: string
+ *               phone:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Contact form submitted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 submissionId:
+ *                   type: string
+ *       400:
+ *         description: Validation error
+ *       500:
+ *         description: Internal server error
+ */
 // POST /api/contact
 router.post('/', async (req, res) => {
   try {

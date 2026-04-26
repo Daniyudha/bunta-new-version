@@ -1,82 +1,88 @@
-'use client';
+"use client";
 
-import React, { useState, useRef, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { galleryCategories } from '@/types/gallery';
+import React, { useState, useRef, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { galleryCategories } from "@/types/gallery";
+import { Trash2 } from "lucide-react";
 
 export default function CreateGalleryClient() {
   const { status } = useSession();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [videoPreviewUrl, setVideoPreviewUrl] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    imageUrl: '',
-    category: '',
-    type: 'image',
+    title: "",
+    description: "",
+    imageUrl: "",
+    category: "",
+    type: "image",
     active: true,
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => {
     const { name, value, type } = e.target;
-    
-    if (name === 'type') {
+
+    if (name === "type") {
       // Reset previews when type changes
       setImagePreview(null);
       setVideoPreviewUrl(null);
-      setFormData(prev => ({ ...prev, imageUrl: '' }));
+      setFormData((prev) => ({ ...prev, imageUrl: "" }));
     }
-    
-    setFormData(prev => ({
+
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
+      [name]:
+        type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
     }));
   };
 
   // Handle video preview when imageUrl changes for videos
   useEffect(() => {
-    if (formData.type === 'video' && formData.imageUrl) {
+    if (formData.type === "video" && formData.imageUrl) {
       const youtubeId = extractYoutubeId(formData.imageUrl);
       if (youtubeId) {
         setVideoPreviewUrl(`https://www.youtube.com/embed/${youtubeId}`);
       } else {
         setVideoPreviewUrl(null);
       }
-    } else if (formData.type === 'image') {
+    } else if (formData.type === "image") {
       setVideoPreviewUrl(null);
     }
   }, [formData.imageUrl, formData.type]);
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file && file.type.startsWith('image/')) {
+    if (file && file.type.startsWith("image/")) {
       setUploading(true);
       try {
         const formData = new FormData();
-        formData.append('file', file);
+        formData.append("file", file);
 
-        const response = await fetch('/api/admin/gallery/upload', {
-          method: 'POST',
+        const response = await fetch("/api/admin/gallery/upload", {
+          method: "POST",
           body: formData,
         });
 
         if (response.ok) {
           const uploadResult = await response.json();
           setImagePreview(uploadResult.url);
-          setFormData(prev => ({ ...prev, imageUrl: uploadResult.url }));
+          setFormData((prev) => ({ ...prev, imageUrl: uploadResult.url }));
         } else {
           const errorData = await response.json();
-          setError(errorData.error || 'Failed to upload image');
+          setError(errorData.error || "Failed to upload image");
         }
       } catch (error) {
-        setError('Error uploading image');
+        setError("Error uploading image");
       } finally {
         setUploading(false);
       }
@@ -84,39 +90,40 @@ export default function CreateGalleryClient() {
   };
 
   const extractYoutubeId = (url: string): string | null => {
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const regExp =
+      /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     const match = url.match(regExp);
-    return (match && match[2].length === 11) ? match[2] : null;
+    return match && match[2].length === 11 ? match[2] : null;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
+    setError("");
 
     try {
-      const response = await fetch('/api/admin/gallery', {
-        method: 'POST',
+      const response = await fetch("/api/admin/gallery", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
 
       if (response.ok) {
-        router.push('/admin/content/gallery');
+        router.push("/admin/content/gallery");
       } else {
         const errorData = await response.json();
-        setError(errorData.message || 'Failed to create gallery item');
+        setError(errorData.message || "Failed to create gallery item");
       }
     } catch (error) {
-      setError('Error creating gallery item');
+      setError("Error creating gallery item");
     } finally {
       setLoading(false);
     }
   };
 
-  if (status === 'loading') {
+  if (status === "loading") {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
@@ -129,7 +136,9 @@ export default function CreateGalleryClient() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-800">Buat Galeri Baru</h1>
-          <p className="text-gray-600 mt-2">tambahkan gambar atau video di galeri</p>
+          <p className="text-gray-600 mt-2">
+            tambahkan gambar atau video di galeri
+          </p>
         </div>
 
         {error && (
@@ -138,10 +147,16 @@ export default function CreateGalleryClient() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-lg p-6">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white shadow-md rounded-lg p-6"
+        >
           <div className="grid grid-cols-1 gap-6">
             <div>
-              <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="title"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Judul *
               </label>
               <input
@@ -157,7 +172,10 @@ export default function CreateGalleryClient() {
             </div>
 
             <div>
-              <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="description"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Deskripsi
               </label>
               <textarea
@@ -172,7 +190,10 @@ export default function CreateGalleryClient() {
             </div>
 
             <div>
-              <label htmlFor="type" className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="type"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Tipe *
               </label>
               <select
@@ -189,47 +210,90 @@ export default function CreateGalleryClient() {
             </div>
 
             {/* Conditional rendering based on media type */}
-            {formData.type === 'image' ? (
+            {formData.type === "image" ? (
               <div>
-                <label htmlFor="imageUpload" className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Upload Image *
                 </label>
-                <input
-                  type="file"
-                  id="imageUpload"
-                  ref={fileInputRef}
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  className="w-full text-black border border-gray-300 file:py-2 file:px-3 file:bg-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required={formData.type === 'image'}
-                  disabled={uploading}
-                />
-                {uploading && (
-                  <p className="text-sm text-blue-600 mt-2">Uploading image...</p>
-                )}
-                {imagePreview && (
-                  <div className="mt-4">
-                    <p className="text-sm text-gray-600 mb-2">Image Preview:</p>
-                    <img
-                      src={imagePreview}
-                      alt="Preview"
-                      className="h-48 w-full object-cover rounded-md border"
-                    />
-                  </div>
-                )}
+
+                <label className="block cursor-pointer group">
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="hidden"
+                    required={formData.type === "image" && !imagePreview}
+                    disabled={uploading}
+                  />
+
+                  {imagePreview ? (
+                    <div className="relative w-full h-full rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
+                      <img
+                        src={imagePreview}
+                        alt="Preview"
+                        className="w-full h-full object-cover"
+                      />
+
+                      {/* Overlay */}
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setImagePreview(null);
+                            setFormData((prev) => ({ ...prev, imageUrl: "" }));
+                            if (fileInputRef.current) {
+                              fileInputRef.current.value = "";
+                            }
+                          }}
+                          className="inline-flex items-center justify-center p-3 rounded-full hover:bg-white/20 transition shadow cursor-pointer"
+                        >
+                          <Trash2 className="w-5 h-5 text-white" />
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="w-full h-48 rounded-lg border-2 border-dashed border-gray-200 flex items-center justify-center bg-gray-50 group-hover:bg-gray-100 transition">
+                      <div className="text-center">
+                        <svg
+                          className="mx-auto h-8 w-8 text-gray-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={1.5}
+                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                          />
+                        </svg>
+                        <p className="mt-2 text-xs text-gray-400">
+                          {uploading
+                            ? "Uploading..."
+                            : "Klik untuk upload gambar"}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </label>
               </div>
             ) : (
               <div>
-                <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="imageUrl"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   YouTube Video URL *
                 </label>
                 <input
                   type="url"
                   id="imageUrl"
                   name="imageUrl"
-                  value={formData.imageUrl || ''}
+                  value={formData.imageUrl || ""}
                   onChange={handleInputChange}
-                  required={formData.type === 'video'}
+                  required={formData.type === "video"}
                   className="w-full px-3 py-2 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="https://www.youtube.com/watch?v=..."
                 />
@@ -251,7 +315,10 @@ export default function CreateGalleryClient() {
             )}
 
             <div>
-              <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="category"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Category *
               </label>
               <select
@@ -264,7 +331,7 @@ export default function CreateGalleryClient() {
               >
                 <option value="">Select a category</option>
                 {galleryCategories
-                  .filter(category => category !== 'All')
+                  .filter((category) => category !== "All")
                   .map((category) => (
                     <option key={category} value={category}>
                       {category}
@@ -282,7 +349,10 @@ export default function CreateGalleryClient() {
                 onChange={handleInputChange}
                 className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
-              <label htmlFor="active" className="ml-2 block text-sm text-gray-900">
+              <label
+                htmlFor="active"
+                className="ml-2 block text-sm text-gray-900"
+              >
                 Active (visible on website)
               </label>
             </div>
@@ -301,7 +371,7 @@ export default function CreateGalleryClient() {
               disabled={loading}
               className="px-4 py-2 bg-blue-500 text-white rounded-md text-sm font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? 'Creating...' : 'Create Gallery Item'}
+              {loading ? "Creating..." : "Create Gallery Item"}
             </button>
           </div>
         </form>

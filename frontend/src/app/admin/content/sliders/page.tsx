@@ -143,7 +143,7 @@ export default function SlidersManagementPage() {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Status
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Aksi
               </th>
             </tr>
@@ -184,10 +184,10 @@ export default function SlidersManagementPage() {
                 <td className="px-6 py-4 whitespace-nowrap">
                   <button
                     onClick={() => toggleActive(slider.id, slider.active)}
-                    className={`inline-flex items-center justify-center p-2 rounded-full ${
+                    className={`inline-flex items-center justify-center p-2 rounded transition cursor-pointer ${
                       slider.active
-                        ? 'bg-green-100 text-green-800 hover:bg-green-200'
-                        : 'bg-red-100 text-red-800 hover:bg-red-200'
+                        ? 'text-yellow-600 hover:bg-yellow-500/10'
+                        : 'text-green-600 hover:bg-green-500/10'
                     } cursor-pointer`}
                     title={slider.active ? 'Nonaktifkan' : 'Aktifkan'}
                   >
@@ -197,14 +197,14 @@ export default function SlidersManagementPage() {
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                   <Link
                     href={`/admin/content/sliders/edit/${slider.id}`}
-                    className="inline-flex items-center justify-center p-2 bg-blue-600 text-white rounded hover:bg-blue-700 cursor-pointer"
+                    className="inline-flex items-center justify-center p-2 rounded text-blue-600 hover:bg-blue-500/10 transition cursor-pointer"
                     title="Edit"
                   >
                     <Pencil size={16} />
                   </Link>
                   <button
                     onClick={() => handleDelete(slider.id)}
-                    className="inline-flex items-center justify-center p-2 bg-red-600 text-white rounded hover:bg-red-700 cursor-pointer"
+                    className="inline-flex items-center justify-center p-2 rounded text-red-600 hover:bg-red-500/10 transition cursor-pointer"
                     title="Delete"
                   >
                     <Trash2 size={16} />

@@ -1,0 +1,2576 @@
+{
+  "metadata": {
+    "exportedAt": "2026-04-26T21:51:17.249Z",
+    "timestamp": "2026-04-26_21-51-17",
+    "modelCount": 20,
+    "totalRecords": 244
+  },
+  "data": {
+    "user": [
+      {
+        "id": "cmo7ko39z008fi6fci9zbo4fk",
+        "name": "Super Administrator",
+        "email": "su.admin@irigasibunta.com",
+        "emailVerified": null,
+        "image": null,
+        "password": "$2b$12$mFa2w0pxqd0CjXe.GeI5x.pyjOBPEt/CCLdKjV6BQnYVEX/u0zrWG",
+        "createdAt": "2026-04-20T19:12:45.720Z",
+        "updatedAt": "2026-04-20T19:12:45.720Z",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5"
+      },
+      {
+        "id": "cmo7ko3a2008hi6fczu1rfdoe",
+        "name": "Administrator",
+        "email": "admin@buntabella.go.id",
+        "emailVerified": null,
+        "image": null,
+        "password": "$2b$12$Mk7Cr2/9hhX7N1ArpjJtA.fuLp/mGEBmsY2bN16f5gTk48BSlH.56",
+        "createdAt": "2026-04-20T19:12:45.722Z",
+        "updatedAt": "2026-04-20T19:12:45.722Z",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl"
+      }
+    ],
+    "account": [],
+    "session": [],
+    "verificationToken": [],
+    "role": [
+      {
+        "id": "cmo7ko2ru001oi6fc1cakeyo5",
+        "name": "SUPER_ADMIN",
+        "description": "Super Administrator with full system access",
+        "isDefault": false,
+        "createdAt": "2026-04-20T19:12:45.067Z",
+        "updatedAt": "2026-04-20T19:12:45.067Z"
+      },
+      {
+        "id": "cmo7ko2rw001pi6fcttermtzl",
+        "name": "ADMIN",
+        "description": "Administrator role with full access",
+        "isDefault": false,
+        "createdAt": "2026-04-20T19:12:45.068Z",
+        "updatedAt": "2026-04-20T19:12:45.068Z"
+      }
+    ],
+    "rolePermission": [
+      {
+        "id": "cmo7ko2ry001ri6fc6x5jkba1",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2p80000i6fchlmlyumi",
+        "createdAt": "2026-04-20T19:12:45.070Z",
+        "updatedAt": "2026-04-20T19:12:45.070Z"
+      },
+      {
+        "id": "cmo7ko2s1001ti6fc7fh0iez3",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2pe0001i6fcr1d3htmw",
+        "createdAt": "2026-04-20T19:12:45.073Z",
+        "updatedAt": "2026-04-20T19:12:45.073Z"
+      },
+      {
+        "id": "cmo7ko2s3001vi6fcv4qkb4j0",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2pg0002i6fckz76kdr4",
+        "createdAt": "2026-04-20T19:12:45.075Z",
+        "updatedAt": "2026-04-20T19:12:45.075Z"
+      },
+      {
+        "id": "cmo7ko2s4001xi6fc870ut6al",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2pi0003i6fcgtztwhtp",
+        "createdAt": "2026-04-20T19:12:45.077Z",
+        "updatedAt": "2026-04-20T19:12:45.077Z"
+      },
+      {
+        "id": "cmo7ko2s5001zi6fcbho8d17x",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2pj0004i6fcy2ydcj5n",
+        "createdAt": "2026-04-20T19:12:45.078Z",
+        "updatedAt": "2026-04-20T19:12:45.078Z"
+      },
+      {
+        "id": "cmo7ko2s70021i6fcyyozl0fj",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2pk0005i6fcimnov1hq",
+        "createdAt": "2026-04-20T19:12:45.080Z",
+        "updatedAt": "2026-04-20T19:12:45.080Z"
+      },
+      {
+        "id": "cmo7ko2s90023i6fcsxzah7e5",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2pl0006i6fcbxgj7xjc",
+        "createdAt": "2026-04-20T19:12:45.081Z",
+        "updatedAt": "2026-04-20T19:12:45.081Z"
+      },
+      {
+        "id": "cmo7ko2sa0025i6fcxjzpds5m",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2pn0007i6fctb1081u7",
+        "createdAt": "2026-04-20T19:12:45.083Z",
+        "updatedAt": "2026-04-20T19:12:45.083Z"
+      },
+      {
+        "id": "cmo7ko2sb0027i6fczvysl8pz",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2pp0008i6fck36ir05l",
+        "createdAt": "2026-04-20T19:12:45.084Z",
+        "updatedAt": "2026-04-20T19:12:45.084Z"
+      },
+      {
+        "id": "cmo7ko2sc0029i6fcht2fvk89",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2pr0009i6fcuixbnin4",
+        "createdAt": "2026-04-20T19:12:45.085Z",
+        "updatedAt": "2026-04-20T19:12:45.085Z"
+      },
+      {
+        "id": "cmo7ko2sd002bi6fchjuqk2bu",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2pu000ai6fcqexlj766",
+        "createdAt": "2026-04-20T19:12:45.086Z",
+        "updatedAt": "2026-04-20T19:12:45.086Z"
+      },
+      {
+        "id": "cmo7ko2se002di6fcatz3ha7e",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2pv000bi6fcov25czmx",
+        "createdAt": "2026-04-20T19:12:45.087Z",
+        "updatedAt": "2026-04-20T19:12:45.087Z"
+      },
+      {
+        "id": "cmo7ko2sf002fi6fc8l2t5iqg",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2px000ci6fc7140vyg6",
+        "createdAt": "2026-04-20T19:12:45.088Z",
+        "updatedAt": "2026-04-20T19:12:45.088Z"
+      },
+      {
+        "id": "cmo7ko2sh002hi6fctonakb0v",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2py000di6fc80dte1aq",
+        "createdAt": "2026-04-20T19:12:45.089Z",
+        "updatedAt": "2026-04-20T19:12:45.089Z"
+      },
+      {
+        "id": "cmo7ko2sh002ji6fck2g2ekyq",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2q0000ei6fcppr9ha4b",
+        "createdAt": "2026-04-20T19:12:45.090Z",
+        "updatedAt": "2026-04-20T19:12:45.090Z"
+      },
+      {
+        "id": "cmo7ko2sj002li6fchp4zp34z",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2q2000fi6fcbvhfa9io",
+        "createdAt": "2026-04-20T19:12:45.091Z",
+        "updatedAt": "2026-04-20T19:12:45.091Z"
+      },
+      {
+        "id": "cmo7ko2sk002ni6fcnrd74uvl",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2q3000gi6fcgqepk6ja",
+        "createdAt": "2026-04-20T19:12:45.092Z",
+        "updatedAt": "2026-04-20T19:12:45.092Z"
+      },
+      {
+        "id": "cmo7ko2sk002pi6fcd3lw2eis",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2q6000hi6fcshstwqow",
+        "createdAt": "2026-04-20T19:12:45.093Z",
+        "updatedAt": "2026-04-20T19:12:45.093Z"
+      },
+      {
+        "id": "cmo7ko2sl002ri6fc1m2jl6c4",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2q8000ii6fc9anp2ux1",
+        "createdAt": "2026-04-20T19:12:45.093Z",
+        "updatedAt": "2026-04-20T19:12:45.093Z"
+      },
+      {
+        "id": "cmo7ko2sl002ti6fc606h92ej",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2q9000ji6fc88qt1h2p",
+        "createdAt": "2026-04-20T19:12:45.094Z",
+        "updatedAt": "2026-04-20T19:12:45.094Z"
+      },
+      {
+        "id": "cmo7ko2sm002vi6fc41bo7usg",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2qb000ki6fc12t0mr21",
+        "createdAt": "2026-04-20T19:12:45.094Z",
+        "updatedAt": "2026-04-20T19:12:45.094Z"
+      },
+      {
+        "id": "cmo7ko2sn002xi6fcvtyq8jp3",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2qc000li6fcvjg43qq6",
+        "createdAt": "2026-04-20T19:12:45.095Z",
+        "updatedAt": "2026-04-20T19:12:45.095Z"
+      },
+      {
+        "id": "cmo7ko2sn002zi6fcabjm4a4c",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2qf000mi6fcid0yz1a1",
+        "createdAt": "2026-04-20T19:12:45.095Z",
+        "updatedAt": "2026-04-20T19:12:45.095Z"
+      },
+      {
+        "id": "cmo7ko2sn0031i6fc4uwuepgt",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2qh000ni6fc3p31v19q",
+        "createdAt": "2026-04-20T19:12:45.096Z",
+        "updatedAt": "2026-04-20T19:12:45.096Z"
+      },
+      {
+        "id": "cmo7ko2so0033i6fcjnpfha00",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2qi000oi6fc2anm67dd",
+        "createdAt": "2026-04-20T19:12:45.096Z",
+        "updatedAt": "2026-04-20T19:12:45.096Z"
+      },
+      {
+        "id": "cmo7ko2so0035i6fchojl4zs0",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2qj000pi6fciqh1a5t5",
+        "createdAt": "2026-04-20T19:12:45.097Z",
+        "updatedAt": "2026-04-20T19:12:45.097Z"
+      },
+      {
+        "id": "cmo7ko2sp0037i6fc7kt9hxmu",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2ql000qi6fcc7g5em6a",
+        "createdAt": "2026-04-20T19:12:45.097Z",
+        "updatedAt": "2026-04-20T19:12:45.097Z"
+      },
+      {
+        "id": "cmo7ko2sp0039i6fc7ixeux9m",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2qm000ri6fcu78wca99",
+        "createdAt": "2026-04-20T19:12:45.098Z",
+        "updatedAt": "2026-04-20T19:12:45.098Z"
+      },
+      {
+        "id": "cmo7ko2sq003bi6fcj7fcehr2",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2qo000si6fcijlo8gnr",
+        "createdAt": "2026-04-20T19:12:45.099Z",
+        "updatedAt": "2026-04-20T19:12:45.099Z"
+      },
+      {
+        "id": "cmo7ko2sr003di6fcrts5jrba",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2qq000ti6fc6hmsxrcx",
+        "createdAt": "2026-04-20T19:12:45.100Z",
+        "updatedAt": "2026-04-20T19:12:45.100Z"
+      },
+      {
+        "id": "cmo7ko2ss003fi6fcl8uc30op",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2qr000ui6fciieot351",
+        "createdAt": "2026-04-20T19:12:45.100Z",
+        "updatedAt": "2026-04-20T19:12:45.100Z"
+      },
+      {
+        "id": "cmo7ko2st003hi6fc3ag3lf7b",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2qs000vi6fcythcsk3s",
+        "createdAt": "2026-04-20T19:12:45.101Z",
+        "updatedAt": "2026-04-20T19:12:45.101Z"
+      },
+      {
+        "id": "cmo7ko2su003ji6fcn7pbid0j",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2qu000wi6fcprg07gwv",
+        "createdAt": "2026-04-20T19:12:45.102Z",
+        "updatedAt": "2026-04-20T19:12:45.102Z"
+      },
+      {
+        "id": "cmo7ko2su003li6fcr01ybmy3",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2qv000xi6fc3y5eb8z1",
+        "createdAt": "2026-04-20T19:12:45.103Z",
+        "updatedAt": "2026-04-20T19:12:45.103Z"
+      },
+      {
+        "id": "cmo7ko2sv003ni6fcx6w4ocn4",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2qx000yi6fcoak426ke",
+        "createdAt": "2026-04-20T19:12:45.104Z",
+        "updatedAt": "2026-04-20T19:12:45.104Z"
+      },
+      {
+        "id": "cmo7ko2sw003pi6fcj3fqedu8",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2qy000zi6fcpwcduttz",
+        "createdAt": "2026-04-20T19:12:45.105Z",
+        "updatedAt": "2026-04-20T19:12:45.105Z"
+      },
+      {
+        "id": "cmo7ko2sx003ri6fc4pjam9oe",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2qz0010i6fchf2s09ec",
+        "createdAt": "2026-04-20T19:12:45.106Z",
+        "updatedAt": "2026-04-20T19:12:45.106Z"
+      },
+      {
+        "id": "cmo7ko2sy003ti6fc9wnptwnp",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2r10011i6fcn7uasc9j",
+        "createdAt": "2026-04-20T19:12:45.106Z",
+        "updatedAt": "2026-04-20T19:12:45.106Z"
+      },
+      {
+        "id": "cmo7ko2sz003vi6fc5ssv2xha",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2r20012i6fcgqv35gr9",
+        "createdAt": "2026-04-20T19:12:45.108Z",
+        "updatedAt": "2026-04-20T19:12:45.108Z"
+      },
+      {
+        "id": "cmo7ko2t0003xi6fck7kei4u5",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2r30013i6fcuj49fxk5",
+        "createdAt": "2026-04-20T19:12:45.109Z",
+        "updatedAt": "2026-04-20T19:12:45.109Z"
+      },
+      {
+        "id": "cmo7ko2t1003zi6fc8x8tvzwq",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2r50014i6fc2bp7fjuo",
+        "createdAt": "2026-04-20T19:12:45.110Z",
+        "updatedAt": "2026-04-20T19:12:45.110Z"
+      },
+      {
+        "id": "cmo7ko2t30041i6fco0s4nj8l",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2r70015i6fciwi6i903",
+        "createdAt": "2026-04-20T19:12:45.111Z",
+        "updatedAt": "2026-04-20T19:12:45.111Z"
+      },
+      {
+        "id": "cmo7ko2t40043i6fcxa16uhs3",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2r80016i6fce6e4dcy3",
+        "createdAt": "2026-04-20T19:12:45.112Z",
+        "updatedAt": "2026-04-20T19:12:45.112Z"
+      },
+      {
+        "id": "cmo7ko2t90045i6fc7u92p7ks",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2r90017i6fcv0jf94yv",
+        "createdAt": "2026-04-20T19:12:45.118Z",
+        "updatedAt": "2026-04-20T19:12:45.118Z"
+      },
+      {
+        "id": "cmo7ko2tb0047i6fc7avowtdx",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2ra0018i6fc9pltul3w",
+        "createdAt": "2026-04-20T19:12:45.119Z",
+        "updatedAt": "2026-04-20T19:12:45.119Z"
+      },
+      {
+        "id": "cmo7ko2tc0049i6fcghgiaxhq",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2rb0019i6fc6b0gt7a3",
+        "createdAt": "2026-04-20T19:12:45.120Z",
+        "updatedAt": "2026-04-20T19:12:45.120Z"
+      },
+      {
+        "id": "cmo7ko2td004bi6fc4r10j1yn",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2rc001ai6fctotzlm28",
+        "createdAt": "2026-04-20T19:12:45.121Z",
+        "updatedAt": "2026-04-20T19:12:45.121Z"
+      },
+      {
+        "id": "cmo7ko2te004di6fc8tu4cgk6",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2re001bi6fc9ln30cya",
+        "createdAt": "2026-04-20T19:12:45.122Z",
+        "updatedAt": "2026-04-20T19:12:45.122Z"
+      },
+      {
+        "id": "cmo7ko2tj004fi6fchtssbjfw",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2rf001ci6fct2d1luc9",
+        "createdAt": "2026-04-20T19:12:45.127Z",
+        "updatedAt": "2026-04-20T19:12:45.127Z"
+      },
+      {
+        "id": "cmo7ko2tk004hi6fcxbb0x8z9",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2rg001di6fcppirdaew",
+        "createdAt": "2026-04-20T19:12:45.128Z",
+        "updatedAt": "2026-04-20T19:12:45.128Z"
+      },
+      {
+        "id": "cmo7ko2tl004ji6fcb3y42nus",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2rh001ei6fci9swlnvl",
+        "createdAt": "2026-04-20T19:12:45.130Z",
+        "updatedAt": "2026-04-20T19:12:45.130Z"
+      },
+      {
+        "id": "cmo7ko2tq004li6fcsfrythyo",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2rj001fi6fc45jpkftb",
+        "createdAt": "2026-04-20T19:12:45.135Z",
+        "updatedAt": "2026-04-20T19:12:45.135Z"
+      },
+      {
+        "id": "cmo7ko2tr004ni6fc0mi5f4zj",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2rk001gi6fcuj1nx5ol",
+        "createdAt": "2026-04-20T19:12:45.136Z",
+        "updatedAt": "2026-04-20T19:12:45.136Z"
+      },
+      {
+        "id": "cmo7ko2ts004pi6fc3f3hu946",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2rm001hi6fc15gjloy3",
+        "createdAt": "2026-04-20T19:12:45.136Z",
+        "updatedAt": "2026-04-20T19:12:45.136Z"
+      },
+      {
+        "id": "cmo7ko2ts004ri6fc9nd4mcpm",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2rn001ii6fcfun59yjp",
+        "createdAt": "2026-04-20T19:12:45.137Z",
+        "updatedAt": "2026-04-20T19:12:45.137Z"
+      },
+      {
+        "id": "cmo7ko2tt004ti6fcoieyvkj1",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2ro001ji6fcsxho9ecf",
+        "createdAt": "2026-04-20T19:12:45.137Z",
+        "updatedAt": "2026-04-20T19:12:45.137Z"
+      },
+      {
+        "id": "cmo7ko2tt004vi6fc0ifqilsu",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2rp001ki6fcx2j6jm3r",
+        "createdAt": "2026-04-20T19:12:45.138Z",
+        "updatedAt": "2026-04-20T19:12:45.138Z"
+      },
+      {
+        "id": "cmo7ko2tu004xi6fcmlv7qw3q",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2rq001li6fclpzysx51",
+        "createdAt": "2026-04-20T19:12:45.138Z",
+        "updatedAt": "2026-04-20T19:12:45.138Z"
+      },
+      {
+        "id": "cmo7ko2tu004zi6fcqi4ggtv7",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2rr001mi6fcrhg0unj7",
+        "createdAt": "2026-04-20T19:12:45.138Z",
+        "updatedAt": "2026-04-20T19:12:45.138Z"
+      },
+      {
+        "id": "cmo7ko2tu0051i6fcuo809slm",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmo7ko2rs001ni6fc1latn4lt",
+        "createdAt": "2026-04-20T19:12:45.139Z",
+        "updatedAt": "2026-04-20T19:12:45.139Z"
+      },
+      {
+        "id": "cmo7ko2tv0053i6fcnp2uz8r7",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2p80000i6fchlmlyumi",
+        "createdAt": "2026-04-20T19:12:45.139Z",
+        "updatedAt": "2026-04-20T19:12:45.139Z"
+      },
+      {
+        "id": "cmo7ko2tw0055i6fcib9unt6n",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2pe0001i6fcr1d3htmw",
+        "createdAt": "2026-04-20T19:12:45.140Z",
+        "updatedAt": "2026-04-20T19:12:45.140Z"
+      },
+      {
+        "id": "cmo7ko2tw0057i6fclhguglvk",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2pg0002i6fckz76kdr4",
+        "createdAt": "2026-04-20T19:12:45.141Z",
+        "updatedAt": "2026-04-20T19:12:45.141Z"
+      },
+      {
+        "id": "cmo7ko2tx0059i6fcrmzggzxu",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2pi0003i6fcgtztwhtp",
+        "createdAt": "2026-04-20T19:12:45.141Z",
+        "updatedAt": "2026-04-20T19:12:45.141Z"
+      },
+      {
+        "id": "cmo7ko2tx005bi6fcanmcp3bh",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2pj0004i6fcy2ydcj5n",
+        "createdAt": "2026-04-20T19:12:45.142Z",
+        "updatedAt": "2026-04-20T19:12:45.142Z"
+      },
+      {
+        "id": "cmo7ko2ty005di6fcg1nnywr2",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2pk0005i6fcimnov1hq",
+        "createdAt": "2026-04-20T19:12:45.142Z",
+        "updatedAt": "2026-04-20T19:12:45.142Z"
+      },
+      {
+        "id": "cmo7ko2ty005fi6fcuxa2dqrt",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2pl0006i6fcbxgj7xjc",
+        "createdAt": "2026-04-20T19:12:45.143Z",
+        "updatedAt": "2026-04-20T19:12:45.143Z"
+      },
+      {
+        "id": "cmo7ko2tz005hi6fc88qzwdrz",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2pn0007i6fctb1081u7",
+        "createdAt": "2026-04-20T19:12:45.143Z",
+        "updatedAt": "2026-04-20T19:12:45.143Z"
+      },
+      {
+        "id": "cmo7ko2tz005ji6fcoolwmxk8",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2pp0008i6fck36ir05l",
+        "createdAt": "2026-04-20T19:12:45.144Z",
+        "updatedAt": "2026-04-20T19:12:45.144Z"
+      },
+      {
+        "id": "cmo7ko2u0005li6fcy1e7on9c",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2pr0009i6fcuixbnin4",
+        "createdAt": "2026-04-20T19:12:45.144Z",
+        "updatedAt": "2026-04-20T19:12:45.144Z"
+      },
+      {
+        "id": "cmo7ko2u0005ni6fc0p6z3g9k",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2pu000ai6fcqexlj766",
+        "createdAt": "2026-04-20T19:12:45.145Z",
+        "updatedAt": "2026-04-20T19:12:45.145Z"
+      },
+      {
+        "id": "cmo7ko2u1005pi6fcwpcoh3cw",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2pv000bi6fcov25czmx",
+        "createdAt": "2026-04-20T19:12:45.145Z",
+        "updatedAt": "2026-04-20T19:12:45.145Z"
+      },
+      {
+        "id": "cmo7ko2u1005ri6fcocidx11w",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2px000ci6fc7140vyg6",
+        "createdAt": "2026-04-20T19:12:45.145Z",
+        "updatedAt": "2026-04-20T19:12:45.145Z"
+      },
+      {
+        "id": "cmo7ko2u1005ti6fchecf4i09",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2py000di6fc80dte1aq",
+        "createdAt": "2026-04-20T19:12:45.146Z",
+        "updatedAt": "2026-04-20T19:12:45.146Z"
+      },
+      {
+        "id": "cmo7ko2u2005vi6fcme847iuf",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2q0000ei6fcppr9ha4b",
+        "createdAt": "2026-04-20T19:12:45.146Z",
+        "updatedAt": "2026-04-20T19:12:45.146Z"
+      },
+      {
+        "id": "cmo7ko2u2005xi6fc3ilufzai",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2q2000fi6fcbvhfa9io",
+        "createdAt": "2026-04-20T19:12:45.147Z",
+        "updatedAt": "2026-04-20T19:12:45.147Z"
+      },
+      {
+        "id": "cmo7ko2u3005zi6fcu7ahrvoc",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2q3000gi6fcgqepk6ja",
+        "createdAt": "2026-04-20T19:12:45.147Z",
+        "updatedAt": "2026-04-20T19:12:45.147Z"
+      },
+      {
+        "id": "cmo7ko2u30061i6fc6mi4fu2u",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2q6000hi6fcshstwqow",
+        "createdAt": "2026-04-20T19:12:45.147Z",
+        "updatedAt": "2026-04-20T19:12:45.147Z"
+      },
+      {
+        "id": "cmo7ko2u30063i6fck0obrbg6",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2q8000ii6fc9anp2ux1",
+        "createdAt": "2026-04-20T19:12:45.148Z",
+        "updatedAt": "2026-04-20T19:12:45.148Z"
+      },
+      {
+        "id": "cmo7ko2u40065i6fczo3jl6mn",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2q9000ji6fc88qt1h2p",
+        "createdAt": "2026-04-20T19:12:45.148Z",
+        "updatedAt": "2026-04-20T19:12:45.148Z"
+      },
+      {
+        "id": "cmo7ko2u40067i6fcqqbcf3no",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2qb000ki6fc12t0mr21",
+        "createdAt": "2026-04-20T19:12:45.149Z",
+        "updatedAt": "2026-04-20T19:12:45.149Z"
+      },
+      {
+        "id": "cmo7ko2u40069i6fcwpg09e7d",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2qc000li6fcvjg43qq6",
+        "createdAt": "2026-04-20T19:12:45.149Z",
+        "updatedAt": "2026-04-20T19:12:45.149Z"
+      },
+      {
+        "id": "cmo7ko2u5006bi6fc0eb5k54e",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2qf000mi6fcid0yz1a1",
+        "createdAt": "2026-04-20T19:12:45.149Z",
+        "updatedAt": "2026-04-20T19:12:45.149Z"
+      },
+      {
+        "id": "cmo7ko2u5006di6fcb2skmrwa",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2qh000ni6fc3p31v19q",
+        "createdAt": "2026-04-20T19:12:45.150Z",
+        "updatedAt": "2026-04-20T19:12:45.150Z"
+      },
+      {
+        "id": "cmo7ko2u5006fi6fcctvaho3b",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2qi000oi6fc2anm67dd",
+        "createdAt": "2026-04-20T19:12:45.150Z",
+        "updatedAt": "2026-04-20T19:12:45.150Z"
+      },
+      {
+        "id": "cmo7ko2u6006hi6fchb8uqjdd",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2qj000pi6fciqh1a5t5",
+        "createdAt": "2026-04-20T19:12:45.150Z",
+        "updatedAt": "2026-04-20T19:12:45.150Z"
+      },
+      {
+        "id": "cmo7ko2u6006ji6fc331uivr5",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2ql000qi6fcc7g5em6a",
+        "createdAt": "2026-04-20T19:12:45.151Z",
+        "updatedAt": "2026-04-20T19:12:45.151Z"
+      },
+      {
+        "id": "cmo7ko2u7006li6fcvrfo6iqv",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2qm000ri6fcu78wca99",
+        "createdAt": "2026-04-20T19:12:45.151Z",
+        "updatedAt": "2026-04-20T19:12:45.151Z"
+      },
+      {
+        "id": "cmo7ko2u7006ni6fcpwa7wbna",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2qo000si6fcijlo8gnr",
+        "createdAt": "2026-04-20T19:12:45.152Z",
+        "updatedAt": "2026-04-20T19:12:45.152Z"
+      },
+      {
+        "id": "cmo7ko2u8006pi6fcejncjg27",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2qq000ti6fc6hmsxrcx",
+        "createdAt": "2026-04-20T19:12:45.152Z",
+        "updatedAt": "2026-04-20T19:12:45.152Z"
+      },
+      {
+        "id": "cmo7ko2u8006ri6fcrhhonwun",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2qr000ui6fciieot351",
+        "createdAt": "2026-04-20T19:12:45.152Z",
+        "updatedAt": "2026-04-20T19:12:45.152Z"
+      },
+      {
+        "id": "cmo7ko2u8006ti6fc4nhi599e",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2qs000vi6fcythcsk3s",
+        "createdAt": "2026-04-20T19:12:45.153Z",
+        "updatedAt": "2026-04-20T19:12:45.153Z"
+      },
+      {
+        "id": "cmo7ko2u9006vi6fc9zpbo0o6",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2qu000wi6fcprg07gwv",
+        "createdAt": "2026-04-20T19:12:45.153Z",
+        "updatedAt": "2026-04-20T19:12:45.153Z"
+      },
+      {
+        "id": "cmo7ko2u9006xi6fcp64w8kx2",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2qv000xi6fc3y5eb8z1",
+        "createdAt": "2026-04-20T19:12:45.153Z",
+        "updatedAt": "2026-04-20T19:12:45.153Z"
+      },
+      {
+        "id": "cmo7ko2u9006zi6fcq1a8ixu3",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2qx000yi6fcoak426ke",
+        "createdAt": "2026-04-20T19:12:45.154Z",
+        "updatedAt": "2026-04-20T19:12:45.154Z"
+      },
+      {
+        "id": "cmo7ko2ua0071i6fcvmsizqtk",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2qy000zi6fcpwcduttz",
+        "createdAt": "2026-04-20T19:12:45.154Z",
+        "updatedAt": "2026-04-20T19:12:45.154Z"
+      },
+      {
+        "id": "cmo7ko2ua0073i6fcn46bvvx0",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2qz0010i6fchf2s09ec",
+        "createdAt": "2026-04-20T19:12:45.155Z",
+        "updatedAt": "2026-04-20T19:12:45.155Z"
+      },
+      {
+        "id": "cmo7ko2ua0075i6fc97hxw9th",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2r10011i6fcn7uasc9j",
+        "createdAt": "2026-04-20T19:12:45.155Z",
+        "updatedAt": "2026-04-20T19:12:45.155Z"
+      },
+      {
+        "id": "cmo7ko2ub0077i6fcm04a8nle",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2r20012i6fcgqv35gr9",
+        "createdAt": "2026-04-20T19:12:45.155Z",
+        "updatedAt": "2026-04-20T19:12:45.155Z"
+      },
+      {
+        "id": "cmo7ko2ub0079i6fcai49p2o3",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2r30013i6fcuj49fxk5",
+        "createdAt": "2026-04-20T19:12:45.156Z",
+        "updatedAt": "2026-04-20T19:12:45.156Z"
+      },
+      {
+        "id": "cmo7ko2uc007bi6fcde1bwszs",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2r50014i6fc2bp7fjuo",
+        "createdAt": "2026-04-20T19:12:45.156Z",
+        "updatedAt": "2026-04-20T19:12:45.156Z"
+      },
+      {
+        "id": "cmo7ko2ud007di6fcum9myj4e",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2r70015i6fciwi6i903",
+        "createdAt": "2026-04-20T19:12:45.157Z",
+        "updatedAt": "2026-04-20T19:12:45.157Z"
+      },
+      {
+        "id": "cmo7ko2ud007fi6fcz3rkic2s",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2r80016i6fce6e4dcy3",
+        "createdAt": "2026-04-20T19:12:45.157Z",
+        "updatedAt": "2026-04-20T19:12:45.157Z"
+      },
+      {
+        "id": "cmo7ko2ud007hi6fc7ttv7hpu",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2r90017i6fcv0jf94yv",
+        "createdAt": "2026-04-20T19:12:45.158Z",
+        "updatedAt": "2026-04-20T19:12:45.158Z"
+      },
+      {
+        "id": "cmo7ko2ue007ji6fc0a1eysiu",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2ra0018i6fc9pltul3w",
+        "createdAt": "2026-04-20T19:12:45.158Z",
+        "updatedAt": "2026-04-20T19:12:45.158Z"
+      },
+      {
+        "id": "cmo7ko2ue007li6fcile54f1l",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2rb0019i6fc6b0gt7a3",
+        "createdAt": "2026-04-20T19:12:45.158Z",
+        "updatedAt": "2026-04-20T19:12:45.158Z"
+      },
+      {
+        "id": "cmo7ko2ue007ni6fc41uacueu",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2rc001ai6fctotzlm28",
+        "createdAt": "2026-04-20T19:12:45.159Z",
+        "updatedAt": "2026-04-20T19:12:45.159Z"
+      },
+      {
+        "id": "cmo7ko2uf007pi6fcowr259dl",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2re001bi6fc9ln30cya",
+        "createdAt": "2026-04-20T19:12:45.159Z",
+        "updatedAt": "2026-04-20T19:12:45.159Z"
+      },
+      {
+        "id": "cmo7ko2uf007ri6fc03kbtv22",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2rf001ci6fct2d1luc9",
+        "createdAt": "2026-04-20T19:12:45.159Z",
+        "updatedAt": "2026-04-20T19:12:45.159Z"
+      },
+      {
+        "id": "cmo7ko2uf007ti6fcnh1n49w7",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2rg001di6fcppirdaew",
+        "createdAt": "2026-04-20T19:12:45.160Z",
+        "updatedAt": "2026-04-20T19:12:45.160Z"
+      },
+      {
+        "id": "cmo7ko2ug007vi6fcd8dn0lyy",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2rh001ei6fci9swlnvl",
+        "createdAt": "2026-04-20T19:12:45.160Z",
+        "updatedAt": "2026-04-20T19:12:45.160Z"
+      },
+      {
+        "id": "cmo7ko2ug007xi6fc6oa8ykjg",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2rj001fi6fc45jpkftb",
+        "createdAt": "2026-04-20T19:12:45.161Z",
+        "updatedAt": "2026-04-20T19:12:45.161Z"
+      },
+      {
+        "id": "cmo7ko2uh007zi6fcg9abfes0",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2rk001gi6fcuj1nx5ol",
+        "createdAt": "2026-04-20T19:12:45.161Z",
+        "updatedAt": "2026-04-20T19:12:45.161Z"
+      },
+      {
+        "id": "cmo7ko2uh0081i6fc7ksjlh7l",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2rm001hi6fc15gjloy3",
+        "createdAt": "2026-04-20T19:12:45.161Z",
+        "updatedAt": "2026-04-20T19:12:45.161Z"
+      },
+      {
+        "id": "cmo7ko2uh0083i6fcu9sjioil",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2rn001ii6fcfun59yjp",
+        "createdAt": "2026-04-20T19:12:45.162Z",
+        "updatedAt": "2026-04-20T19:12:45.162Z"
+      },
+      {
+        "id": "cmo7ko2ui0085i6fcwuoqkgaw",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2ro001ji6fcsxho9ecf",
+        "createdAt": "2026-04-20T19:12:45.162Z",
+        "updatedAt": "2026-04-20T19:12:45.162Z"
+      },
+      {
+        "id": "cmo7ko2ui0087i6fc1ebcgcqu",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2rp001ki6fcx2j6jm3r",
+        "createdAt": "2026-04-20T19:12:45.162Z",
+        "updatedAt": "2026-04-20T19:12:45.162Z"
+      },
+      {
+        "id": "cmo7ko2ui0089i6fcc40lfu70",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2rq001li6fclpzysx51",
+        "createdAt": "2026-04-20T19:12:45.163Z",
+        "updatedAt": "2026-04-20T19:12:45.163Z"
+      },
+      {
+        "id": "cmo7ko2uj008bi6fc7tan0de5",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2rr001mi6fcrhg0unj7",
+        "createdAt": "2026-04-20T19:12:45.163Z",
+        "updatedAt": "2026-04-20T19:12:45.163Z"
+      },
+      {
+        "id": "cmo7ko2uj008di6fcw8735exc",
+        "roleId": "cmo7ko2rw001pi6fcttermtzl",
+        "permissionId": "cmo7ko2rs001ni6fc1latn4lt",
+        "createdAt": "2026-04-20T19:12:45.163Z",
+        "updatedAt": "2026-04-20T19:12:45.163Z"
+      },
+      {
+        "id": "cmog3tb9n0005i6dmsfyaikp8",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmog3tb7z0000i6dm4lx6s5jx",
+        "createdAt": "2026-04-26T18:30:51.467Z",
+        "updatedAt": "2026-04-26T18:30:51.467Z"
+      },
+      {
+        "id": "cmog3tbaf0007i6dmnm99r1kj",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmog3tb8h0001i6dmuuga09rk",
+        "createdAt": "2026-04-26T18:30:51.496Z",
+        "updatedAt": "2026-04-26T18:30:51.496Z"
+      },
+      {
+        "id": "cmog3tbas0009i6dmf0bm9cuc",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmog3tb8k0002i6dm5kd1k9bj",
+        "createdAt": "2026-04-26T18:30:51.508Z",
+        "updatedAt": "2026-04-26T18:30:51.508Z"
+      },
+      {
+        "id": "cmog3tbav000bi6dmaunvsmre",
+        "roleId": "cmo7ko2ru001oi6fc1cakeyo5",
+        "permissionId": "cmog3tb8n0003i6dm3ma9ey1x",
+        "createdAt": "2026-04-26T18:30:51.511Z",
+        "updatedAt": "2026-04-26T18:30:51.511Z"
+      }
+    ],
+    "permission": [
+      {
+        "id": "cmo7ko2p80000i6fchlmlyumi",
+        "name": "news:read",
+        "description": "View news articles",
+        "category": "News",
+        "createdAt": "2026-04-20T19:12:44.973Z",
+        "updatedAt": "2026-04-20T19:12:44.973Z"
+      },
+      {
+        "id": "cmo7ko2pe0001i6fcr1d3htmw",
+        "name": "news:create",
+        "description": "Create new news articles",
+        "category": "News",
+        "createdAt": "2026-04-20T19:12:44.978Z",
+        "updatedAt": "2026-04-20T19:12:44.978Z"
+      },
+      {
+        "id": "cmo7ko2pg0002i6fckz76kdr4",
+        "name": "news:edit",
+        "description": "Edit existing news articles",
+        "category": "News",
+        "createdAt": "2026-04-20T19:12:44.980Z",
+        "updatedAt": "2026-04-20T19:12:44.980Z"
+      },
+      {
+        "id": "cmo7ko2pi0003i6fcgtztwhtp",
+        "name": "news:delete",
+        "description": "Delete news articles",
+        "category": "News",
+        "createdAt": "2026-04-20T19:12:44.982Z",
+        "updatedAt": "2026-04-20T19:12:44.982Z"
+      },
+      {
+        "id": "cmo7ko2pj0004i6fcy2ydcj5n",
+        "name": "news:publish",
+        "description": "Publish/unpublish news articles",
+        "category": "News",
+        "createdAt": "2026-04-20T19:12:44.984Z",
+        "updatedAt": "2026-04-20T19:12:44.984Z"
+      },
+      {
+        "id": "cmo7ko2pk0005i6fcimnov1hq",
+        "name": "users:read",
+        "description": "View user accounts",
+        "category": "Users",
+        "createdAt": "2026-04-20T19:12:44.985Z",
+        "updatedAt": "2026-04-20T19:12:44.985Z"
+      },
+      {
+        "id": "cmo7ko2pl0006i6fcbxgj7xjc",
+        "name": "users:create",
+        "description": "Create new user accounts",
+        "category": "Users",
+        "createdAt": "2026-04-20T19:12:44.986Z",
+        "updatedAt": "2026-04-20T19:12:44.986Z"
+      },
+      {
+        "id": "cmo7ko2pn0007i6fctb1081u7",
+        "name": "users:edit",
+        "description": "Edit user accounts",
+        "category": "Users",
+        "createdAt": "2026-04-20T19:12:44.988Z",
+        "updatedAt": "2026-04-20T19:12:44.988Z"
+      },
+      {
+        "id": "cmo7ko2pp0008i6fck36ir05l",
+        "name": "users:delete",
+        "description": "Delete user accounts",
+        "category": "Users",
+        "createdAt": "2026-04-20T19:12:44.989Z",
+        "updatedAt": "2026-04-20T19:12:44.989Z"
+      },
+      {
+        "id": "cmo7ko2pr0009i6fcuixbnin4",
+        "name": "users:roles",
+        "description": "Manage user roles and permissions",
+        "category": "Users",
+        "createdAt": "2026-04-20T19:12:44.991Z",
+        "updatedAt": "2026-04-20T19:12:44.991Z"
+      },
+      {
+        "id": "cmo7ko2pu000ai6fcqexlj766",
+        "name": "roles:read",
+        "description": "View roles",
+        "category": "Roles",
+        "createdAt": "2026-04-20T19:12:44.994Z",
+        "updatedAt": "2026-04-20T19:12:44.994Z"
+      },
+      {
+        "id": "cmo7ko2pv000bi6fcov25czmx",
+        "name": "roles:create",
+        "description": "Create new roles",
+        "category": "Roles",
+        "createdAt": "2026-04-20T19:12:44.996Z",
+        "updatedAt": "2026-04-20T19:12:44.996Z"
+      },
+      {
+        "id": "cmo7ko2px000ci6fc7140vyg6",
+        "name": "roles:edit",
+        "description": "Edit roles",
+        "category": "Roles",
+        "createdAt": "2026-04-20T19:12:44.997Z",
+        "updatedAt": "2026-04-20T19:12:44.997Z"
+      },
+      {
+        "id": "cmo7ko2py000di6fc80dte1aq",
+        "name": "roles:delete",
+        "description": "Delete roles",
+        "category": "Roles",
+        "createdAt": "2026-04-20T19:12:44.999Z",
+        "updatedAt": "2026-04-20T19:12:44.999Z"
+      },
+      {
+        "id": "cmo7ko2q0000ei6fcppr9ha4b",
+        "name": "roles:permissions",
+        "description": "Manage role permissions",
+        "category": "Roles",
+        "createdAt": "2026-04-20T19:12:45.001Z",
+        "updatedAt": "2026-04-20T19:12:45.001Z"
+      },
+      {
+        "id": "cmo7ko2q2000fi6fcbvhfa9io",
+        "name": "categories:read",
+        "description": "View categories",
+        "category": "Categories",
+        "createdAt": "2026-04-20T19:12:45.002Z",
+        "updatedAt": "2026-04-20T19:12:45.002Z"
+      },
+      {
+        "id": "cmo7ko2q3000gi6fcgqepk6ja",
+        "name": "categories:create",
+        "description": "Create new categories",
+        "category": "Categories",
+        "createdAt": "2026-04-20T19:12:45.004Z",
+        "updatedAt": "2026-04-20T19:12:45.004Z"
+      },
+      {
+        "id": "cmo7ko2q6000hi6fcshstwqow",
+        "name": "categories:edit",
+        "description": "Edit categories",
+        "category": "Categories",
+        "createdAt": "2026-04-20T19:12:45.006Z",
+        "updatedAt": "2026-04-20T19:12:45.006Z"
+      },
+      {
+        "id": "cmo7ko2q8000ii6fc9anp2ux1",
+        "name": "categories:delete",
+        "description": "Delete categories",
+        "category": "Categories",
+        "createdAt": "2026-04-20T19:12:45.008Z",
+        "updatedAt": "2026-04-20T19:12:45.008Z"
+      },
+      {
+        "id": "cmo7ko2q9000ji6fc88qt1h2p",
+        "name": "media:read",
+        "description": "View media files",
+        "category": "Media",
+        "createdAt": "2026-04-20T19:12:45.010Z",
+        "updatedAt": "2026-04-20T19:12:45.010Z"
+      },
+      {
+        "id": "cmo7ko2qb000ki6fc12t0mr21",
+        "name": "media:upload",
+        "description": "Upload new media files",
+        "category": "Media",
+        "createdAt": "2026-04-20T19:12:45.012Z",
+        "updatedAt": "2026-04-20T19:12:45.012Z"
+      },
+      {
+        "id": "cmo7ko2qc000li6fcvjg43qq6",
+        "name": "media:edit",
+        "description": "Edit media files",
+        "category": "Media",
+        "createdAt": "2026-04-20T19:12:45.013Z",
+        "updatedAt": "2026-04-20T19:12:45.013Z"
+      },
+      {
+        "id": "cmo7ko2qf000mi6fcid0yz1a1",
+        "name": "media:delete",
+        "description": "Delete media files",
+        "category": "Media",
+        "createdAt": "2026-04-20T19:12:45.015Z",
+        "updatedAt": "2026-04-20T19:12:45.015Z"
+      },
+      {
+        "id": "cmo7ko2qh000ni6fc3p31v19q",
+        "name": "gallery:read",
+        "description": "View gallery items",
+        "category": "Gallery",
+        "createdAt": "2026-04-20T19:12:45.017Z",
+        "updatedAt": "2026-04-20T19:12:45.017Z"
+      },
+      {
+        "id": "cmo7ko2qi000oi6fc2anm67dd",
+        "name": "gallery:create",
+        "description": "Create new gallery items",
+        "category": "Gallery",
+        "createdAt": "2026-04-20T19:12:45.019Z",
+        "updatedAt": "2026-04-20T19:12:45.019Z"
+      },
+      {
+        "id": "cmo7ko2qj000pi6fciqh1a5t5",
+        "name": "gallery:edit",
+        "description": "Edit gallery items",
+        "category": "Gallery",
+        "createdAt": "2026-04-20T19:12:45.020Z",
+        "updatedAt": "2026-04-20T19:12:45.020Z"
+      },
+      {
+        "id": "cmo7ko2ql000qi6fcc7g5em6a",
+        "name": "gallery:delete",
+        "description": "Delete gallery items",
+        "category": "Gallery",
+        "createdAt": "2026-04-20T19:12:45.021Z",
+        "updatedAt": "2026-04-20T19:12:45.021Z"
+      },
+      {
+        "id": "cmo7ko2qm000ri6fcu78wca99",
+        "name": "data:read",
+        "description": "View data records",
+        "category": "Data",
+        "createdAt": "2026-04-20T19:12:45.023Z",
+        "updatedAt": "2026-04-20T19:12:45.023Z"
+      },
+      {
+        "id": "cmo7ko2qo000si6fcijlo8gnr",
+        "name": "data:create",
+        "description": "Create new data records",
+        "category": "Data",
+        "createdAt": "2026-04-20T19:12:45.024Z",
+        "updatedAt": "2026-04-20T19:12:45.024Z"
+      },
+      {
+        "id": "cmo7ko2qq000ti6fc6hmsxrcx",
+        "name": "data:edit",
+        "description": "Edit data records",
+        "category": "Data",
+        "createdAt": "2026-04-20T19:12:45.026Z",
+        "updatedAt": "2026-04-20T19:12:45.026Z"
+      },
+      {
+        "id": "cmo7ko2qr000ui6fciieot351",
+        "name": "data:delete",
+        "description": "Delete data records",
+        "category": "Data",
+        "createdAt": "2026-04-20T19:12:45.027Z",
+        "updatedAt": "2026-04-20T19:12:45.027Z"
+      },
+      {
+        "id": "cmo7ko2qs000vi6fcythcsk3s",
+        "name": "data:export",
+        "description": "Export data",
+        "category": "Data",
+        "createdAt": "2026-04-20T19:12:45.029Z",
+        "updatedAt": "2026-04-20T19:12:45.029Z"
+      },
+      {
+        "id": "cmo7ko2qu000wi6fcprg07gwv",
+        "name": "settings:read",
+        "description": "View system settings",
+        "category": "Settings",
+        "createdAt": "2026-04-20T19:12:45.030Z",
+        "updatedAt": "2026-04-20T19:12:45.030Z"
+      },
+      {
+        "id": "cmo7ko2qv000xi6fc3y5eb8z1",
+        "name": "settings:edit",
+        "description": "Edit system settings",
+        "category": "Settings",
+        "createdAt": "2026-04-20T19:12:45.032Z",
+        "updatedAt": "2026-04-20T19:12:45.032Z"
+      },
+      {
+        "id": "cmo7ko2qx000yi6fcoak426ke",
+        "name": "dashboard:view",
+        "description": "View admin dashboard",
+        "category": "Dashboard",
+        "createdAt": "2026-04-20T19:12:45.033Z",
+        "updatedAt": "2026-04-20T19:12:45.033Z"
+      },
+      {
+        "id": "cmo7ko2qy000zi6fcpwcduttz",
+        "name": "reports:view",
+        "description": "View reports",
+        "category": "Reports",
+        "createdAt": "2026-04-20T19:12:45.034Z",
+        "updatedAt": "2026-04-20T19:12:45.034Z"
+      },
+      {
+        "id": "cmo7ko2qz0010i6fchf2s09ec",
+        "name": "reports:generate",
+        "description": "Generate reports",
+        "category": "Reports",
+        "createdAt": "2026-04-20T19:12:45.036Z",
+        "updatedAt": "2026-04-20T19:12:45.036Z"
+      },
+      {
+        "id": "cmo7ko2r10011i6fcn7uasc9j",
+        "name": "storage:read",
+        "description": "View storage files",
+        "category": "Storage",
+        "createdAt": "2026-04-20T19:12:45.037Z",
+        "updatedAt": "2026-04-20T19:12:45.037Z"
+      },
+      {
+        "id": "cmo7ko2r20012i6fcgqv35gr9",
+        "name": "storage:upload",
+        "description": "Upload files to storage",
+        "category": "Storage",
+        "createdAt": "2026-04-20T19:12:45.038Z",
+        "updatedAt": "2026-04-20T19:12:45.038Z"
+      },
+      {
+        "id": "cmo7ko2r30013i6fcuj49fxk5",
+        "name": "storage:edit",
+        "description": "Edit storage files",
+        "category": "Storage",
+        "createdAt": "2026-04-20T19:12:45.040Z",
+        "updatedAt": "2026-04-20T19:12:45.040Z"
+      },
+      {
+        "id": "cmo7ko2r50014i6fc2bp7fjuo",
+        "name": "storage:delete",
+        "description": "Delete storage files",
+        "category": "Storage",
+        "createdAt": "2026-04-20T19:12:45.041Z",
+        "updatedAt": "2026-04-20T19:12:45.041Z"
+      },
+      {
+        "id": "cmo7ko2r70015i6fciwi6i903",
+        "name": "storage:manage",
+        "description": "Manage storage system",
+        "category": "Storage",
+        "createdAt": "2026-04-20T19:12:45.043Z",
+        "updatedAt": "2026-04-20T19:12:45.043Z"
+      },
+      {
+        "id": "cmo7ko2r80016i6fce6e4dcy3",
+        "name": "farmer_groups:read",
+        "description": "View farmer groups",
+        "category": "Farmer Groups",
+        "createdAt": "2026-04-20T19:12:45.044Z",
+        "updatedAt": "2026-04-20T19:12:45.044Z"
+      },
+      {
+        "id": "cmo7ko2r90017i6fcv0jf94yv",
+        "name": "farmer_groups:create",
+        "description": "Create new farmer groups",
+        "category": "Farmer Groups",
+        "createdAt": "2026-04-20T19:12:45.045Z",
+        "updatedAt": "2026-04-20T19:12:45.045Z"
+      },
+      {
+        "id": "cmo7ko2ra0018i6fc9pltul3w",
+        "name": "farmer_groups:edit",
+        "description": "Edit farmer groups",
+        "category": "Farmer Groups",
+        "createdAt": "2026-04-20T19:12:45.046Z",
+        "updatedAt": "2026-04-20T19:12:45.046Z"
+      },
+      {
+        "id": "cmo7ko2rb0019i6fc6b0gt7a3",
+        "name": "farmer_groups:delete",
+        "description": "Delete farmer groups",
+        "category": "Farmer Groups",
+        "createdAt": "2026-04-20T19:12:45.048Z",
+        "updatedAt": "2026-04-20T19:12:45.048Z"
+      },
+      {
+        "id": "cmo7ko2rc001ai6fctotzlm28",
+        "name": "contact_submissions:read",
+        "description": "View contact submissions",
+        "category": "Contact Submissions",
+        "createdAt": "2026-04-20T19:12:45.049Z",
+        "updatedAt": "2026-04-20T19:12:45.049Z"
+      },
+      {
+        "id": "cmo7ko2re001bi6fc9ln30cya",
+        "name": "contact_submissions:edit",
+        "description": "Edit contact submissions",
+        "category": "Contact Submissions",
+        "createdAt": "2026-04-20T19:12:45.050Z",
+        "updatedAt": "2026-04-20T19:12:45.050Z"
+      },
+      {
+        "id": "cmo7ko2rf001ci6fct2d1luc9",
+        "name": "irrigation:read",
+        "description": "View irrigation data",
+        "category": "Irrigation",
+        "createdAt": "2026-04-20T19:12:45.051Z",
+        "updatedAt": "2026-04-20T19:12:45.051Z"
+      },
+      {
+        "id": "cmo7ko2rg001di6fcppirdaew",
+        "name": "irrigation:create",
+        "description": "Create irrigation data",
+        "category": "Irrigation",
+        "createdAt": "2026-04-20T19:12:45.053Z",
+        "updatedAt": "2026-04-20T19:12:45.053Z"
+      },
+      {
+        "id": "cmo7ko2rh001ei6fci9swlnvl",
+        "name": "irrigation:edit",
+        "description": "Edit irrigation data",
+        "category": "Irrigation",
+        "createdAt": "2026-04-20T19:12:45.054Z",
+        "updatedAt": "2026-04-20T19:12:45.054Z"
+      },
+      {
+        "id": "cmo7ko2rj001fi6fc45jpkftb",
+        "name": "irrigation:delete",
+        "description": "Delete irrigation data",
+        "category": "Irrigation",
+        "createdAt": "2026-04-20T19:12:45.055Z",
+        "updatedAt": "2026-04-20T19:12:45.055Z"
+      },
+      {
+        "id": "cmo7ko2rk001gi6fcuj1nx5ol",
+        "name": "sliders:read",
+        "description": "View sliders",
+        "category": "Sliders",
+        "createdAt": "2026-04-20T19:12:45.056Z",
+        "updatedAt": "2026-04-20T19:12:45.056Z"
+      },
+      {
+        "id": "cmo7ko2rm001hi6fc15gjloy3",
+        "name": "sliders:create",
+        "description": "Create new sliders",
+        "category": "Sliders",
+        "createdAt": "2026-04-20T19:12:45.058Z",
+        "updatedAt": "2026-04-20T19:12:45.058Z"
+      },
+      {
+        "id": "cmo7ko2rn001ii6fcfun59yjp",
+        "name": "sliders:edit",
+        "description": "Edit sliders",
+        "category": "Sliders",
+        "createdAt": "2026-04-20T19:12:45.059Z",
+        "updatedAt": "2026-04-20T19:12:45.059Z"
+      },
+      {
+        "id": "cmo7ko2ro001ji6fcsxho9ecf",
+        "name": "sliders:delete",
+        "description": "Delete sliders",
+        "category": "Sliders",
+        "createdAt": "2026-04-20T19:12:45.060Z",
+        "updatedAt": "2026-04-20T19:12:45.060Z"
+      },
+      {
+        "id": "cmo7ko2rp001ki6fcx2j6jm3r",
+        "name": "employees:read",
+        "description": "View employees",
+        "category": "Employees",
+        "createdAt": "2026-04-20T19:12:45.062Z",
+        "updatedAt": "2026-04-20T19:12:45.062Z"
+      },
+      {
+        "id": "cmo7ko2rq001li6fclpzysx51",
+        "name": "employees:create",
+        "description": "Create new employees",
+        "category": "Employees",
+        "createdAt": "2026-04-20T19:12:45.063Z",
+        "updatedAt": "2026-04-20T19:12:45.063Z"
+      },
+      {
+        "id": "cmo7ko2rr001mi6fcrhg0unj7",
+        "name": "employees:edit",
+        "description": "Edit employees",
+        "category": "Employees",
+        "createdAt": "2026-04-20T19:12:45.064Z",
+        "updatedAt": "2026-04-20T19:12:45.064Z"
+      },
+      {
+        "id": "cmo7ko2rs001ni6fc1latn4lt",
+        "name": "employees:delete",
+        "description": "Delete employees",
+        "category": "Employees",
+        "createdAt": "2026-04-20T19:12:45.065Z",
+        "updatedAt": "2026-04-20T19:12:45.065Z"
+      },
+      {
+        "id": "cmog3tb7z0000i6dm4lx6s5jx",
+        "name": "irrigation_profiles:read",
+        "description": "View irrigation profiles",
+        "category": "Irrigation Profiles",
+        "createdAt": "2026-04-26T18:30:51.407Z",
+        "updatedAt": "2026-04-26T18:30:51.407Z"
+      },
+      {
+        "id": "cmog3tb8h0001i6dmuuga09rk",
+        "name": "irrigation_profiles:create",
+        "description": "Create irrigation profiles",
+        "category": "Irrigation Profiles",
+        "createdAt": "2026-04-26T18:30:51.425Z",
+        "updatedAt": "2026-04-26T18:30:51.425Z"
+      },
+      {
+        "id": "cmog3tb8k0002i6dm5kd1k9bj",
+        "name": "irrigation_profiles:edit",
+        "description": "Edit irrigation profiles",
+        "category": "Irrigation Profiles",
+        "createdAt": "2026-04-26T18:30:51.429Z",
+        "updatedAt": "2026-04-26T18:30:51.429Z"
+      },
+      {
+        "id": "cmog3tb8n0003i6dm3ma9ey1x",
+        "name": "irrigation_profiles:delete",
+        "description": "Delete irrigation profiles",
+        "category": "Irrigation Profiles",
+        "createdAt": "2026-04-26T18:30:51.432Z",
+        "updatedAt": "2026-04-26T18:30:51.432Z"
+      }
+    ],
+    "slider": [
+      {
+        "id": "cmo7kohsb0000i6fnat0dzhbu",
+        "title": "Selamat Datang di Sistem Irigasi Bunta",
+        "subtitle": "Layanan informasi manajemen air terpadu untuk petani",
+        "image": "/images/hero-bg.jpeg",
+        "link": "/data",
+        "order": 1,
+        "active": true,
+        "createdAt": "2026-04-20T19:13:04.523Z",
+        "updatedAt": "2026-04-26T20:55:38.697Z",
+        "buttonText": "Lihat Data Air"
+      },
+      {
+        "id": "cmo7kohsd0001i6fnteydtqif",
+        "title": "Pemantauan Real-time Level Air",
+        "subtitle": "Pantau kondisi air irigasi secara langsung dan akurat",
+        "image": "/images/water-monitoring.jpg",
+        "link": "/irrigation",
+        "order": 2,
+        "active": true,
+        "createdAt": "2026-04-20T19:13:04.525Z",
+        "updatedAt": "2026-04-26T20:56:59.603Z",
+        "buttonText": "Pelajari Sistem"
+      },
+      {
+        "id": "cmog2bhk80001i64ch1hzwkdt",
+        "title": "ase",
+        "subtitle": "eaqf",
+        "image": "/uploads/sliders/slider_1777225740168.png",
+        "link": "/data",
+        "order": 4,
+        "active": true,
+        "createdAt": "2026-04-26T17:49:00.191Z",
+        "updatedAt": "2026-04-26T20:57:00.888Z",
+        "buttonText": "cek data"
+      }
+    ],
+    "irrigationProfile": [
+      {
+        "id": "cmo7ko3aq0091i6fctrv19ojp",
+        "name": "Bendungan Bunta",
+        "description": "Bendungan utama di Sungai Bunta",
+        "location": "Bunta",
+        "latitude": -0.891,
+        "longitude": 122.257,
+        "area": 120.5,
+        "waterLevel": 4.2,
+        "status": "normal",
+        "canals": 3,
+        "gates": 5,
+        "waterSource": "Sungai Bunta",
+        "regency": null,
+        "constructionYear": null,
+        "servedVillages": null,
+        "potentialArea": null,
+        "functionalArea": null,
+        "dischargeCapacity": null,
+        "channelLength": null,
+        "watershedArea": null,
+        "productivity": null,
+        "totalStructures": null,
+        "mainStructure": null,
+        "divisionStructure": null,
+        "intakeStructure": null,
+        "dropStructure": null,
+        "aqueduct": null,
+        "drainageCulvert": null,
+        "roadCulvert": null,
+        "slopingDrain": null,
+        "buildingScheme": "/uploads/irrigation/irrigation_1777235622436.png",
+        "networkScheme": null,
+        "p3aGroupList": null,
+        "farmingBusinessAnalysis": null,
+        "rttg": null,
+        "plantingSchedule": null,
+        "lastUpdate": "2026-04-20T19:12:45.747Z",
+        "createdAt": "2026-04-20T19:12:45.747Z",
+        "updatedAt": "2026-04-26T20:33:54.224Z"
+      },
+      {
+        "id": "cmo7ko3ar0092i6fcr02u1onk",
+        "name": "Irigasi Tondok",
+        "description": "Jaringan irigasi di Desa Tondok",
+        "location": "Tondok",
+        "latitude": -0.902,
+        "longitude": 122.245,
+        "area": 85,
+        "waterLevel": 3.8,
+        "status": "normal",
+        "canals": 2,
+        "gates": 3,
+        "waterSource": "Sungai Tondok",
+        "regency": null,
+        "constructionYear": null,
+        "servedVillages": null,
+        "potentialArea": null,
+        "functionalArea": null,
+        "dischargeCapacity": null,
+        "channelLength": null,
+        "watershedArea": null,
+        "productivity": null,
+        "totalStructures": null,
+        "mainStructure": null,
+        "divisionStructure": null,
+        "intakeStructure": null,
+        "dropStructure": null,
+        "aqueduct": null,
+        "drainageCulvert": null,
+        "roadCulvert": null,
+        "slopingDrain": null,
+        "buildingScheme": null,
+        "networkScheme": null,
+        "p3aGroupList": null,
+        "farmingBusinessAnalysis": null,
+        "rttg": null,
+        "plantingSchedule": null,
+        "lastUpdate": "2026-04-20T19:12:45.748Z",
+        "createdAt": "2026-04-20T19:12:45.748Z",
+        "updatedAt": "2026-04-20T19:12:45.748Z"
+      },
+      {
+        "id": "cmo7ko3as0093i6fcbrtvcblb",
+        "name": "Saluran Induk Luwuk",
+        "description": "Saluran induk wilayah Luwuk",
+        "location": "Luwuk",
+        "latitude": -0.878,
+        "longitude": 122.312,
+        "area": 200,
+        "waterLevel": 5.1,
+        "status": "high",
+        "canals": 4,
+        "gates": 8,
+        "waterSource": "Sungai Luwuk",
+        "regency": null,
+        "constructionYear": null,
+        "servedVillages": null,
+        "potentialArea": null,
+        "functionalArea": null,
+        "dischargeCapacity": null,
+        "channelLength": null,
+        "watershedArea": null,
+        "productivity": null,
+        "totalStructures": null,
+        "mainStructure": null,
+        "divisionStructure": null,
+        "intakeStructure": null,
+        "dropStructure": null,
+        "aqueduct": null,
+        "drainageCulvert": null,
+        "roadCulvert": null,
+        "slopingDrain": null,
+        "buildingScheme": null,
+        "networkScheme": null,
+        "p3aGroupList": null,
+        "farmingBusinessAnalysis": null,
+        "rttg": null,
+        "plantingSchedule": null,
+        "lastUpdate": "2026-04-20T19:12:45.749Z",
+        "createdAt": "2026-04-20T19:12:45.749Z",
+        "updatedAt": "2026-04-20T19:12:45.749Z"
+      },
+      {
+        "id": "cmo7ko3at0094i6fcrjq0uinp",
+        "name": "Irigasi Banggai",
+        "description": "Sistem irigasi tradisional Banggai",
+        "location": "Banggai",
+        "latitude": -1.012,
+        "longitude": 122.512,
+        "area": 150,
+        "waterLevel": 2.9,
+        "status": "low",
+        "canals": 3,
+        "gates": 4,
+        "waterSource": "Sungai Banggai",
+        "regency": null,
+        "constructionYear": null,
+        "servedVillages": null,
+        "potentialArea": null,
+        "functionalArea": null,
+        "dischargeCapacity": null,
+        "channelLength": null,
+        "watershedArea": null,
+        "productivity": null,
+        "totalStructures": null,
+        "mainStructure": null,
+        "divisionStructure": null,
+        "intakeStructure": null,
+        "dropStructure": null,
+        "aqueduct": null,
+        "drainageCulvert": null,
+        "roadCulvert": null,
+        "slopingDrain": null,
+        "buildingScheme": null,
+        "networkScheme": null,
+        "p3aGroupList": null,
+        "farmingBusinessAnalysis": null,
+        "rttg": null,
+        "plantingSchedule": null,
+        "lastUpdate": "2026-04-20T19:12:45.750Z",
+        "createdAt": "2026-04-20T19:12:45.750Z",
+        "updatedAt": "2026-04-20T19:12:45.750Z"
+      },
+      {
+        "id": "cmo7ko3au0095i6fcc58xuopk",
+        "name": "Bendungan Salu",
+        "description": "Bendungan kecil di Salu",
+        "location": "Salu",
+        "latitude": -0.925,
+        "longitude": 122.198,
+        "area": 65.5,
+        "waterLevel": 3.5,
+        "status": "normal",
+        "canals": 1,
+        "gates": 2,
+        "waterSource": "Sungai Salu",
+        "regency": null,
+        "constructionYear": null,
+        "servedVillages": null,
+        "potentialArea": null,
+        "functionalArea": null,
+        "dischargeCapacity": null,
+        "channelLength": null,
+        "watershedArea": null,
+        "productivity": null,
+        "totalStructures": null,
+        "mainStructure": null,
+        "divisionStructure": null,
+        "intakeStructure": null,
+        "dropStructure": null,
+        "aqueduct": null,
+        "drainageCulvert": null,
+        "roadCulvert": null,
+        "slopingDrain": null,
+        "buildingScheme": null,
+        "networkScheme": null,
+        "p3aGroupList": null,
+        "farmingBusinessAnalysis": null,
+        "rttg": null,
+        "plantingSchedule": null,
+        "lastUpdate": "2026-04-20T19:12:45.750Z",
+        "createdAt": "2026-04-20T19:12:45.750Z",
+        "updatedAt": "2026-04-20T19:12:45.750Z"
+      },
+      {
+        "id": "cmo7ko3av0096i6fchk65km79",
+        "name": "Irigasi Permai",
+        "description": "Jaringan irigasi permukiman",
+        "location": "Permai",
+        "latitude": -0.845,
+        "longitude": 122.275,
+        "area": 95,
+        "waterLevel": 4,
+        "status": "normal",
+        "canals": 2,
+        "gates": 3,
+        "waterSource": "Mata Air Permai",
+        "regency": null,
+        "constructionYear": null,
+        "servedVillages": null,
+        "potentialArea": null,
+        "functionalArea": null,
+        "dischargeCapacity": null,
+        "channelLength": null,
+        "watershedArea": null,
+        "productivity": null,
+        "totalStructures": null,
+        "mainStructure": null,
+        "divisionStructure": null,
+        "intakeStructure": null,
+        "dropStructure": null,
+        "aqueduct": null,
+        "drainageCulvert": null,
+        "roadCulvert": null,
+        "slopingDrain": null,
+        "buildingScheme": null,
+        "networkScheme": null,
+        "p3aGroupList": null,
+        "farmingBusinessAnalysis": null,
+        "rttg": null,
+        "plantingSchedule": null,
+        "lastUpdate": "2026-04-20T19:12:45.752Z",
+        "createdAt": "2026-04-20T19:12:45.752Z",
+        "updatedAt": "2026-04-20T19:12:45.752Z"
+      },
+      {
+        "id": "cmo7ko3aw0097i6fcgc3cnc07",
+        "name": "Saluran Sekunder Bolano",
+        "description": "Saluran sekunder Bolano",
+        "location": "Bolano",
+        "latitude": -0.812,
+        "longitude": 122.332,
+        "area": 110,
+        "waterLevel": 4.5,
+        "status": "normal",
+        "canals": 2,
+        "gates": 4,
+        "waterSource": "Sungai Bolano",
+        "regency": null,
+        "constructionYear": null,
+        "servedVillages": null,
+        "potentialArea": null,
+        "functionalArea": null,
+        "dischargeCapacity": null,
+        "channelLength": null,
+        "watershedArea": null,
+        "productivity": null,
+        "totalStructures": null,
+        "mainStructure": null,
+        "divisionStructure": null,
+        "intakeStructure": null,
+        "dropStructure": null,
+        "aqueduct": null,
+        "drainageCulvert": null,
+        "roadCulvert": null,
+        "slopingDrain": null,
+        "buildingScheme": null,
+        "networkScheme": null,
+        "p3aGroupList": null,
+        "farmingBusinessAnalysis": null,
+        "rttg": null,
+        "plantingSchedule": null,
+        "lastUpdate": "2026-04-20T19:12:45.753Z",
+        "createdAt": "2026-04-20T19:12:45.753Z",
+        "updatedAt": "2026-04-20T19:12:45.753Z"
+      },
+      {
+        "id": "cmo7ko3ax0098i6fc32b8btya",
+        "name": "Irigasi Lembah Hijau",
+        "description": "Irigasi untuk lahan pertanian hijau",
+        "location": "Lembah Hijau",
+        "latitude": -0.932,
+        "longitude": 122.289,
+        "area": 180,
+        "waterLevel": 3.2,
+        "status": "low",
+        "canals": 3,
+        "gates": 6,
+        "waterSource": "Sungai Lembah",
+        "regency": null,
+        "constructionYear": null,
+        "servedVillages": null,
+        "potentialArea": null,
+        "functionalArea": null,
+        "dischargeCapacity": null,
+        "channelLength": null,
+        "watershedArea": null,
+        "productivity": null,
+        "totalStructures": null,
+        "mainStructure": null,
+        "divisionStructure": null,
+        "intakeStructure": null,
+        "dropStructure": null,
+        "aqueduct": null,
+        "drainageCulvert": null,
+        "roadCulvert": null,
+        "slopingDrain": null,
+        "buildingScheme": null,
+        "networkScheme": null,
+        "p3aGroupList": null,
+        "farmingBusinessAnalysis": null,
+        "rttg": null,
+        "plantingSchedule": null,
+        "lastUpdate": "2026-04-20T19:12:45.753Z",
+        "createdAt": "2026-04-20T19:12:45.753Z",
+        "updatedAt": "2026-04-20T19:12:45.753Z"
+      },
+      {
+        "id": "cmo7ko3ay0099i6fc1m1fnamh",
+        "name": "Bendungan Mopu",
+        "description": "Bendungan Mopu untuk pengendalian banjir",
+        "location": "Mopu",
+        "latitude": -0.958,
+        "longitude": 122.401,
+        "area": 140,
+        "waterLevel": 5.8,
+        "status": "high",
+        "canals": 3,
+        "gates": 7,
+        "waterSource": "Sungai Mopu",
+        "regency": null,
+        "constructionYear": null,
+        "servedVillages": null,
+        "potentialArea": null,
+        "functionalArea": null,
+        "dischargeCapacity": null,
+        "channelLength": null,
+        "watershedArea": null,
+        "productivity": null,
+        "totalStructures": null,
+        "mainStructure": null,
+        "divisionStructure": null,
+        "intakeStructure": null,
+        "dropStructure": null,
+        "aqueduct": null,
+        "drainageCulvert": null,
+        "roadCulvert": null,
+        "slopingDrain": null,
+        "buildingScheme": null,
+        "networkScheme": null,
+        "p3aGroupList": null,
+        "farmingBusinessAnalysis": null,
+        "rttg": null,
+        "plantingSchedule": null,
+        "lastUpdate": "2026-04-20T19:12:45.754Z",
+        "createdAt": "2026-04-20T19:12:45.754Z",
+        "updatedAt": "2026-04-20T19:12:45.754Z"
+      },
+      {
+        "id": "cmo7ko3az009ai6fcylxd0tqj",
+        "name": "Irigasi Pantura",
+        "description": "Irigasi pesisir pantai utara",
+        "location": "Pantura",
+        "latitude": -0.765,
+        "longitude": 122.521,
+        "area": 75,
+        "waterLevel": 2.5,
+        "status": "critical",
+        "canals": 1,
+        "gates": 2,
+        "waterSource": "Air Tanah",
+        "regency": null,
+        "constructionYear": null,
+        "servedVillages": null,
+        "potentialArea": null,
+        "functionalArea": null,
+        "dischargeCapacity": null,
+        "channelLength": null,
+        "watershedArea": null,
+        "productivity": null,
+        "totalStructures": null,
+        "mainStructure": null,
+        "divisionStructure": null,
+        "intakeStructure": null,
+        "dropStructure": null,
+        "aqueduct": null,
+        "drainageCulvert": null,
+        "roadCulvert": null,
+        "slopingDrain": null,
+        "buildingScheme": null,
+        "networkScheme": null,
+        "p3aGroupList": null,
+        "farmingBusinessAnalysis": null,
+        "rttg": null,
+        "plantingSchedule": null,
+        "lastUpdate": "2026-04-20T19:12:45.755Z",
+        "createdAt": "2026-04-20T19:12:45.755Z",
+        "updatedAt": "2026-04-20T19:12:45.755Z"
+      },
+      {
+        "id": "cmo7ko3b0009bi6fc57opwcac",
+        "name": "Saluran Tersier Sidoarjo",
+        "description": "Saluran tersier untuk persawahan",
+        "location": "Sidoarjo",
+        "latitude": -0.888,
+        "longitude": 122.367,
+        "area": 50,
+        "waterLevel": 3,
+        "status": "normal",
+        "canals": 1,
+        "gates": 1,
+        "waterSource": "Sungai Sidoarjo",
+        "regency": null,
+        "constructionYear": null,
+        "servedVillages": null,
+        "potentialArea": null,
+        "functionalArea": null,
+        "dischargeCapacity": null,
+        "channelLength": null,
+        "watershedArea": null,
+        "productivity": null,
+        "totalStructures": null,
+        "mainStructure": null,
+        "divisionStructure": null,
+        "intakeStructure": null,
+        "dropStructure": null,
+        "aqueduct": null,
+        "drainageCulvert": null,
+        "roadCulvert": null,
+        "slopingDrain": null,
+        "buildingScheme": null,
+        "networkScheme": null,
+        "p3aGroupList": null,
+        "farmingBusinessAnalysis": null,
+        "rttg": null,
+        "plantingSchedule": null,
+        "lastUpdate": "2026-04-20T19:12:45.756Z",
+        "createdAt": "2026-04-20T19:12:45.756Z",
+        "updatedAt": "2026-04-20T19:12:45.756Z"
+      },
+      {
+        "id": "cmo7ko3b1009ci6fco89l1caj",
+        "name": "Irigasi Bukit Tinggi",
+        "description": "Irigasi di daerah perbukitan",
+        "location": "Bukit Tinggi",
+        "latitude": -0.912,
+        "longitude": 122.112,
+        "area": 90,
+        "waterLevel": 4.8,
+        "status": "normal",
+        "canals": 2,
+        "gates": 3,
+        "waterSource": "Mata Air Bukit",
+        "regency": null,
+        "constructionYear": null,
+        "servedVillages": null,
+        "potentialArea": null,
+        "functionalArea": null,
+        "dischargeCapacity": null,
+        "channelLength": null,
+        "watershedArea": null,
+        "productivity": null,
+        "totalStructures": null,
+        "mainStructure": null,
+        "divisionStructure": null,
+        "intakeStructure": null,
+        "dropStructure": null,
+        "aqueduct": null,
+        "drainageCulvert": null,
+        "roadCulvert": null,
+        "slopingDrain": null,
+        "buildingScheme": null,
+        "networkScheme": null,
+        "p3aGroupList": null,
+        "farmingBusinessAnalysis": null,
+        "rttg": null,
+        "plantingSchedule": null,
+        "lastUpdate": "2026-04-20T19:12:45.757Z",
+        "createdAt": "2026-04-20T19:12:45.757Z",
+        "updatedAt": "2026-04-20T19:12:45.757Z"
+      },
+      {
+        "id": "cmo7ko3b2009di6fcs209us2p",
+        "name": "Bendungan Sungai Kecil",
+        "description": "Bendungan kecil untuk irigasi",
+        "location": "Sungai Kecil",
+        "latitude": -0.842,
+        "longitude": 122.189,
+        "area": 55,
+        "waterLevel": 3.7,
+        "status": "normal",
+        "canals": 1,
+        "gates": 2,
+        "waterSource": "Sungai Kecil",
+        "regency": null,
+        "constructionYear": null,
+        "servedVillages": null,
+        "potentialArea": null,
+        "functionalArea": null,
+        "dischargeCapacity": null,
+        "channelLength": null,
+        "watershedArea": null,
+        "productivity": null,
+        "totalStructures": null,
+        "mainStructure": null,
+        "divisionStructure": null,
+        "intakeStructure": null,
+        "dropStructure": null,
+        "aqueduct": null,
+        "drainageCulvert": null,
+        "roadCulvert": null,
+        "slopingDrain": null,
+        "buildingScheme": null,
+        "networkScheme": null,
+        "p3aGroupList": null,
+        "farmingBusinessAnalysis": null,
+        "rttg": null,
+        "plantingSchedule": null,
+        "lastUpdate": "2026-04-20T19:12:45.758Z",
+        "createdAt": "2026-04-20T19:12:45.758Z",
+        "updatedAt": "2026-04-20T19:12:45.758Z"
+      },
+      {
+        "id": "cmo7ko3b2009ei6fcziomyqli",
+        "name": "Irigasi Delta",
+        "description": "Irigasi daerah delta sungai",
+        "location": "Delta",
+        "latitude": -0.801,
+        "longitude": 122.445,
+        "area": 125,
+        "waterLevel": 4.3,
+        "status": "normal",
+        "canals": 3,
+        "gates": 5,
+        "waterSource": "Sungai Delta",
+        "regency": null,
+        "constructionYear": null,
+        "servedVillages": null,
+        "potentialArea": null,
+        "functionalArea": null,
+        "dischargeCapacity": null,
+        "channelLength": null,
+        "watershedArea": null,
+        "productivity": null,
+        "totalStructures": null,
+        "mainStructure": null,
+        "divisionStructure": null,
+        "intakeStructure": null,
+        "dropStructure": null,
+        "aqueduct": null,
+        "drainageCulvert": null,
+        "roadCulvert": null,
+        "slopingDrain": null,
+        "buildingScheme": null,
+        "networkScheme": null,
+        "p3aGroupList": null,
+        "farmingBusinessAnalysis": null,
+        "rttg": null,
+        "plantingSchedule": null,
+        "lastUpdate": "2026-04-20T19:12:45.759Z",
+        "createdAt": "2026-04-20T19:12:45.759Z",
+        "updatedAt": "2026-04-20T19:12:45.759Z"
+      },
+      {
+        "id": "cmo7ko3b3009fi6fc4f3f9vws",
+        "name": "Saluran Induk Timur",
+        "description": "Saluran induk wilayah timur",
+        "location": "Timur",
+        "latitude": -0.875,
+        "longitude": 122.512,
+        "area": 175,
+        "waterLevel": 5.5,
+        "status": "high",
+        "canals": 4,
+        "gates": 9,
+        "waterSource": "Sungai Timur",
+        "regency": null,
+        "constructionYear": null,
+        "servedVillages": null,
+        "potentialArea": null,
+        "functionalArea": null,
+        "dischargeCapacity": null,
+        "channelLength": null,
+        "watershedArea": null,
+        "productivity": null,
+        "totalStructures": null,
+        "mainStructure": null,
+        "divisionStructure": null,
+        "intakeStructure": null,
+        "dropStructure": null,
+        "aqueduct": null,
+        "drainageCulvert": null,
+        "roadCulvert": null,
+        "slopingDrain": null,
+        "buildingScheme": null,
+        "networkScheme": null,
+        "p3aGroupList": null,
+        "farmingBusinessAnalysis": null,
+        "rttg": null,
+        "plantingSchedule": null,
+        "lastUpdate": "2026-04-20T19:12:45.760Z",
+        "createdAt": "2026-04-20T19:12:45.760Z",
+        "updatedAt": "2026-04-20T19:12:45.760Z"
+      }
+    ],
+    "news": [
+      {
+        "id": "cmog8kve10001i6fwexmh21gi",
+        "title": "ew",
+        "slug": "ew",
+        "content": "<p>weq</p>",
+        "excerpt": "ew",
+        "image": "/uploads/news/news_1777236255678.png",
+        "categoryId": "cmo7ko3a4008ii6fcpugme1mc",
+        "authorId": "cmo7ko39z008fi6fci9zbo4fk",
+        "published": true,
+        "publishedAt": "2026-04-26T20:46:17.778Z",
+        "createdAt": "2026-04-26T20:44:15.720Z",
+        "updatedAt": "2026-04-26T20:46:17.779Z"
+      }
+    ],
+    "category": [
+      {
+        "id": "cmo7ko3a4008ii6fcpugme1mc",
+        "name": "Berita",
+        "slug": "berita",
+        "description": "Berita terkini",
+        "createdAt": "2026-04-20T19:12:45.725Z",
+        "updatedAt": "2026-04-20T19:12:45.725Z"
+      },
+      {
+        "id": "cmo7ko3a6008ji6fc8192x4l7",
+        "name": "Pengumuman",
+        "slug": "pengumuman",
+        "description": "Pengumuman resmi",
+        "createdAt": "2026-04-20T19:12:45.726Z",
+        "updatedAt": "2026-04-20T19:12:45.726Z"
+      },
+      {
+        "id": "cmo7ko3a7008ki6fclom9q9kv",
+        "name": "Artikel",
+        "slug": "artikel",
+        "description": "Artikel informatif",
+        "createdAt": "2026-04-20T19:12:45.727Z",
+        "updatedAt": "2026-04-20T19:12:45.727Z"
+      },
+      {
+        "id": "cmo7ko3a8008li6fcc9eqy2m2",
+        "name": "Kegiatan",
+        "slug": "kegiatan",
+        "description": "Kegiatan dan acara",
+        "createdAt": "2026-04-20T19:12:45.728Z",
+        "updatedAt": "2026-04-20T19:12:45.728Z"
+      }
+    ],
+    "gallery": [
+      {
+        "id": "cmog09acn0001i6lb2bjfzk7v",
+        "title": "weas",
+        "description": "eaqw",
+        "imageUrl": "/uploads/gallery/gallery_1777222272821.png",
+        "category": "Construction",
+        "date": "2026-04-26T16:51:18.310Z",
+        "type": "image",
+        "active": true,
+        "createdAt": "2026-04-26T16:51:18.310Z",
+        "updatedAt": "2026-04-26T20:48:17.376Z"
+      }
+    ],
+    "farmer": [
+      {
+        "id": "cmo7ko8n00009i6febyc8h8bk",
+        "name": "Kelompok Tani Maju Jaya",
+        "group": "Maju Jaya",
+        "chairman": "Budi Santoso",
+        "members": "[\"Ahmad Rizki\",\"Siti Nurhaliza\",\"Dewi Lestari\",\"Joko Widodo\"]",
+        "userId": "cmo7ko39z008fi6fci9zbo4fk",
+        "createdAt": "2026-04-20T19:12:52.669Z",
+        "updatedAt": "2026-04-20T19:12:52.669Z"
+      },
+      {
+        "id": "cmo7ko8n0000ai6fe7o2249ll",
+        "name": "Kelompok Tani Sejahtera",
+        "group": "Sejahtera",
+        "chairman": "Sari Indah",
+        "members": "[\"Rina Melati\",\"Agus Suparman\",\"Lina Marlina\",\"Rudi Hartono\"]",
+        "userId": "cmo7ko39z008fi6fci9zbo4fk",
+        "createdAt": "2026-04-20T19:12:52.669Z",
+        "updatedAt": "2026-04-20T19:12:52.669Z"
+      },
+      {
+        "id": "cmo7ko8n0000bi6feqzbrzc0u",
+        "name": "Kelompok Tani Makmur",
+        "group": "Makmur",
+        "chairman": "Hendra Gunawan",
+        "members": "[\"Dian Sastrowardoyo\",\"Tono Sutrisno\",\"Maya Septiana\",\"Bambang Pamungkas\"]",
+        "userId": "cmo7ko39z008fi6fci9zbo4fk",
+        "createdAt": "2026-04-20T19:12:52.669Z",
+        "updatedAt": "2026-04-20T19:12:52.669Z"
+      }
+    ],
+    "farmerData": [],
+    "waterLevelData": [
+      {
+        "id": "cmo7ko8mv0000i6feyqjb3u9u",
+        "location": "Bendungan Utama",
+        "value": 125.5,
+        "unit": "cm",
+        "measuredAt": "2024-01-15T08:00:00.000Z",
+        "recordedBy": "cmo7ko39z008fi6fci9zbo4fk",
+        "createdAt": "2026-04-20T19:12:52.664Z",
+        "updatedAt": "2026-04-20T19:12:52.664Z"
+      },
+      {
+        "id": "cmo7ko8mv0001i6feaodto53w",
+        "location": "Saluran Primer A",
+        "value": 98.2,
+        "unit": "cm",
+        "measuredAt": "2024-01-15T12:00:00.000Z",
+        "recordedBy": "cmo7ko39z008fi6fci9zbo4fk",
+        "createdAt": "2026-04-20T19:12:52.664Z",
+        "updatedAt": "2026-04-20T19:12:52.664Z"
+      },
+      {
+        "id": "cmo7ko8mv0002i6fe0a1xgyhb",
+        "location": "Saluran Primer B",
+        "value": 112.8,
+        "unit": "cm",
+        "measuredAt": "2024-01-15T16:00:00.000Z",
+        "recordedBy": "cmo7ko39z008fi6fci9zbo4fk",
+        "createdAt": "2026-04-20T19:12:52.664Z",
+        "updatedAt": "2026-04-20T19:12:52.664Z"
+      }
+    ],
+    "rainfallData": [
+      {
+        "id": "cmo7ko8mx0003i6feb52ghl69",
+        "location": "Stasiun Hujan 1",
+        "value": 45.2,
+        "unit": "mm",
+        "measuredAt": "2024-01-15T08:00:00.000Z",
+        "recordedBy": "cmo7ko39z008fi6fci9zbo4fk",
+        "createdAt": "2026-04-20T19:12:52.666Z",
+        "updatedAt": "2026-04-20T19:12:52.666Z"
+      },
+      {
+        "id": "cmo7ko8mx0004i6fe07zhzzdw",
+        "location": "Stasiun Hujan 2",
+        "value": 32.1,
+        "unit": "mm",
+        "measuredAt": "2024-01-15T12:00:00.000Z",
+        "recordedBy": "cmo7ko39z008fi6fci9zbo4fk",
+        "createdAt": "2026-04-20T19:12:52.666Z",
+        "updatedAt": "2026-04-20T19:12:52.666Z"
+      },
+      {
+        "id": "cmo7ko8mx0005i6febuwvbzun",
+        "location": "Stasiun Hujan 3",
+        "value": 28.7,
+        "unit": "mm",
+        "measuredAt": "2024-01-15T16:00:00.000Z",
+        "recordedBy": "cmo7ko39z008fi6fci9zbo4fk",
+        "createdAt": "2026-04-20T19:12:52.666Z",
+        "updatedAt": "2026-04-20T19:12:52.666Z"
+      }
+    ],
+    "cropData": [
+      {
+        "id": "cmo7ko8mz0006i6feq21nwxyp",
+        "crop": "Padi",
+        "area": 25.5,
+        "production": 127.5,
+        "season": "Musim Hujan",
+        "location": "Blok A",
+        "recordedBy": "cmo7ko39z008fi6fci9zbo4fk",
+        "createdAt": "2026-04-20T19:12:52.667Z",
+        "updatedAt": "2026-04-20T19:12:52.667Z"
+      },
+      {
+        "id": "cmo7ko8mz0007i6feg27wr6gy",
+        "crop": "Jagung",
+        "area": 18.2,
+        "production": 91,
+        "season": "Musim Hujan",
+        "location": "Blok B",
+        "recordedBy": "cmo7ko39z008fi6fci9zbo4fk",
+        "createdAt": "2026-04-20T19:12:52.667Z",
+        "updatedAt": "2026-04-20T19:12:52.667Z"
+      },
+      {
+        "id": "cmo7ko8mz0008i6fec6lty58w",
+        "crop": "Kedelai",
+        "area": 12.8,
+        "production": 38.4,
+        "season": "Musim Kemarau",
+        "location": "Blok C",
+        "recordedBy": "cmo7ko39z008fi6fci9zbo4fk",
+        "createdAt": "2026-04-20T19:12:52.667Z",
+        "updatedAt": "2026-04-20T19:12:52.667Z"
+      }
+    ],
+    "contactSubmission": [
+      {
+        "id": "cmoboneen0002i62vzv4i2rgg",
+        "name": "ssd",
+        "email": "irigasibunta@gmail.com",
+        "phone": null,
+        "subject": "asdefg",
+        "message": "swerdgfgewadgv",
+        "status": "unread",
+        "createdAt": "2026-04-23T16:15:16.654Z",
+        "updatedAt": "2026-04-23T16:15:16.654Z"
+      }
+    ],
+    "fileStorage": [],
+    "employee": [
+      {
+        "id": "cmo7ko3a9008mi6fcldhc6ay2",
+        "name": "Untung",
+        "position": "Pengamat",
+        "education": "SMA",
+        "status": "PNS",
+        "photo": "/uploads/employees/employee_1776965947089.jpeg",
+        "department": "Operasi & Pemeliharaan",
+        "age": 56,
+        "workRegion": "Bunta",
+        "whatsapp": "628782377461",
+        "location": "Bendungan Bunta",
+        "pangkat_golongan": "II D",
+        "nip": "7393937823",
+        "order": 1,
+        "createdAt": "2026-04-20T19:12:45.729Z",
+        "updatedAt": "2026-04-23T17:41:34.168Z"
+      },
+      {
+        "id": "cmo7ko3aa008ni6fc8xglyuhf",
+        "name": "Ahmad Fauzi Ridwan, A.Md.",
+        "position": "Juru Operasi dan Pemeliharaan",
+        "education": "D3 Teknik Sipil",
+        "status": "PNS",
+        "photo": "/uploads/employees/employee_1776965649811.jpeg",
+        "department": "Operasi & Pemeliharaan",
+        "age": 29,
+        "workRegion": "Luwuk Banggai",
+        "whatsapp": "628782377461",
+        "location": "Irigasi Pantura",
+        "pangkat_golongan": "II C",
+        "nip": "7393937823",
+        "order": 2,
+        "createdAt": "2026-04-20T19:12:45.730Z",
+        "updatedAt": "2026-04-23T17:34:09.830Z"
+      },
+      {
+        "id": "cmo7ko3ab008oi6fchaxvjp14",
+        "name": "Rahmatul Ummah",
+        "position": "Staf Operasi",
+        "education": "S1 Teknik Lingkungan",
+        "status": "PNS",
+        "photo": null,
+        "department": "Operasi & Pemeliharaan",
+        "age": 32,
+        "workRegion": "Luwuk Banggai",
+        "whatsapp": null,
+        "location": null,
+        "pangkat_golongan": null,
+        "nip": null,
+        "order": 3,
+        "createdAt": "2026-04-20T19:12:45.731Z",
+        "updatedAt": "2026-04-20T19:12:45.731Z"
+      },
+      {
+        "id": "cmo7ko3ad008pi6fcagbketm6",
+        "name": "Rahmat Hidayat",
+        "position": "Staf Pemeliharaan",
+        "education": "SMA",
+        "status": "Honorer",
+        "photo": null,
+        "department": "Operasi & Pemeliharaan",
+        "age": 28,
+        "workRegion": "Luwuk Banggai",
+        "whatsapp": "628782377461",
+        "location": "Saluran Sekunder Bolano",
+        "pangkat_golongan": "-",
+        "nip": "-",
+        "order": 4,
+        "createdAt": "2026-04-20T19:12:45.733Z",
+        "updatedAt": "2026-04-23T17:42:48.194Z"
+      },
+      {
+        "id": "cmo7ko3af008qi6fc26f9hlvu",
+        "name": "Syarifudin",
+        "position": "Petugas Pintu Air",
+        "education": "SMA",
+        "status": "Honorer",
+        "photo": null,
+        "department": "Teknis",
+        "age": 35,
+        "workRegion": "Bunta",
+        "whatsapp": null,
+        "location": null,
+        "pangkat_golongan": null,
+        "nip": null,
+        "order": 5,
+        "createdAt": "2026-04-20T19:12:45.735Z",
+        "updatedAt": "2026-04-20T19:12:45.735Z"
+      },
+      {
+        "id": "cmo7ko3ag008ri6fckb093n4m",
+        "name": "Abdul Rahim",
+        "position": "Petugas Pintu Air",
+        "education": "SMA",
+        "status": "Honorer",
+        "photo": null,
+        "department": "Teknis",
+        "age": 40,
+        "workRegion": "Bunta",
+        "whatsapp": null,
+        "location": null,
+        "pangkat_golongan": null,
+        "nip": null,
+        "order": 6,
+        "createdAt": "2026-04-20T19:12:45.736Z",
+        "updatedAt": "2026-04-20T19:12:45.736Z"
+      },
+      {
+        "id": "cmo7ko3ah008si6fc8ih1f4sy",
+        "name": "M. Yusuf",
+        "position": "Petugas Pintu Air",
+        "education": "SMA",
+        "status": "Honorer",
+        "photo": null,
+        "department": "Teknis",
+        "age": 33,
+        "workRegion": "Bunta",
+        "whatsapp": null,
+        "location": null,
+        "pangkat_golongan": null,
+        "nip": null,
+        "order": 7,
+        "createdAt": "2026-04-20T19:12:45.737Z",
+        "updatedAt": "2026-04-20T19:12:45.737Z"
+      },
+      {
+        "id": "cmo7ko3ai008ti6fcq0mnoosg",
+        "name": "Samsul Bahri",
+        "position": "Petugas Pintu Air",
+        "education": "SMA",
+        "status": "Honorer",
+        "photo": null,
+        "department": "Teknis",
+        "age": 36,
+        "workRegion": "Bunta",
+        "whatsapp": null,
+        "location": null,
+        "pangkat_golongan": null,
+        "nip": null,
+        "order": 8,
+        "createdAt": "2026-04-20T19:12:45.738Z",
+        "updatedAt": "2026-04-20T19:12:45.738Z"
+      },
+      {
+        "id": "cmo7ko3aj008ui6fcwjtvclv5",
+        "name": "Rusli",
+        "position": "Petugas Pintu Air",
+        "education": "SMA",
+        "status": "Honorer",
+        "photo": null,
+        "department": "Teknis",
+        "age": 39,
+        "workRegion": "Bunta",
+        "whatsapp": null,
+        "location": null,
+        "pangkat_golongan": null,
+        "nip": null,
+        "order": 9,
+        "createdAt": "2026-04-20T19:12:45.739Z",
+        "updatedAt": "2026-04-20T19:12:45.739Z"
+      },
+      {
+        "id": "cmo7ko3ak008vi6fc56oh5wz7",
+        "name": "Junaidi",
+        "position": "Petugas Pintu Air",
+        "education": "SMA",
+        "status": "Honorer",
+        "photo": null,
+        "department": "Teknis",
+        "age": 31,
+        "workRegion": "Bunta",
+        "whatsapp": null,
+        "location": null,
+        "pangkat_golongan": null,
+        "nip": null,
+        "order": 10,
+        "createdAt": "2026-04-20T19:12:45.740Z",
+        "updatedAt": "2026-04-20T19:12:45.740Z"
+      },
+      {
+        "id": "cmo7ko3al008wi6fcospxt4ze",
+        "name": "Aswan",
+        "position": "Petugas Operasi Bendung",
+        "education": "SMA",
+        "status": "Honorer",
+        "photo": null,
+        "department": "Teknis",
+        "age": 42,
+        "workRegion": "Bunta",
+        "whatsapp": null,
+        "location": null,
+        "pangkat_golongan": null,
+        "nip": null,
+        "order": 11,
+        "createdAt": "2026-04-20T19:12:45.741Z",
+        "updatedAt": "2026-04-20T19:12:45.741Z"
+      },
+      {
+        "id": "cmo7ko3am008xi6fcae2d0oay",
+        "name": "Rudi Hartono",
+        "position": "Petugas Operasi Bendung",
+        "education": "SMA",
+        "status": "Honorer",
+        "photo": null,
+        "department": "Teknis",
+        "age": 37,
+        "workRegion": "Bunta",
+        "whatsapp": null,
+        "location": null,
+        "pangkat_golongan": null,
+        "nip": null,
+        "order": 12,
+        "createdAt": "2026-04-20T19:12:45.743Z",
+        "updatedAt": "2026-04-20T19:12:45.743Z"
+      },
+      {
+        "id": "cmo7ko3ao008yi6fcwtgcjq3e",
+        "name": "Fajar",
+        "position": "Petugas Operasi Bendung",
+        "education": "SMA",
+        "status": "Honorer",
+        "photo": null,
+        "department": "Teknis",
+        "age": 29,
+        "workRegion": "Bunta",
+        "whatsapp": null,
+        "location": null,
+        "pangkat_golongan": null,
+        "nip": null,
+        "order": 13,
+        "createdAt": "2026-04-20T19:12:45.744Z",
+        "updatedAt": "2026-04-20T19:12:45.744Z"
+      },
+      {
+        "id": "cmo7ko3ao008zi6fcpsborj8i",
+        "name": "Budi Santoso",
+        "position": "Petugas Operasi Bendung",
+        "education": "SMA",
+        "status": "Honorer",
+        "photo": null,
+        "department": "Teknis",
+        "age": 34,
+        "workRegion": "Bunta",
+        "whatsapp": null,
+        "location": null,
+        "pangkat_golongan": null,
+        "nip": null,
+        "order": 14,
+        "createdAt": "2026-04-20T19:12:45.745Z",
+        "updatedAt": "2026-04-20T19:12:45.745Z"
+      },
+      {
+        "id": "cmo7ko3ap0090i6fchb74nult",
+        "name": "Herman",
+        "position": "Petugas Operasi Bendung",
+        "education": "SMA",
+        "status": "Honorer",
+        "photo": null,
+        "department": "Teknis",
+        "age": 41,
+        "workRegion": "Bunta",
+        "whatsapp": null,
+        "location": null,
+        "pangkat_golongan": null,
+        "nip": null,
+        "order": 15,
+        "createdAt": "2026-04-20T19:12:45.746Z",
+        "updatedAt": "2026-04-20T19:12:45.746Z"
+      }
+    ]
+  }
+}

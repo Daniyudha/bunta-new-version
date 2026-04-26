@@ -1,8 +1,7 @@
 import type { NextAuthOptions, User } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { prisma } from './prisma';
-import bcrypt from 'bcryptjs';
+
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5001';
 
 interface CustomUser extends User {
   role: string;
@@ -10,7 +9,6 @@ interface CustomUser extends User {
 }
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
@@ -28,52 +26,34 @@ export const authOptions: NextAuthOptions = {
         }
 
         try {
-          const user = await prisma.user.findUnique({
-            where: {
-              email: credentials.email
+          // Call the backend API for authentication
+          const response = await fetch(`${BACKEND_URL}/api/auth/login`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
             },
-            include: {
-              role: {
-                include: {
-                  permissions: {
-                    include: {
-                      permission: true
-                    }
-                  }
-                }
-              }
-            }
+            body: JSON.stringify({
+              email: credentials.email,
+              password: credentials.password,
+            }),
           });
 
-          console.log('User found:', user);
-
-          if (!user || !user.password) {
-            console.log('User not found or no password');
+          if (!response.ok) {
+            console.log('Backend authentication failed with status:', response.status);
             return null;
           }
 
-          const isPasswordValid = await bcrypt.compare(
-            credentials.password,
-            user.password
-          );
-
-          console.log('Password valid:', isPasswordValid);
-
-          if (!isPasswordValid) {
-            console.log('Invalid password');
-            return null;
-          }
-
-          const userData = {
-            id: user.id,
-            email: user.email,
-            name: user.name,
-            role: user.role?.name || 'USER',
-            permissions: user.role?.permissions.map(rp => rp.permission.name) || []
-          };
-
-          console.log('Authorization successful, returning:', userData);
-          return userData;
+          const userData = await response.json();
+          
+          console.log('Backend authentication successful:', userData);
+          
+          return {
+            id: userData.id,
+            email: userData.email,
+            name: userData.name,
+            role: userData.role,
+            permissions: userData.permissions,
+          } as CustomUser;
         } catch (error) {
           console.error('Error in authorize function:', error);
           return null;
@@ -88,44 +68,32 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       console.log('JWT callback called with:', { token, user });
       if (user) {
-        // Initial login - set all user data
-        token.role = user.role;
+        // Initial login - set all user data from the authorize response
+        token.role = (user as CustomUser).role;
         token.email = user.email;
         token.permissions = (user as CustomUser).permissions || [];
-      } else if (token) {
-        // Session refresh - ensure permissions are preserved
-        // If permissions don't exist in token, we need to fetch them
-        if (!token.permissions || !token.role) {
-          console.log('No permissions or role in token, fetching from database...');
-          try {
-            const userData = await prisma.user.findUnique({
-              where: { email: token.email as string },
-              include: {
-                role: {
-                  include: {
-                    permissions: {
-                      include: {
-                        permission: true
-                      }
-                    }
-                  }
-                }
-              }
-            });
-            
-            if (userData && userData.role) {
-              token.role = userData.role.name;
-              token.permissions = userData.role.permissions.map(rp => rp.permission.name);
-              console.log('Fetched role and permissions from DB:', token.role, token.permissions);
-            } else {
-              token.role = 'USER';
-              token.permissions = [];
-            }
-          } catch (error) {
-            console.error('Error fetching role and permissions:', error);
+      } else if (token.email && !token.permissions) {
+        // Session refresh - fetch permissions from backend API
+        console.log('No permissions in token, fetching from backend...');
+        try {
+          const response = await fetch(
+            `${BACKEND_URL}/api/auth/me?email=${encodeURIComponent(token.email as string)}`,
+            { method: 'GET' }
+          );
+
+          if (response.ok) {
+            const userData = await response.json();
+            token.role = userData.role;
+            token.permissions = userData.permissions;
+            console.log('Fetched role and permissions from backend:', token.role, token.permissions);
+          } else {
             token.role = 'USER';
             token.permissions = [];
           }
+        } catch (error) {
+          console.error('Error fetching role and permissions:', error);
+          token.role = 'USER';
+          token.permissions = [];
         }
       }
       console.log('JWT callback returning token:', token);

@@ -144,25 +144,83 @@ Follow the interactive prompts. Certbot will automatically update your Nginx con
 
 ## 7. Upload Directory Permissions
 
-Ensure the upload directory exists and is writable:
+Ensure the upload directories exist and are writable. Multiple subdirectories are needed for different feature areas:
 
 ```bash
+# Create all upload subdirectories
 sudo mkdir -p /var/www/bunta-bella-irrigation/backend/public/uploads
+sudo mkdir -p /var/www/bunta-bella-irrigation/backend/public/uploads/sliders
+sudo mkdir -p /var/www/bunta-bella-irrigation/backend/public/uploads/irrigation
+sudo mkdir -p /var/www/bunta-bella-irrigation/backend/public/uploads/gallery
+sudo mkdir -p /var/www/bunta-bella-irrigation/backend/public/uploads/news
+sudo mkdir -p /var/www/bunta-bella-irrigation/backend/public/uploads/employees
+
+# Set ownership and permissions
 sudo chown -R www-data:www-data /var/www/bunta-bella-irrigation/backend/public/uploads
 sudo chmod -R 755 /var/www/bunta-bella-irrigation/backend/public/uploads
 ```
 
-## 8. Monitoring and Maintenance
+### Upload Subdirectory Reference
+
+| Directory | Purpose | Used By |
+|-----------|---------|---------|
+| `uploads/sliders/` | Slider/banner images | Slider management |
+| `uploads/irrigation/` | Irrigation profile images (building scheme, network scheme, RTTG, planting schedule) | Irrigation profile management |
+| `uploads/gallery/` | Gallery images | Gallery management |
+| `uploads/news/` | News article images | News management |
+| `uploads/employees/` | Employee profile photos | Employee management |
+
+## 8. Nginx Static File Serving
+
+Add a location block to serve uploaded files in your Nginx configuration:
+
+```nginx
+location /uploads/ {
+    alias /var/www/bunta-bella-irrigation/backend/public/uploads/;
+    expires 30d;
+    add_header Cache-Control "public, immutable";
+}
+```
+
+## 9. Database Backup
+
+Always backup your database before running migrations or major updates.
+
+### Option A: Using mysqldump (recommended, requires MySQL client)
+```bash
+mysqldump -h localhost -u bunta_user -p bunta_bella_production > backup_$(date +%Y%m%d_%H%M%S).sql
+```
+
+### Option B: Using the Prisma backup script (portable, no MySQL client needed)
+The project includes a portable backup script that exports all data as JSON:
+
+```bash
+cd /var/www/bunta-bella-irrigation/backend
+node scripts/backup-database.js
+```
+
+This exports all 20 Prisma models (users, sliders, irrigation profiles, news, gallery, farmers, water level data, rainfall data, crop data, employees, etc.) into a timestamped JSON file saved in the `backups/` directory.
+
+### Option C: Restore from JSON backup
+To restore from a JSON backup, use a custom restore script or import via Prisma Studio:
+```bash
+cd backend && npx prisma studio
+```
+
+## 10. Monitoring and Maintenance
 
 - View logs: `pm2 logs`
 - Monitor processes: `pm2 monit`
+- Check API health: `curl https://be.irigasibunta.com/api/health`
 - Update the application: pull the latest changes and rerun `./deploy.sh`, then restart PM2 processes:
 
 ```bash
+git pull
+./deploy.sh
 pm2 restart bunta-frontend bunta-backend
 ```
 
-## 9. Troubleshooting
+## 11. Troubleshooting
 
 ### Frontend not loading
 Check that the frontend is running on port 3000:
@@ -176,6 +234,17 @@ Verify the backend is running on port 5001:
 curl http://localhost:5001/api/health
 ```
 
+### File upload returns "Unexpected field" (500 error)
+The backend uses `upload.single('file')` for all upload endpoints.
+- Frontend FormData must use `'file'` as the field name (not `'image'`)
+- Verify the upload subdirectory exists (e.g., `uploads/irrigation/`)
+- Check directory permissions are 755
+
+### Images not displaying after upload
+- Verify the file exists in the correct upload subdirectory
+- Ensure Nginx is configured to serve `/uploads/` static files
+- Restart Nginx: `sudo systemctl restart nginx`
+
 ### Nginx errors
 Check Nginx error logs:
 ```bash
@@ -183,13 +252,17 @@ sudo tail -f /var/log/nginx/error.log
 ```
 
 ### Database connection issues
-Ensure MySQL is running and the credentials in `.env` are correct.
+Ensure MySQL is running and the credentials in `.env` are correct:
+```bash
+sudo systemctl status mysql
+```
 
-## 10. Additional Resources
+## 12. Additional Resources
 
 - [PM2 Documentation](https://pm2.keymetrics.io/docs/usage/quick-start/)
 - [Nginx Beginner’s Guide](https://nginx.org/en/docs/beginners_guide.html)
 - [Let’s Encrypt Documentation](https://certbot.eff.org/docs/)
+- [Prisma Documentation](https://www.prisma.io/docs)
 
 ---
 

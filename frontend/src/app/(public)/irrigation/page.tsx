@@ -12,6 +12,8 @@ import {
   DoorOpen,
   Search,
   Waves,
+  ChevronDown,
+  FileImage,
 } from "lucide-react";
 
 // ================= TYPES =================
@@ -46,6 +48,12 @@ export interface IrrigationArea {
   drainageCulvert?: number;
   roadCulvert?: number;
   slopingDrain?: number;
+
+  // image fields
+  buildingScheme?: string;
+  networkScheme?: string;
+  rttg?: string;
+  plantingSchedule?: string;
 }
 
 interface IrrigationProfileApi {
@@ -60,32 +68,31 @@ interface IrrigationProfileApi {
   status: string;
   canals: number | null;
   gates: number | null;
+  waterSource: string | null;
+  regency: string | null;
+  constructionYear: number | null;
+  servedVillages: string | null;
+  potentialArea: number | null;
+  functionalArea: number | null;
+  dischargeCapacity: number | null;
+  channelLength: number | null;
+  watershedArea: number | null;
+  productivity: string | null;
+  totalStructures: number | null;
+  mainStructure: string | null;
+  divisionStructure: number | null;
+  intakeStructure: number | null;
+  dropStructure: number | null;
+  aqueduct: number | null;
+  drainageCulvert: number | null;
+  roadCulvert: number | null;
+  slopingDrain: number | null;
+  buildingScheme?: string | null;
+  networkScheme?: string | null;
+  rttg?: string | null;
+  plantingSchedule?: string | null;
   lastUpdate: string;
 }
-
-// ================= FALLBACK DATA =================
-const fallbackDetail: Record<string, Partial<IrrigationArea>> = {
-  "1": {
-    regency: "Kabupaten Banggai",
-    constructionYear: 2005,
-    servedVillages: "Desa A, Desa B, Desa C",
-    potentialArea: 1200,
-    functionalArea: 950,
-    dischargeCapacity: 2.5,
-    channelLength: 15,
-    watershedArea: 3000,
-    productivity: "Padi 5 ton/ha",
-    totalStructures: 25,
-    mainStructure: "Bendung Beton",
-    divisionStructure: 5,
-    intakeStructure: 3,
-    dropStructure: 4,
-    aqueduct: 2,
-    drainageCulvert: 6,
-    roadCulvert: 3,
-    slopingDrain: 2,
-  },
-};
 
 const statusConfig: Record<
   string,
@@ -124,6 +131,8 @@ export default function IrrigationPage() {
   );
   const [selectedProfileId, setSelectedProfileId] = useState<string>("");
   const [loading, setLoading] = useState(true);
+  const [expandedAccordion, setExpandedAccordion] = useState<string | null>(null);
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -146,7 +155,30 @@ export default function IrrigationPage() {
             lastUpdate: p.lastUpdate,
             canals: p.canals || 0,
             gates: p.gates || 0,
-            ...fallbackDetail[p.id],
+            // Extended profile data from API (no longer using fallback)
+            regency: p.regency || undefined,
+            constructionYear: p.constructionYear || undefined,
+            servedVillages: p.servedVillages || undefined,
+            potentialArea: p.potentialArea || undefined,
+            functionalArea: p.functionalArea || undefined,
+            dischargeCapacity: p.dischargeCapacity || undefined,
+            channelLength: p.channelLength || undefined,
+            watershedArea: p.watershedArea || undefined,
+            productivity: p.productivity || undefined,
+            totalStructures: p.totalStructures || undefined,
+            mainStructure: p.mainStructure || undefined,
+            divisionStructure: p.divisionStructure || undefined,
+            intakeStructure: p.intakeStructure || undefined,
+            dropStructure: p.dropStructure || undefined,
+            aqueduct: p.aqueduct || undefined,
+            drainageCulvert: p.drainageCulvert || undefined,
+            roadCulvert: p.roadCulvert || undefined,
+            slopingDrain: p.slopingDrain || undefined,
+            // Image fields
+            buildingScheme: p.buildingScheme || undefined,
+            networkScheme: p.networkScheme || undefined,
+            rttg: p.rttg || undefined,
+            plantingSchedule: p.plantingSchedule || undefined,
           }),
         );
 
@@ -477,12 +509,140 @@ export default function IrrigationPage() {
                       ))}
                     </div>
                   </div>
+
+                  {/* ACCORDION: Gambar & Dokumen */}
+                  <div className="border-t border-gray-100">
+                    <button
+                      onClick={() =>
+                        setExpandedAccordion(
+                          expandedAccordion === area.id ? null : area.id,
+                        )
+                      }
+                      className="w-full flex items-center justify-between px-6 py-4 bg-white hover:bg-gray-50 transition-colors"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-amber-50 rounded-lg">
+                          <FileImage className="w-5 h-5 text-amber-600" />
+                        </div>
+                        <span className="font-semibold text-gray-900">
+                          Gambar & Dokumen
+                        </span>
+                        <span className="text-sm text-gray-400">
+                          (Bangunan, Jaringan, RTTG, Jadwal Tanam)
+                        </span>
+                      </div>
+                      <ChevronDown
+                        className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${
+                          expandedAccordion === area.id ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+                    {expandedAccordion === area.id && (
+                      <div className="px-6 pb-6 pt-2 bg-gray-50/50">
+                        {(
+                          [
+                            {
+                              key: "buildingScheme",
+                              label: "BUILDING SCHEME",
+                            },
+                            {
+                              key: "networkScheme",
+                              label: "NETWORK SCHEME",
+                            },
+                            { key: "rttg", label: "RTTG" },
+                            {
+                              key: "plantingSchedule",
+                              label: "PLANTING SCHEDULE",
+                            },
+                          ] as const
+                        ).map((imgField) => {
+                          const imgUrl =
+                            area[
+                              imgField.key as keyof IrrigationArea
+                            ] as string | undefined;
+                          return (
+                            <div
+                              key={imgField.key}
+                              className="mb-3 last:mb-0"
+                            >
+                              <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+                                <div className="px-4 py-2 bg-gray-50 border-b border-gray-100">
+                                  <span className="text-sm font-medium text-gray-700">
+                                    {imgField.label}
+                                  </span>
+                                </div>
+                                <div className="p-4">
+                                  {imgUrl ? (
+                                    <button
+                                      type="button"
+                                      onClick={() => setLightboxImage(imgUrl)}
+                                      className="relative w-full h-48 md:h-80 rounded-lg overflow-hidden border border-gray-200 cursor-pointer hover:opacity-90 transition-opacity block text-left"
+                                    >
+                                      <Image
+                                        src={imgUrl}
+                                        alt={imgField.label}
+                                        fill
+                                        className="object-contain"
+                                        onError={(e) => {
+                                          (
+                                            e.target as HTMLImageElement
+                                          ).style.display = "none";
+                                        }}
+                                      />
+                                    </button>
+                                  ) : (
+                                    <div className="w-full h-32 rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center">
+                                      <p className="text-sm text-gray-400">
+                                        Tidak tersedia
+                                      </p>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
                 </div>
               );
             })
           )}
         </div>
       </div>
+
+      {/* Lightbox Overlay */}
+      {lightboxImage && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+          onClick={() => setLightboxImage(null)}
+        >
+          <button
+            type="button"
+            onClick={() => setLightboxImage(null)}
+            className="absolute top-4 right-4 text-white/80 hover:text-white transition-colors cursor-pointer z-10"
+            aria-label="Close"
+          >
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+          <div
+            className="relative max-w-4xl max-h-[90vh] w-full h-full mx-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="relative w-full h-full flex items-center justify-center">
+              <Image
+                src={lightboxImage}
+                alt="Enlarged image"
+                fill
+                className="object-contain"
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
