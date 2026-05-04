@@ -27,5 +27,5 @@ ALTER TABLE `irrigation_profiles` ADD COLUMN `farmingBusinessAnalysis` JSON NULL
 ALTER TABLE `irrigation_profiles` ADD COLUMN `rttg` VARCHAR(191) NULL;
 ALTER TABLE `irrigation_profiles` ADD COLUMN `plantingSchedule` VARCHAR(191) NULL;
 
--- Add missing column to sliders table (buttonText was added to schema but not migrated)
-ALTER TABLE `sliders` ADD COLUMN `buttonText` VARCHAR(191) NULL DEFAULT 'Pelajari Lebih Lanjut';
+-- Note: buttonText on sliders table is already added in some environments, so it's excluded here.
+-- If you need it, run manually: ALTER TABLE `sliders` ADD COLUMN `buttonText` VARCHAR(191) NULL DEFAULT 'Pelajari Lebih Lanjut';

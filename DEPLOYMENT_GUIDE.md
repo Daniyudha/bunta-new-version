@@ -354,7 +354,7 @@ node scripts/seed-all-in-one.js
 |-------|----------------|
 | `employees` | `tanggalPengangkatan` |
 | `irrigation_profiles` | `regency`, `constructionYear`, `servedVillages`, `potentialArea`, `functionalArea`, `dischargeCapacity`, `channelLength`, `watershedArea`, `productivity`, `totalStructures`, `mainStructure`, `divisionStructure`, `intakeStructure`, `dropStructure`, `aqueduct`, `drainageCulvert`, `roadCulvert`, `slopingDrain`, `buildingScheme`, `networkScheme`, `p3aGroupList` (JSON), `farmingBusinessAnalysis` (JSON), `rttg`, `plantingSchedule` |
-| `sliders` | `buttonText` |
+| `sliders` | `buttonText` (may already exist in some environments) |
 
 > **Note:** On a fresh database, `prisma migrate deploy` applies ALL migrations in order, including this new fix migration, so the seed will work on the first try.
 
