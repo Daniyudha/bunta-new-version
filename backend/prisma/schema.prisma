@@ -277,22 +277,23 @@ model FileStorage {
 }
 
 model Employee {
-  id               String   @id @default(cuid())
-  name             String
-  position         String
-  education        String?
-  status           String   @default("PNS")
-  photo            String?
-  department       String?
-  age              Int?
-  workRegion       String?
-  whatsapp         String?
-  location         String?
-  pangkat_golongan String?
-  nip              String?
-  order            Int?     @default(0)
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  id                  String   @id @default(cuid())
+  name                String
+  position            String
+  education           String?
+  status              String   @default("PNS")
+  photo               String?
+  department          String?
+  age                 Int?
+  workRegion          String?
+  whatsapp            String?
+  location            String?
+  pangkat_golongan    String?
+  nip                 String?
+  tanggalPengangkatan DateTime?
+  order               Int?     @default(0)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 
   @@map("employees")
 }

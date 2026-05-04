@@ -19,6 +19,7 @@ interface Employee {
   whatsapp: string | null;
   location: string | null;
   order: number | null;
+  tanggalPengangkatan: string | null;
   updatedAt?: string;
 }
 
@@ -50,6 +51,7 @@ export default function EditEmployee() {
     nip: '',
     whatsapp: '',
     location: '',
+    tanggalPengangkatan: '',
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
@@ -104,6 +106,7 @@ export default function EditEmployee() {
           nip: employeeData.nip || '',
           whatsapp: employeeData.whatsapp || '',
           location: employeeData.location || '',
+          tanggalPengangkatan: employeeData.tanggalPengangkatan ? employeeData.tanggalPengangkatan.substring(0, 10) : '',
         });
         setImagePreview(employeeData.photo || '');
       } else {
@@ -183,6 +186,7 @@ export default function EditEmployee() {
         nip: formData.nip || null,
         whatsapp: formData.whatsapp || null,
         location: formData.location || null,
+        tanggalPengangkatan: formData.tanggalPengangkatan || null,
       };
 
       const response = await fetch(`/api/admin/employees/${params.id}`, {
@@ -298,9 +302,9 @@ export default function EditEmployee() {
                 className="w-full px-3 py-2 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="PNS">PNS</option>
-                <option value="Honorer">Honorer</option>
-                <option value="Kontrak">Kontrak</option>
-                <option value="Magang">Magang</option>
+                <option value="Honorer">Honorer/Kontrak</option>
+                <option value="Kontrak">PPPK Penuh Waktu</option>
+                <option value="Magang">PPPK Paruh Waktu</option>
               </select>
             </div>
 
@@ -393,6 +397,20 @@ export default function EditEmployee() {
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Contoh: +6281234567890"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="tanggalPengangkatan" className="block text-sm font-medium text-gray-700 mb-2">
+                Tanggal Pengangkatan
+              </label>
+              <input
+                type="date"
+                id="tanggalPengangkatan"
+                name="tanggalPengangkatan"
+                value={formData.tanggalPengangkatan}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 

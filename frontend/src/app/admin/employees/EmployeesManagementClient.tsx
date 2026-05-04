@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Search, X, User, Pencil, Trash2 } from 'lucide-react';
+import { Search, X, User, Pencil, Trash2, Bell } from 'lucide-react';
 import Image from 'next/image';
 
 export const dynamic = 'force-dynamic';
@@ -24,6 +24,7 @@ interface Employee {
   whatsapp: string | null;
   location: string | null;
   order: number | null;
+  tanggalPengangkatan: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -132,6 +133,61 @@ export default function EmployeesManagementClient() {
     }
   };
 
+  const handleSendWhatsApp = (employee: Employee) => {
+    if (!employee.whatsapp) {
+      setError('Nomor WhatsApp tidak tersedia untuk pegawai ini');
+      return;
+    }
+
+    // Clean the phone number: remove non-digit characters except leading +
+    let phone = employee.whatsapp.replace(/[^\d+]/g, '');
+    // If number starts with 0, replace with 62 (Indonesia code)
+    if (phone.startsWith('0')) {
+      phone = '62' + phone.substring(1);
+    }
+    // Remove + if present
+    phone = phone.replace(/^\+/, '');
+
+    // Compute Masa Kerja from tanggalPengangkatan
+    let masaKerja = '0';
+    if (employee.tanggalPengangkatan) {
+      const start = new Date(employee.tanggalPengangkatan);
+      const now = new Date();
+      let years = now.getFullYear() - start.getFullYear();
+      const monthDiff = now.getMonth() - start.getMonth();
+      if (monthDiff < 0 || (monthDiff === 0 && now.getDate() < start.getDate())) {
+        years--;
+      }
+      masaKerja = years.toString();
+    }
+
+    const message = `PEMBERITAHUAN DATA KEPEGAWAIAN
+
+Yth. Bapak/Ibu ${employee.name}
+
+Kami informasikan bahwa data kepegawaian Anda perlu dilakukan pembaharuan atau mengurus berkas kenaikan Pangkat/Golongan Jabatan. Berikut ringkasan data Anda saat ini:
+
+Nama: ${employee.name}
+NIP: ${employee.nip || '-'}
+Jabatan: ${employee.department || '-'}
+Posisi: ${employee.position}
+Status: ${employee.status}
+Pangkat/Golongan: ${employee.pangkat_golongan || '-'}
+Masa Kerja : ${masaKerja} Tahun
+
+Untuk informasi detail lebih lanjut, silakan hubungi bagian Sub Bagian Tata Usaha (Sadriyani Anwar, S.P. : 0813-4123-3483).
+
+Terima kasih.
+
+-UPT PSDA WILAYAH 2 CIKASDA SULTENG-`;
+
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/${phone}?text=${encodedMessage}`;
+
+    // Open WhatsApp in a new tab
+    window.open(whatsappUrl, '_blank');
+  };
+
   if (status === 'loading' || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -229,6 +285,12 @@ export default function EmployeesManagementClient() {
                   Status
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Tgl. Pengangkatan
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Masa Kerja
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Departemen
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -300,6 +362,29 @@ export default function EmployeesManagementClient() {
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {employee.tanggalPengangkatan
+                      ? new Date(employee.tanggalPengangkatan).toLocaleDateString('id-ID', {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric',
+                        })
+                      : '-'}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {employee.tanggalPengangkatan
+                      ? (() => {
+                          const start = new Date(employee.tanggalPengangkatan);
+                          const now = new Date();
+                          let years = now.getFullYear() - start.getFullYear();
+                          const monthDiff = now.getMonth() - start.getMonth();
+                          if (monthDiff < 0 || (monthDiff === 0 && now.getDate() < start.getDate())) {
+                            years--;
+                          }
+                          return `${years} Tahun`;
+                        })()
+                      : '-'}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {employee.department || '-'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -320,17 +405,29 @@ export default function EmployeesManagementClient() {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {new Date(employee.updatedAt).toLocaleDateString()}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-2">
+                  <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-1">
                     <Link
                       href={`/admin/employees/edit/${employee.id}`}
-                      className="inline-flex items-center justify-center p-2 bg-blue-600 text-white rounded hover:bg-blue-700 cursor-pointer"
+                      className="inline-flex items-center justify-center p-2 rounded text-blue-600 hover:bg-blue-500/10 transition cursor-pointer"
                       title="Edit"
                     >
                       <Pencil size={16} />
                     </Link>
                     <button
+                      onClick={() => handleSendWhatsApp(employee)}
+                      className={`inline-flex items-center justify-center p-2 rounded transition cursor-pointer ${
+                        employee.whatsapp
+                          ? 'text-green-600 hover:bg-green-500/10'
+                          : 'text-gray-400 cursor-not-allowed'
+                      }`}
+                      title={employee.whatsapp ? 'Kirim Notifikasi WhatsApp' : 'Nomor WhatsApp tidak tersedia'}
+                      disabled={!employee.whatsapp}
+                    >
+                      <Bell size={16} />
+                    </button>
+                    <button
                       onClick={() => handleDelete(employee.id)}
-                      className="inline-flex items-center justify-center p-2 bg-red-600 text-white rounded hover:bg-red-700 cursor-pointer"
+                      className="inline-flex items-center justify-center p-2 rounded text-red-600 hover:bg-red-500/10 transition cursor-pointer"
                       title="Delete"
                     >
                       <Trash2 size={16} />

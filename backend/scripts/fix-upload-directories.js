@@ -3,18 +3,24 @@ const path = require('path');
 
 console.log('🔧 Fixing upload directories and permissions...');
 
+// Upload directories are relative to the frontend/public/ directory
+// because all Express multer routes save to frontend/public/uploads/
+const frontendPublicDir = path.join(__dirname, '../../frontend/public');
+
 // Define all upload directories that need to be created
 const uploadDirs = [
-  'public/uploads',
-  'public/uploads/storage',
-  'public/uploads/news',
-  'public/uploads/gallery',
-  'public/uploads/sliders',
-  'public/uploads/media'
+  'uploads',
+  'uploads/storage',
+  'uploads/news',
+  'uploads/gallery',
+  'uploads/sliders',
+  'uploads/media',
+  'uploads/employees',
+  'uploads/irrigation'
 ];
 
 uploadDirs.forEach(dir => {
-  const fullPath = path.join(process.cwd(), dir);
+  const fullPath = path.join(frontendPublicDir, dir);
   
   if (!fs.existsSync(fullPath)) {
     fs.mkdirSync(fullPath, { recursive: true });

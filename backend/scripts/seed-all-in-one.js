@@ -96,6 +96,12 @@ const permissions = [
   { name: 'employees:create', description: 'Create new employees', category: 'Employees' },
   { name: 'employees:edit', description: 'Edit employees', category: 'Employees' },
   { name: 'employees:delete', description: 'Delete employees', category: 'Employees' },
+
+  // Irrigation Profile Management Permissions
+  { name: 'irrigation_profiles:read', description: 'View irrigation profiles', category: 'Irrigation Profiles' },
+  { name: 'irrigation_profiles:create', description: 'Create new irrigation profiles', category: 'Irrigation Profiles' },
+  { name: 'irrigation_profiles:edit', description: 'Edit irrigation profiles', category: 'Irrigation Profiles' },
+  { name: 'irrigation_profiles:delete', description: 'Delete irrigation profiles', category: 'Irrigation Profiles' },
 ];
 
 async function seedPermissions() {

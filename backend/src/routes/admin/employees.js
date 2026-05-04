@@ -313,7 +313,7 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     // TODO: Add authentication
-    const { name, position, education, status, photo, department, age, workRegion, order, pangkat_golongan, nip, whatsapp, location } = req.body;
+    const { name, position, education, status, photo, department, age, workRegion, order, pangkat_golongan, nip, whatsapp, location, tanggalPengangkatan } = req.body;
 
     // Validate required fields
     if (!name || !position) {
@@ -335,6 +335,7 @@ router.post('/', async (req, res) => {
         order: order ? parseInt(order) : 0,
         whatsapp: whatsapp || null,
         location: location || null,
+        tanggalPengangkatan: tanggalPengangkatan ? new Date(tanggalPengangkatan) : null,
       },
     });
 
@@ -349,7 +350,7 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, position, education, status, photo, department, age, workRegion, order, pangkat_golongan, nip, whatsapp, location } = req.body;
+    const { name, position, education, status, photo, department, age, workRegion, order, pangkat_golongan, nip, whatsapp, location, tanggalPengangkatan } = req.body;
 
     // Check if employee exists
     const existingEmployee = await prisma.employee.findUnique({
@@ -381,6 +382,7 @@ router.put('/:id', async (req, res) => {
         order: order !== undefined ? parseInt(order) : existingEmployee.order,
         whatsapp: whatsapp !== undefined ? whatsapp : existingEmployee.whatsapp,
         location: location !== undefined ? location : existingEmployee.location,
+        tanggalPengangkatan: tanggalPengangkatan !== undefined ? (tanggalPengangkatan ? new Date(tanggalPengangkatan) : null) : existingEmployee.tanggalPengangkatan,
       },
     });
 

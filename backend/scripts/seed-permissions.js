@@ -89,6 +89,18 @@ const permissions = [
   { name: 'sliders:create', description: 'Create new sliders', category: 'Sliders' },
   { name: 'sliders:edit', description: 'Edit sliders', category: 'Sliders' },
   { name: 'sliders:delete', description: 'Delete sliders', category: 'Sliders' },
+
+  // Employee Management Permissions
+  { name: 'employees:read', description: 'View employees', category: 'Employees' },
+  { name: 'employees:create', description: 'Create new employees', category: 'Employees' },
+  { name: 'employees:edit', description: 'Edit employees', category: 'Employees' },
+  { name: 'employees:delete', description: 'Delete employees', category: 'Employees' },
+
+  // Irrigation Profile Management Permissions
+  { name: 'irrigation_profiles:read', description: 'View irrigation profiles', category: 'Irrigation Profiles' },
+  { name: 'irrigation_profiles:create', description: 'Create new irrigation profiles', category: 'Irrigation Profiles' },
+  { name: 'irrigation_profiles:edit', description: 'Edit irrigation profiles', category: 'Irrigation Profiles' },
+  { name: 'irrigation_profiles:delete', description: 'Delete irrigation profiles', category: 'Irrigation Profiles' },
 ];
 
 async function main() {

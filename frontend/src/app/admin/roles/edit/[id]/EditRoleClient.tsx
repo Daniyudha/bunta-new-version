@@ -3,10 +3,27 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Permission, Role } from '@prisma/client';
+
+interface Permission {
+  id: string;
+  name: string;
+  description: string | null;
+  category: string;
+  createdAt: string;
+  updatedAt: string;
+}
 
 interface PermissionWithSelected extends Permission {
   selected: boolean;
+}
+
+interface Role {
+  id: string;
+  name: string;
+  description: string | null;
+  isDefault: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface RoleWithPermissions extends Role {

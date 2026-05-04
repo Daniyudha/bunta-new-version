@@ -52,8 +52,8 @@ export default function LoginPage() {
       <div className="max-w-md w-full space-y-8">
         <div>
           <div className="text-center">
-            <h1 className="text-4xl font-bold text-blue-600 mb-2">Bunta</h1>
-            <h2 className="text-2xl font-semibold text-gray-900">Irrigation System</h2>
+            <h1 className="text-4xl font-bold text-blue-600 mb-2">DIMENSI</h1>
+            <h2 className="text-2xl font-semibold text-gray-900">UPT PSDA Wilayah II</h2>
             <p className="mt-2 text-sm text-gray-600">
               Masuk untuk mengakses akun Anda
             </p>

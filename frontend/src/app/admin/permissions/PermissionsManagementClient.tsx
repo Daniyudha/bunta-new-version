@@ -1,7 +1,15 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Permission } from '@prisma/client';
+
+interface Permission {
+  id: string;
+  name: string;
+  description: string | null;
+  category: string;
+  createdAt: string;
+  updatedAt: string;
+}
 
 export default function PermissionsManagementClient() {
   const [permissions, setPermissions] = useState<Permission[]>([]);

@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
@@ -44,6 +45,9 @@ const corsOptions = {
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'x-user-id', 'x-user-role']
 };
+
+// Serve uploaded static files (fallback - in production, Nginx handles this directly)
+app.use('/uploads', express.static(path.join(__dirname, '../../frontend/public/uploads')));
 
 // Middleware
 app.use(cors(corsOptions));

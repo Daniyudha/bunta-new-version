@@ -543,16 +543,16 @@ export default function IrrigationPage() {
                           [
                             {
                               key: "buildingScheme",
-                              label: "BUILDING SCHEME",
+                              label: "SKEMA BANGUNAN",
                             },
                             {
                               key: "networkScheme",
-                              label: "NETWORK SCHEME",
+                              label: "SKEMA JARINGAN",
                             },
                             { key: "rttg", label: "RTTG" },
                             {
                               key: "plantingSchedule",
-                              label: "PLANTING SCHEDULE",
+                              label: "JADWAL TANAM",
                             },
                           ] as const
                         ).map((imgField) => {
