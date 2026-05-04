@@ -29,12 +29,13 @@ export default function Header() {
                     <div className="flex items-center">
                         <Link href="/" className="flex items-center space-x-2">
                             <Image
-                                src="/images/main-logo.png"
-                                alt="Admin Avatar"
-                                width={250}
-                                height={40}
-                                className="w-auto h-auto"
-                                priority />
+                            src="/images/main-logo.png"
+                            alt="Logo"
+                            width={250}
+                            height={80}
+                            className="h-10 w-auto object-contain"
+                            priority
+                            />
                         </Link>
                     </div>
 
