@@ -181,7 +181,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         <div className="flex items-center justify-between h-16 px-4 bg-white border-b border-gray-800">
           <div className="flex items-center space-x-2">
             <Image
-              src="/images/main-logo.png"
+              src="/images/header-logo.png"
               alt="Admin Avatar"
               width={180}
               height={40}
