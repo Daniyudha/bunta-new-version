@@ -151,17 +151,21 @@ const prisma = require('../../lib/prisma');
 // GET /api/admin/farmers
 router.get('/', async (req, res) => {
   try {
-    const { page = 1, limit = 10, search = '' } = req.query;
+    const { page = 1, limit = 10, search = '', location } = req.query;
     const skip = (parseInt(page) - 1) * parseInt(limit);
     const take = parseInt(limit);
 
-    const where = search ? {
-      OR: [
+    const where = {};
+    if (search) {
+      where.OR = [
         { name: { contains: search } },
         { group: { contains: search } },
         { chairman: { contains: search } },
-      ],
-    } : {};
+      ];
+    }
+    if (location) {
+      where.location = { contains: location };
+    }
 
     const [farmers, totalCount] = await Promise.all([
       prisma.farmer.findMany({
@@ -175,6 +179,7 @@ router.get('/', async (req, res) => {
           group: true,
           chairman: true,
           members: true,
+          location: true,
           createdAt: true,
           updatedAt: true,
         },
@@ -222,7 +227,7 @@ router.get('/', async (req, res) => {
 // POST /api/admin/farmers
 router.post('/', async (req, res) => {
   try {
-    const { name, group, chairman, members } = req.body;
+    const { name, group, chairman, members, location } = req.body;
 
     if (!name || !group || !chairman || !members) {
       return res.status(400).json({
@@ -248,6 +253,7 @@ router.post('/', async (req, res) => {
         group,
         chairman,
         members: membersArray,
+        location: location || undefined,
       },
     });
 
@@ -264,7 +270,7 @@ router.post('/', async (req, res) => {
 // PUT /api/admin/farmers
 router.put('/', async (req, res) => {
   try {
-    const { id, name, group, chairman, members } = req.body;
+    const { id, name, group, chairman, members, location } = req.body;
 
     if (!id || !name || !group || !chairman || !members) {
       return res.status(400).json({
@@ -290,6 +296,7 @@ router.put('/', async (req, res) => {
         group,
         chairman,
         members: membersArray,
+        location: location || undefined,
       },
     });
 
@@ -303,10 +310,10 @@ router.put('/', async (req, res) => {
   }
 });
 
-// DELETE /api/admin/farmers
-router.delete('/', async (req, res) => {
+// DELETE /api/admin/farmers/:id
+router.delete('/:id', async (req, res) => {
   try {
-    const { id } = req.query;
+    const { id } = req.params;
 
     if (!id) {
       return res.status(400).json({

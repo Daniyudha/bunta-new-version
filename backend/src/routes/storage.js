@@ -55,8 +55,34 @@
 
 const express = require('express');
 const prisma = require('../lib/prisma');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 
 const router = express.Router();
+
+// Multer configuration for storage file uploads
+const storageConfig = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const uploadDir = path.join(__dirname, '../../../frontend/public/uploads/storage');
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+    cb(null, uploadDir);
+  },
+  filename: function (req, file, cb) {
+    const timestamp = Date.now();
+    const originalName = file.originalname;
+    const fileExtension = originalName.split('.').pop();
+    const filename = `${timestamp}-${Math.random().toString(36).substring(2, 15)}.${fileExtension}`;
+    cb(null, filename);
+  }
+});
+
+const upload = multer({
+  storage: storageConfig,
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
+});
 
 /**
  * @openapi
@@ -172,9 +198,111 @@ router.get('/', async (req, res) => {
  *       501:
  *         description: Not implemented
  */
-// POST /api/storage (placeholder)
-router.post('/', async (req, res) => {
-  res.status(501).json({ error: 'File upload not implemented yet' });
+// POST /api/storage - Upload a file
+router.post('/', upload.single('file'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'File is required' });
+    }
+
+    const { category, description } = req.body;
+    const file = req.file;
+
+    const url = `/uploads/storage/${file.filename}`;
+
+    // Save to database
+    const fileRecord = await prisma.fileStorage.create({
+      data: {
+        filename: file.filename,
+        originalName: file.originalname,
+        mimeType: file.mimetype,
+        size: file.size,
+        path: file.path,
+        url,
+        category: category || null,
+        description: description || null,
+      },
+      include: {
+        uploadedBy: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
+    });
+
+    res.json({
+      message: 'File uploaded successfully',
+      file: fileRecord,
+    });
+  } catch (error) {
+    console.error('Error uploading file:', error);
+    if (error.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({ error: 'File size too large. Maximum allowed size is 10MB.' });
+    }
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// GET /api/storage/:id - Download a file
+router.get('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const file = await prisma.fileStorage.findUnique({
+      where: { id }
+    });
+
+    if (!file) {
+      return res.status(404).json({ error: 'File not found' });
+    }
+
+    // Check if file exists on disk
+    if (!fs.existsSync(file.path)) {
+      return res.status(404).json({ error: 'File not found on server' });
+    }
+
+    // Send file as download
+    res.setHeader('Content-Type', file.mimeType);
+    res.setHeader('Content-Disposition', `attachment; filename="${file.originalName}"`);
+    res.setHeader('Content-Length', file.size.toString());
+    res.sendFile(file.path);
+  } catch (error) {
+    console.error('Error downloading file:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// DELETE /api/storage/:id - Delete a file
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const file = await prisma.fileStorage.findUnique({
+      where: { id }
+    });
+
+    if (!file) {
+      return res.status(404).json({ error: 'File not found' });
+    }
+
+    // Delete file from disk
+    if (fs.existsSync(file.path)) {
+      fs.unlinkSync(file.path);
+    }
+
+    // Delete from database
+    await prisma.fileStorage.delete({
+      where: { id }
+    });
+
+    res.json({ message: 'File deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting file:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 module.exports = router;

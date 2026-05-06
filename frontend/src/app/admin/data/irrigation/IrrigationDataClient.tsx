@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { Trash2, Search, ChevronDown, Check } from 'lucide-react';
 import * as XLSX from 'xlsx';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -47,6 +48,7 @@ interface Farmer {
   group: string;
   chairman: string;
   members: string[];
+  location?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -99,8 +101,10 @@ export default function IrrigationDataClient() {
 
   const [activeTab, setActiveTab] = useState<DataType>('water-level');
   const [locations, setLocations] = useState<IrrigationProfile[]>([]);
-  const [dataLocation, setDataLocation] = useState<string>('all');
+  const [dataLocation, setDataLocation] = useState<string>('');
   const [loading, setLoading] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
   const [error, setError] = useState('');
 
   // Data state per tab
@@ -127,8 +131,8 @@ export default function IrrigationDataClient() {
     const fetchLocations = async () => {
       try {
         const res = await fetch('/api/admin/irrigation-profiles?limit=500');
-        const data = await res.json();
-        setLocations(data.profiles || []);
+        const json = await res.json();
+        setLocations(json.data || json.profiles || []);
       } catch (e) {
         console.error('Failed to fetch locations:', e);
       }
@@ -136,8 +140,18 @@ export default function IrrigationDataClient() {
     if (status === 'authenticated') fetchLocations();
   }, [status]);
 
+  // Filtered locations for searchable dropdown
+  const filteredLocations = useMemo(() => {
+    if (!searchTerm) return locations;
+    return locations.filter(l =>
+      l.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [locations, searchTerm]);
+
+
   // Fetch data for active tab
   const fetchData = useCallback(async () => {
+    if (!dataLocation) { setLoading(false); return; }
     setLoading(true);
     setError('');
     try {
@@ -148,7 +162,7 @@ export default function IrrigationDataClient() {
         'farmers': '/api/admin/farmers',
       };
       const url = new URL(endpointMap[activeTab], window.location.origin);
-      if (dataLocation !== 'all') url.searchParams.append('location', dataLocation);
+      url.searchParams.append('location', dataLocation);
       url.searchParams.append('limit', '500');
 
       const res = await fetch(url.toString());
@@ -197,6 +211,14 @@ export default function IrrigationDataClient() {
     setAddFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  // Auto-fill location in add form when opening and reset when closing
+  const handleToggleAddForm = () => {
+    if (!showAddForm) {
+      setAddFormData(prev => ({ ...prev, location: dataLocation }));
+    }
+    setShowAddForm(!showAddForm);
+  };
+
   const handleAddSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setAddSubmitting(true);
@@ -219,7 +241,7 @@ export default function IrrigationDataClient() {
           endpoint = '/api/admin/data/crops';
           break;
         case 'farmers':
-          body = { name: addFormData.name, group: addFormData.group, chairman: addFormData.chairman, members: addFormData.members ? addFormData.members.split(',').map((m: string) => m.trim()) : [] };
+          body = { name: addFormData.name, group: addFormData.group, chairman: addFormData.chairman, members: addFormData.members ? addFormData.members.split(',').map((m: string) => m.trim()) : [], location: addFormData.location || undefined };
           endpoint = '/api/admin/farmers';
           break;
         default: throw new Error('Unknown tab');
@@ -365,13 +387,14 @@ export default function IrrigationDataClient() {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Lokasi</label>
               {locations.length > 0 ? (
-                <select name="location" value={addFormData.location} onChange={handleAddFormChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 text-sm">
+                <select name="location" value={addFormData.location} onChange={handleAddFormChange} disabled className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-500 text-sm bg-gray-50 cursor-not-allowed">
                   <option value="">-- Pilih --</option>
                   {locations.map(l => <option key={l.id} value={l.name}>{l.name}</option>)}
                 </select>
               ) : (
-                <input type="text" name="location" value={addFormData.location} onChange={handleAddFormChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 text-sm" />
+                <input type="text" name="location" value={addFormData.location} onChange={handleAddFormChange} disabled className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-500 text-sm bg-gray-50 cursor-not-allowed" />
               )}
+              <p className="text-xs text-gray-400 mt-1">Lokasi mengikuti filter yang dipilih</p>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Nilai</label>
@@ -412,7 +435,15 @@ export default function IrrigationDataClient() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Lokasi</label>
-              <input type="text" name="location" value={addFormData.location} onChange={handleAddFormChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 text-sm" />
+              {locations.length > 0 ? (
+                <select name="location" value={addFormData.location} onChange={handleAddFormChange} disabled className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-500 text-sm bg-gray-50 cursor-not-allowed">
+                  <option value="">-- Pilih --</option>
+                  {locations.map(l => <option key={l.id} value={l.name}>{l.name}</option>)}
+                </select>
+              ) : (
+                <input type="text" name="location" value={addFormData.location} onChange={handleAddFormChange} disabled className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-500 text-sm bg-gray-50 cursor-not-allowed" />
+              )}
+              <p className="text-xs text-gray-400 mt-1">Lokasi mengikuti filter yang dipilih</p>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Dicatat Oleh</label>
@@ -423,6 +454,18 @@ export default function IrrigationDataClient() {
       case 'farmers':
         return (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Lokasi</label>
+              {locations.length > 0 ? (
+                <select name="location" value={addFormData.location} onChange={handleAddFormChange} disabled className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-500 text-sm bg-gray-50 cursor-not-allowed">
+                  <option value="">-- Pilih --</option>
+                  {locations.map(l => <option key={l.id} value={l.name}>{l.name}</option>)}
+                </select>
+              ) : (
+                <input type="text" name="location" value={addFormData.location} onChange={handleAddFormChange} disabled className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-500 text-sm bg-gray-50 cursor-not-allowed" />
+              )}
+              <p className="text-xs text-gray-400 mt-1">Lokasi mengikuti filter yang dipilih</p>
+            </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Nama Petani</label>
               <input type="text" name="name" value={addFormData.name} onChange={handleAddFormChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 text-sm" required />
@@ -483,7 +526,13 @@ export default function IrrigationDataClient() {
                   <td className="px-4 py-3 text-sm text-gray-500">{formatDateTime(item.measuredAt)}</td>
                   <td className="px-4 py-3 text-sm text-gray-500">{item.recordedBy || '-'}</td>
                   <td className="px-4 py-3 text-sm text-center">
-                    <button onClick={() => handleDelete(item.id)} className="text-red-600 hover:text-red-800 text-xs font-medium">Hapus</button>
+                    <button
+                      onClick={() => handleDelete(item.id)}
+                      className="inline-flex items-center justify-center p-2 rounded text-red-600 hover:bg-red-100 transition cursor-pointer"
+                      title="Hapus"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -512,7 +561,13 @@ export default function IrrigationDataClient() {
                   <td className="px-4 py-3 text-sm text-gray-500">{formatDateTime(item.measuredAt)}</td>
                   <td className="px-4 py-3 text-sm text-gray-500">{item.recordedBy || '-'}</td>
                   <td className="px-4 py-3 text-sm text-center">
-                    <button onClick={() => handleDelete(item.id)} className="text-red-600 hover:text-red-800 text-xs font-medium">Hapus</button>
+                    <button
+                      onClick={() => handleDelete(item.id)}
+                      className="inline-flex items-center justify-center p-2 rounded text-red-600 hover:bg-red-100 transition cursor-pointer"
+                      title="Hapus"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -541,7 +596,13 @@ export default function IrrigationDataClient() {
                   <td className="px-4 py-3 text-sm text-gray-500">{item.season}</td>
                   <td className="px-4 py-3 text-sm text-gray-500">{item.location || '-'}</td>
                   <td className="px-4 py-3 text-sm text-center">
-                    <button onClick={() => handleDelete(item.id)} className="text-red-600 hover:text-red-800 text-xs font-medium">Hapus</button>
+                    <button
+                      onClick={() => handleDelete(item.id)}
+                      className="inline-flex items-center justify-center p-2 rounded text-red-600 hover:bg-red-100 transition cursor-pointer"
+                      title="Hapus"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -553,6 +614,7 @@ export default function IrrigationDataClient() {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Lokasi</th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama</th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kelompok</th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ketua</th>
@@ -563,12 +625,19 @@ export default function IrrigationDataClient() {
             <tbody className="bg-white divide-y divide-gray-200">
               {(data as Farmer[]).map(item => (
                 <tr key={item.id} className="hover:bg-gray-50">
+                  <td className="px-4 py-3 text-sm text-gray-900">{item.location || '-'}</td>
                   <td className="px-4 py-3 text-sm text-gray-900">{item.name}</td>
                   <td className="px-4 py-3 text-sm text-gray-500">{item.group || '-'}</td>
                   <td className="px-4 py-3 text-sm text-gray-500">{item.chairman || '-'}</td>
                   <td className="px-4 py-3 text-sm text-gray-500">{item.members?.length || 0} anggota</td>
                   <td className="px-4 py-3 text-sm text-center">
-                    <button onClick={() => handleDelete(item.id)} className="text-red-600 hover:text-red-800 text-xs font-medium">Hapus</button>
+                    <button
+                      onClick={() => handleDelete(item.id)}
+                      className="inline-flex items-center justify-center p-2 rounded text-red-600 hover:bg-red-100 transition cursor-pointer"
+                      title="Hapus"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -623,29 +692,122 @@ export default function IrrigationDataClient() {
         <div className="bg-white shadow-md rounded-lg p-4 mb-6">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <label className="text-sm font-medium text-gray-700">Filter Lokasi:</label>
-              <select
-                value={dataLocation}
-                onChange={(e) => setDataLocation(e.target.value)}
-                className="px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 bg-white"
-              >
-                <option value="all">Semua Lokasi</option>
-                {locations.map(l => (
-                  <option key={l.id} value={l.name}>{l.name}</option>
-                ))}
-              </select>
+              <label className="text-sm font-medium text-gray-700">Pilih Lokasi:</label>
+              {/* Searchable Dropdown */}
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className="flex items-center justify-between w-64 px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 bg-white hover:bg-gray-50 transition-colors"
+                >
+                  <span className={dataLocation ? 'text-gray-900' : 'text-gray-400'}>
+                    {dataLocation || '-- Pilih Lokasi --'}
+                  </span>
+                  <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                {isDropdownOpen && (
+                  <>
+                    <div className="absolute z-50 mt-1 w-full bg-white shadow-xl rounded-xl border border-gray-200 overflow-hidden">
+                      <div className="sticky top-0 p-2 bg-white border-b border-gray-100">
+                        <div className="relative">
+                          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                          <input
+                            type="text"
+                            placeholder="Cari lokasi..."
+                            className="w-full pl-9 pr-4 py-2 text-sm text-black border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            autoFocus
+                          />
+                        </div>
+                      </div>
+                      <ul className="max-h-60 overflow-y-auto py-1">
+                        <li
+                          onClick={() => {
+                            setDataLocation('');
+                            setIsDropdownOpen(false);
+                            setSearchTerm('');
+                          }}
+                          className={`flex items-center justify-between px-4 py-3 cursor-pointer text-sm hover:bg-blue-50 transition-colors ${
+                            !dataLocation ? 'bg-blue-50' : ''
+                          }`}
+                        >
+                          <span className={!dataLocation ? 'text-blue-700 font-medium' : 'text-gray-500'}>-- Pilih Lokasi --</span>
+                          {!dataLocation && <Check className="w-4 h-4 text-blue-600 flex-shrink-0" />}
+                        </li>
+                        {filteredLocations.length > 0 ? (
+                          filteredLocations.map(l => (
+                            <li
+                              key={l.id}
+                              onClick={() => {
+                                setDataLocation(l.name);
+                                setIsDropdownOpen(false);
+                                setSearchTerm('');
+                              }}
+                              className={`flex items-center justify-between px-4 py-3 cursor-pointer text-sm hover:bg-blue-50 transition-colors ${
+                                dataLocation === l.name ? 'bg-blue-50' : ''
+                              }`}
+                            >
+                              <span className={dataLocation === l.name ? 'text-blue-700 font-medium' : 'text-gray-700'}>
+                                {l.name}
+                              </span>
+                              {dataLocation === l.name && <Check className="w-4 h-4 text-blue-600 flex-shrink-0" />}
+                            </li>
+                          ))
+                        ) : (
+                          <li className="px-4 py-6 text-center text-sm text-gray-500">Lokasi tidak ditemukan</li>
+                        )}
+                      </ul>
+                    </div>
+                    <div className="fixed inset-0 z-40 bg-transparent" onClick={() => setIsDropdownOpen(false)} />
+                  </>
+                )}
+              </div>
             </div>
             <div className="flex items-center gap-2">
-              <button onClick={() => setShowAddForm(!showAddForm)} className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
+              <button
+                onClick={handleToggleAddForm}
+                disabled={!dataLocation}
+                className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                  !dataLocation
+                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    : 'bg-blue-600 text-white hover:bg-blue-700'
+                }`}
+              >
                 {showAddForm ? 'Tutup Form' : `+ Tambah ${getTabTitle()}`}
               </button>
-              <button onClick={handleExport} className="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors">
+              <button
+                onClick={handleExport}
+                disabled={!dataLocation}
+                className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                  !dataLocation
+                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    : 'bg-green-600 text-white hover:bg-green-700'
+                }`}
+              >
                 Export Excel
               </button>
-              <button onClick={() => setShowImportModal(true)} className="px-4 py-2 bg-amber-600 text-white text-sm font-medium rounded-lg hover:bg-amber-700 transition-colors">
+              <button
+                onClick={() => setShowImportModal(true)}
+                disabled={!dataLocation}
+                className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                  !dataLocation
+                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    : 'bg-amber-600 text-white hover:bg-amber-700'
+                }`}
+              >
                 Import Excel
               </button>
-              <button onClick={downloadTemplate} className="px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 transition-colors">
+              <button
+                onClick={downloadTemplate}
+                disabled={!dataLocation}
+                className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                  !dataLocation
+                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    : 'bg-gray-600 text-white hover:bg-gray-700'
+                }`}
+              >
                 Template
               </button>
             </div>
@@ -663,6 +825,11 @@ export default function IrrigationDataClient() {
             <h3 className="text-lg font-bold text-gray-900 mb-4">Tambah {getTabTitle()}</h3>
             <form onSubmit={handleAddSubmit}>
               {renderAddForm()}
+              {!dataLocation && (
+                <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 text-yellow-700 rounded-lg text-sm">
+                  Silakan pilih lokasi terlebih dahulu sebelum menambah data.
+                </div>
+              )}
               <div className="mt-6 flex justify-end gap-3">
                 <button type="button" onClick={() => setShowAddForm(false)} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">Batal</button>
                 <button type="submit" disabled={addSubmitting} className="px-6 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:bg-blue-400">
@@ -675,9 +842,20 @@ export default function IrrigationDataClient() {
 
         {/* Data Table */}
         <div className="bg-white shadow-md rounded-lg overflow-hidden">
-          <div className="overflow-x-auto">
-            {renderTable()}
-          </div>
+          {!dataLocation ? (
+            <div className="flex flex-col items-center justify-center py-16 text-gray-400">
+              <svg className="w-16 h-16 mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <h3 className="text-lg font-medium text-gray-500 mb-1">Pilih Lokasi Terlebih Dahulu</h3>
+              <p className="text-sm">Gunakan dropdown di atas untuk memilih lokasi yang ingin ditampilkan datanya.</p>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              {renderTable()}
+            </div>
+          )}
         </div>
       </div>
 

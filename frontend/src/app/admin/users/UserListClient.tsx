@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { Pencil, Trash2 } from 'lucide-react';
 
 interface User {
   id: string;
@@ -157,19 +158,21 @@ export default function UserListClient() {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {user._count?.news || 0}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-center space-x-2">
                     <Link
                       href={`/admin/users/edit/${user.id}`}
-                      className="bg-blue-600 text-white px-3 py-1 rounded text-xs hover:bg-blue-700"
+                      className="inline-flex items-center justify-center p-2 rounded text-blue-600 hover:bg-blue-100 transition cursor-pointer"
+                      title="Edit"
                     >
-                      Edit
+                      <Pencil size={16} />
                     </Link>
                     {user.email !== 'su.admin@irigasibunta.com' && (
                       <button
                         onClick={() => handleDelete(user.id)}
-                        className="bg-red-600 text-white px-3 py-1 rounded text-xs hover:bg-red-700 cursor-pointer"
+                        className="inline-flex items-center justify-center p-2 rounded text-red-600 hover:bg-red-100 transition cursor-pointer"
+                        title="Hapus"
                       >
-                        Hapus
+                        <Trash2 size={16} />
                       </button>
                     )}
                   </td>

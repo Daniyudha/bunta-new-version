@@ -18,6 +18,7 @@ interface IrrigationProfileApi {
   location?: string;
   buildingScheme?: string | null;
   networkScheme?: string | null;
+  mainPhoto?: string | null;
   p3aGroupList?: any;
   farmingBusinessAnalysis?: any;
   rttg?: string | null;
@@ -149,10 +150,10 @@ export default function DataPage() {
             setChartRainfallData(transformedData);
           } else { setError('Gagal mengambil data curah hujan'); }
         } else if (activeTab === 'crops') {
-            const response = await fetch('/api/data/crops');
+            const response = await fetch(`/api/data/crops${locationParam}`);
             if (response.ok) setCropData(await response.json());
         } else if (activeTab === 'farmers') {
-            const response = await fetch('/api/data/farmers');
+            const response = await fetch(`/api/data/farmers${locationParam}`);
             if (response.ok) setFarmerData(await response.json());
         } else if (activeTab === 'irrigationData') {
           // Data is fetched separately above
@@ -171,10 +172,10 @@ export default function DataPage() {
   const renderIrrigationImages = () => {
     if (!irrigationDetail) return null;
     const imageFields = [
-      { key: 'buildingScheme', label: 'Building Scheme' },
-      { key: 'networkScheme', label: 'Network Scheme' },
+      { key: 'buildingScheme', label: 'Skema Bangunan' },
+      { key: 'networkScheme', label: 'Skema Jaringan' },
       { key: 'rttg', label: 'RTTG' },
-      { key: 'plantingSchedule', label: 'Planting Schedule' },
+      { key: 'plantingSchedule', label: 'Jadwal Tanam' },
     ];
 
     const hasImages = imageFields.some(f => irrigationDetail[f.key as keyof IrrigationProfileApi]);

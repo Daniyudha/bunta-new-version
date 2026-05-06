@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { Pencil, Trash2 } from 'lucide-react';
 
 interface Permission {
   id: string;
@@ -153,21 +154,23 @@ export default function RolesManagementClient() {
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {role.isDefault ? 'Ya' : 'Tidak'}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-center space-x-2">
                   {role.name !== 'SUPER_ADMIN' ? (
                     <>
                       <Link
                         href={`/admin/roles/edit/${role.id}`}
-                        className="text-indigo-600 hover:text-indigo-900"
+                        className="inline-flex items-center justify-center p-2 rounded text-blue-600 hover:bg-blue-100 transition cursor-pointer"
+                        title="Edit"
                       >
-                        Edit
+                        <Pencil size={16} />
                       </Link>
                       <button
                         onClick={() => handleDelete(role.id)}
                         disabled={deleteLoading === role.id}
-                        className="text-red-600 hover:text-red-900 disabled:opacity-50 cursor-pointer"
+                        className="inline-flex items-center justify-center p-2 rounded text-red-600 hover:bg-red-100 transition cursor-pointer disabled:opacity-50"
+                        title="Hapus"
                       >
-                        {deleteLoading === role.id ? 'Menghapus...' : 'Hapus'}
+                        <Trash2 size={16} />
                       </button>
                     </>
                   ) : (

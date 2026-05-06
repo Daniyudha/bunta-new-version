@@ -195,6 +195,7 @@ model Farmer {
   group     String
   chairman  String
   members   Json
+  location  String?
   userId    String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -284,13 +285,17 @@ model Employee {
   status              String   @default("PNS")
   photo               String?
   department          String?
-  age                 Int?
+  tanggalLahir        String?
   workRegion          String?
   whatsapp            String?
   location            String?
   pangkat_golongan    String?
   nip                 String?
   tanggalPengangkatan DateTime?
+  jenisKelamin        String?
+  agama               String?
+  alamat              String?
+  noKtp               String?
   order               Int?     @default(0)
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
@@ -306,7 +311,7 @@ model IrrigationProfile {
   latitude          Float?
   longitude         Float?
   area              Float
-  waterLevel        Float?
+  waterLevel        String?
   status            String   @default("normal")
   canals            Int?
   gates             Int?
@@ -329,6 +334,7 @@ model IrrigationProfile {
   drainageCulvert   Int?
   roadCulvert       Int?
   slopingDrain      Int?
+  mainPhoto         String?
   buildingScheme    String?
   networkScheme     String?
   p3aGroupList      Json?

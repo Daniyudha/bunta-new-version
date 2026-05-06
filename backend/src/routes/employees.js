@@ -88,18 +88,24 @@ const router = express.Router();
 // GET /api/employees - public endpoint
 router.get('/', async (req, res) => {
   try {
-    const { page = 1, limit = 100, search = '' } = req.query;
+    const { page = 1, limit = 100, search = '', location = '' } = req.query;
     const skip = (parseInt(page) - 1) * parseInt(limit);
     const take = parseInt(limit);
 
-    const where = search ? {
-      OR: [
+    const where = {};
+
+    if (search) {
+      where.OR = [
         { name: { contains: search } },
         { position: { contains: search } },
         { department: { contains: search } },
         { education: { contains: search } },
-      ],
-    } : {};
+      ];
+    }
+
+    if (location) {
+      where.location = location;
+    }
 
     const [employees, totalCount] = await Promise.all([
       prisma.employee.findMany({
@@ -126,6 +132,29 @@ router.get('/', async (req, res) => {
     });
   } catch (error) {
     console.error('Error fetching employees:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+// GET /api/employees/locations - public endpoint to get distinct locations
+router.get('/locations', async (req, res) => {
+  try {
+    const employees = await prisma.employee.findMany({
+      where: {
+        location: { not: null },
+      },
+      select: { location: true },
+      distinct: ['location'],
+      orderBy: { location: 'asc' },
+    });
+
+    const locations = employees
+      .map(e => e.location)
+      .filter(Boolean);
+
+    res.json({ locations });
+  } catch (error) {
+    console.error('Error fetching employee locations:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 });

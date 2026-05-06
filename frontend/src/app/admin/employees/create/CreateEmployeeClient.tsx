@@ -17,13 +17,17 @@ export default function CreateEmployeeClient() {
     status: 'PNS',
     photo: '',
     department: '',
-    age: '',
+    tanggalLahir: '',
     workRegion: '',
     whatsapp: '',
     location: '',
     pangkat_golongan: '',
     nip: '',
     tanggalPengangkatan: '',
+    jenisKelamin: '',
+    agama: '',
+    alamat: '',
+    noKtp: '',
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
@@ -114,13 +118,17 @@ export default function CreateEmployeeClient() {
         status: formData.status,
         photo: imageUrl || null,
         department: formData.department || null,
-        age: formData.age ? parseInt(formData.age) : null,
+        tanggalLahir: formData.tanggalLahir || null,
         workRegion: formData.workRegion || null,
         whatsapp: formData.whatsapp || null,
         location: formData.location || null,
         pangkat_golongan: formData.pangkat_golongan || null,
         nip: formData.nip || null,
         tanggalPengangkatan: formData.tanggalPengangkatan || null,
+        jenisKelamin: formData.jenisKelamin || null,
+        agama: formData.agama || null,
+        alamat: formData.alamat || null,
+        noKtp: formData.noKtp || null,
       };
 
       const response = await fetch('/api/admin/employees', {
@@ -228,9 +236,9 @@ export default function CreateEmployeeClient() {
                 className="w-full px-3 py-2 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="PNS">PNS</option>
-                <option value="Honorer">Honorer/Kontrak</option>
-                <option value="Kontrak">PPPK Penuh Waktu</option>
-                <option value="Magang">PPPK Paruh Waktu</option>
+                <option value="Honorer/Kontrak">Honorer/Kontrak</option>
+                <option value="PPPK Penuh Waktu">PPPK Penuh Waktu</option>
+                <option value="PPPK Paruh Waktu">PPPK Paruh Waktu</option>
               </select>
             </div>
 
@@ -250,19 +258,16 @@ export default function CreateEmployeeClient() {
             </div>
 
             <div>
-              <label htmlFor="age" className="block text-sm font-medium text-gray-700 mb-2">
-                Umur
+              <label htmlFor="tanggalLahir" className="block text-sm font-medium text-gray-700 mb-2">
+                Tanggal Lahir
               </label>
               <input
-                type="number"
-                id="age"
-                name="age"
-                value={formData.age}
+                type="date"
+                id="tanggalLahir"
+                name="tanggalLahir"
+                value={formData.tanggalLahir}
                 onChange={handleInputChange}
-                min="1"
-                max="100"
                 className="w-full px-3 py-2 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Contoh: 30"
               />
             </div>
 
@@ -360,6 +365,67 @@ export default function CreateEmployeeClient() {
               </select>
             </div>
 
+            <div>
+              <label htmlFor="jenisKelamin" className="block text-sm font-medium text-gray-700 mb-2">
+                Jenis Kelamin
+              </label>
+              <select
+                id="jenisKelamin"
+                name="jenisKelamin"
+                value={formData.jenisKelamin}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Pilih jenis kelamin</option>
+                <option value="Laki-laki">Laki-laki</option>
+                <option value="Perempuan">Perempuan</option>
+              </select>
+            </div>
+
+            <div>
+              <label htmlFor="agama" className="block text-sm font-medium text-gray-700 mb-2">
+                Agama
+              </label>
+              <input
+                type="text"
+                id="agama"
+                name="agama"
+                value={formData.agama}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Contoh: Islam"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="noKtp" className="block text-sm font-medium text-gray-700 mb-2">
+                No. KTP
+              </label>
+              <input
+                type="text"
+                id="noKtp"
+                name="noKtp"
+                value={formData.noKtp}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Contoh: 3273010101900001"
+              />
+            </div>
+
+            <div className="md:col-span-2">
+              <label htmlFor="alamat" className="block text-sm font-medium text-gray-700 mb-2">
+                Alamat
+              </label>
+              <textarea
+                id="alamat"
+                name="alamat"
+                value={formData.alamat}
+                onChange={handleInputChange}
+                rows={3}
+                className="w-full px-3 py-2 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Contoh: Jl. Merdeka No. 1, Desa Bunta"
+              />
+            </div>
 
             <div className="md:col-span-2">
               <label htmlFor="photo" className="block text-sm font-medium text-gray-700 mb-2">

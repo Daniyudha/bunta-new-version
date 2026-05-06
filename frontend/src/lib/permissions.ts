@@ -139,7 +139,6 @@ export const getAccessibleNavigation = (userPermissions: string[]) => {
         { name: 'Profil Irigasi', href: '/admin/irrigation-profiles', icon: 'Database' },
         { name: 'Data Irigasi', href: '/admin/data/irrigation', icon: 'Database' },
         { name: 'Manajemen Lokasi', href: '/admin/data/locations', icon: 'Database' },
-        { name: 'Kelompok Tani', href: '/admin/farmer-groups', icon: 'Users' },
       ].filter(item => hasAccessToRoute(userPermissions, item.href))
     },
     {

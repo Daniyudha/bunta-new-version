@@ -142,20 +142,26 @@ const upload = multer({
 // GET /api/admin/employees
 router.get('/', async (req, res) => {
   try {
-    const { page = 1, limit = 10, search = '' } = req.query;
+    const { page = 1, limit = 10, search = '', location = '' } = req.query;
     const skip = (parseInt(page) - 1) * parseInt(limit);
     const take = parseInt(limit);
 
-    const where = search ? {
-      OR: [
+    const where = {};
+
+    if (search) {
+      where.OR = [
         { name: { contains: search } },
         { position: { contains: search } },
         { department: { contains: search } },
         { education: { contains: search } },
         { pangkat_golongan: { contains: search } },
         { nip: { contains: search } },
-      ],
-    } : {};
+      ];
+    }
+
+    if (location) {
+      where.location = location;
+    }
 
     const [employees, totalCount] = await Promise.all([
       prisma.employee.findMany({
@@ -182,6 +188,29 @@ router.get('/', async (req, res) => {
     });
   } catch (error) {
     console.error('Error fetching employees:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+// GET /api/admin/employees/locations - admin endpoint to get distinct locations
+router.get('/locations', async (req, res) => {
+  try {
+    const employees = await prisma.employee.findMany({
+      where: {
+        location: { not: null },
+      },
+      select: { location: true },
+      distinct: ['location'],
+      orderBy: { location: 'asc' },
+    });
+
+    const locations = employees
+      .map(e => e.location)
+      .filter(Boolean);
+
+    res.json({ locations });
+  } catch (error) {
+    console.error('Error fetching employee locations:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 });
@@ -313,7 +342,7 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     // TODO: Add authentication
-    const { name, position, education, status, photo, department, age, workRegion, order, pangkat_golongan, nip, whatsapp, location, tanggalPengangkatan } = req.body;
+    const { name, position, education, status, photo, department, tanggalLahir, workRegion, order, pangkat_golongan, nip, whatsapp, location, tanggalPengangkatan, jenisKelamin, agama, alamat, noKtp } = req.body;
 
     // Validate required fields
     if (!name || !position) {
@@ -328,7 +357,7 @@ router.post('/', async (req, res) => {
         status: status || 'PNS',
         photo: photo || null,
         department: department || null,
-        age: age ? parseInt(age) : null,
+        tanggalLahir: tanggalLahir || null,
         workRegion: workRegion || null,
         pangkat_golongan: pangkat_golongan || null,
         nip: nip || null,
@@ -336,6 +365,10 @@ router.post('/', async (req, res) => {
         whatsapp: whatsapp || null,
         location: location || null,
         tanggalPengangkatan: tanggalPengangkatan ? new Date(tanggalPengangkatan) : null,
+        jenisKelamin: jenisKelamin || null,
+        agama: agama || null,
+        alamat: alamat || null,
+        noKtp: noKtp || null,
       },
     });
 
@@ -350,7 +383,7 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, position, education, status, photo, department, age, workRegion, order, pangkat_golongan, nip, whatsapp, location, tanggalPengangkatan } = req.body;
+    const { name, position, education, status, photo, department, tanggalLahir, workRegion, order, pangkat_golongan, nip, whatsapp, location, tanggalPengangkatan, jenisKelamin, agama, alamat, noKtp } = req.body;
 
     // Check if employee exists
     const existingEmployee = await prisma.employee.findUnique({
@@ -375,7 +408,7 @@ router.put('/:id', async (req, res) => {
         status: status || existingEmployee.status,
         photo: photo !== undefined ? photo : existingEmployee.photo,
         department: department !== undefined ? department : existingEmployee.department,
-        age: age !== undefined ? (age ? parseInt(age) : null) : existingEmployee.age,
+        tanggalLahir: tanggalLahir !== undefined ? (tanggalLahir || null) : existingEmployee.tanggalLahir,
         workRegion: workRegion !== undefined ? workRegion : existingEmployee.workRegion,
         pangkat_golongan: pangkat_golongan !== undefined ? pangkat_golongan : existingEmployee.pangkat_golongan,
         nip: nip !== undefined ? nip : existingEmployee.nip,
@@ -383,6 +416,10 @@ router.put('/:id', async (req, res) => {
         whatsapp: whatsapp !== undefined ? whatsapp : existingEmployee.whatsapp,
         location: location !== undefined ? location : existingEmployee.location,
         tanggalPengangkatan: tanggalPengangkatan !== undefined ? (tanggalPengangkatan ? new Date(tanggalPengangkatan) : null) : existingEmployee.tanggalPengangkatan,
+        jenisKelamin: jenisKelamin !== undefined ? (jenisKelamin || null) : existingEmployee.jenisKelamin,
+        agama: agama !== undefined ? (agama || null) : existingEmployee.agama,
+        alamat: alamat !== undefined ? (alamat || null) : existingEmployee.alamat,
+        noKtp: noKtp !== undefined ? (noKtp || null) : existingEmployee.noKtp,
       },
     });
 

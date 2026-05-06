@@ -73,6 +73,7 @@ interface FormData {
   drainageCulvert: string;
   roadCulvert: string;
   slopingDrain: string;
+  mainPhoto: string;
   buildingScheme: string;
   networkScheme: string;
   rttg: string;
@@ -80,10 +81,10 @@ interface FormData {
 }
 
 const imageFields = [
-  { key: "buildingScheme", label: "BUILDING SCHEME (Jpg)" },
-  { key: "networkScheme", label: "NETWORK SCHEME (Jpg)" },
+  { key: "buildingScheme", label: "Skema Bangunan (Jpg)" },
+  { key: "networkScheme", label: "Skema Jaringan (Jpg)" },
   { key: "rttg", label: "RTTG (Jpg)" },
-  { key: "plantingSchedule", label: "PLANTING SCHEDULE (Jpg)" },
+  { key: "plantingSchedule", label: "Jadwal Tanam (Jpg)" },
 ] as const;
 
 export default function EditIrrigationProfileClient() {
@@ -126,6 +127,7 @@ export default function EditIrrigationProfileClient() {
     drainageCulvert: "",
     roadCulvert: "",
     slopingDrain: "",
+    mainPhoto: "",
     buildingScheme: "",
     networkScheme: "",
     rttg: "",
@@ -222,6 +224,7 @@ export default function EditIrrigationProfileClient() {
               ? String(profileData.slopingDrain)
               : "",
           buildingScheme: profileData.buildingScheme || "",
+          mainPhoto: profileData.mainPhoto || "",
           networkScheme: profileData.networkScheme || "",
           rttg: profileData.rttg || "",
           plantingSchedule: profileData.plantingSchedule || "",
@@ -331,6 +334,7 @@ export default function EditIrrigationProfileClient() {
         body.drainageCulvert = formData.drainageCulvert;
       if (formData.roadCulvert) body.roadCulvert = formData.roadCulvert;
       if (formData.slopingDrain) body.slopingDrain = formData.slopingDrain;
+      if (formData.mainPhoto) body.mainPhoto = formData.mainPhoto;
       if (formData.buildingScheme)
         body.buildingScheme = formData.buildingScheme;
       if (formData.networkScheme) body.networkScheme = formData.networkScheme;
@@ -562,7 +566,7 @@ export default function EditIrrigationProfileClient() {
                   htmlFor="area"
                   className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                  Luas Area (ha) <span className="text-red-500">*</span>
+                  Luas Baku (ha) <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="number"
@@ -583,17 +587,16 @@ export default function EditIrrigationProfileClient() {
                   htmlFor="waterLevel"
                   className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                  Tinggi Muka Air (cm)
+                  Tipe Bendung
                 </label>
                 <input
-                  type="number"
-                  step="any"
+                  type="text"
                   id="waterLevel"
                   name="waterLevel"
                   value={formData.waterLevel}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Contoh: 85"
+                  placeholder="Contoh: Mercu"
                 />
               </div>
 
@@ -625,7 +628,7 @@ export default function EditIrrigationProfileClient() {
                   htmlFor="canals"
                   className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                  Jumlah Saluran
+                  Panjang Saluran
                 </label>
                 <input
                   type="number"
@@ -990,6 +993,77 @@ export default function EditIrrigationProfileClient() {
               Gambar & Dokumen
             </h2>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              {/* Foto Utama / Thumbnail */}
+              {(() => {
+                const isUploading = uploadingImage === 'mainPhoto';
+                const imgUrl = formData.mainPhoto;
+                return (
+                  <div className="border border-gray-200 rounded-lg p-4 md:col-span-2">
+                    <div className="mb-3">
+                      <label className="text-sm font-medium text-gray-700">
+                        Foto Utama / Thumbnail
+                      </label>
+                    </div>
+                    {imgUrl ? (
+                      <div className="relative w-full h-48 rounded-lg overflow-hidden border border-gray-200 bg-gray-50 group">
+                        <Image
+                          src={imgUrl}
+                          alt="Foto Utama"
+                          fill
+                          className="object-contain"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).style.display = "none";
+                          }}
+                        />
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setFormData((prev) => ({
+                                ...prev,
+                                mainPhoto: "",
+                              }))
+                            }
+                            className="inline-flex items-center justify-center p-3 rounded-full hover:bg-white/20 transition shadow cursor-pointer"
+                            title="Hapus gambar"
+                          >
+                            <Trash2 className="w-5 h-5 text-white" />
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <label className="w-full h-48 rounded-lg border-2 border-dashed border-gray-200 flex items-center justify-center bg-gray-50 cursor-pointer hover:bg-gray-100 transition">
+                        <div className="text-center">
+                          {isUploading ? (
+                            <div className="flex flex-col items-center gap-2 text-gray-400">
+                              <svg className="animate-spin h-6 w-6" fill="none" viewBox="0 0 24 24">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                              </svg>
+                              <p className="text-xs">Uploading...</p>
+                            </div>
+                          ) : (
+                            <>
+                              <svg className="mx-auto h-10 w-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                              </svg>
+                              <p className="mt-3 text-sm text-gray-400">Klik untuk upload foto utama</p>
+                              <p className="text-xs text-gray-300">Format: JPG, PNG (disarankan 16:9)</p>
+                            </>
+                          )}
+                        </div>
+                        <input
+                          type="file"
+                          accept="image/jpeg,image/png,image/jpg"
+                          className="hidden"
+                          disabled={isUploading}
+                          onChange={(e) => handleImageUpload(e, 'mainPhoto')}
+                        />
+                      </label>
+                    )}
+                  </div>
+                );
+              })()}
               {imageFields.map((field) => {
                 const isUploading = uploadingImage === field.key;
                 const imgUrl = formData[field.key as keyof FormData] as string;

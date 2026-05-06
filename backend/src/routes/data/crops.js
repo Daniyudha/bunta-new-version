@@ -59,7 +59,11 @@ const prisma = require('../../lib/prisma');
 // GET /api/data/crops
 router.get('/', async (req, res) => {
   try {
+    const { location } = req.query;
+    const where = location ? { location: { contains: location } } : {};
+
     const cropData = await prisma.cropData.findMany({
+      where,
       orderBy: { createdAt: 'desc' },
       take: 100, // Limit to 100 most recent entries for public access
     });

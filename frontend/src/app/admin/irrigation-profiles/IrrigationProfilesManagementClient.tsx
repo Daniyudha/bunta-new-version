@@ -42,16 +42,17 @@ interface IrrigationProfile {
   networkScheme?: string | null;
   rttg?: string | null;
   plantingSchedule?: string | null;
+  mainPhoto?: string | null;
   lastUpdate: string;
   createdAt: string;
   updatedAt: string;
 }
 
 const imageFields = [
-  { key: 'buildingScheme', label: 'BUILDING SCHEME (Jpg)' },
-  { key: 'networkScheme', label: 'NETWORK SCHEME (Jpg)' },
+  { key: 'buildingScheme', label: 'Skema Bangunan (Jpg)' },
+  { key: 'networkScheme', label: 'Skema Jaringan (Jpg)' },
   { key: 'rttg', label: 'RTTG (Jpg)' },
-  { key: 'plantingSchedule', label: 'PLANTING SCHEDULE (Jpg)' },
+  { key: 'plantingSchedule', label: 'Jadwal Tanam (Jpg)' },
 ] as const;
 
 const statusColors: Record<string, string> = {
@@ -292,6 +293,9 @@ export default function IrrigationProfilesManagementClient() {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
+                <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Foto
+                </th>
                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Nama / Lokasi
                 </th>
@@ -319,6 +323,29 @@ export default function IrrigationProfilesManagementClient() {
               {profiles.map((profile) => (
                 <React.Fragment key={profile.id}>
                   <tr className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap text-center">
+                      {profile.mainPhoto ? (
+                        <div className="relative w-12 h-12 rounded-lg overflow-hidden border border-gray-200 bg-gray-50 mx-auto">
+                          <Image
+                            src={profile.mainPhoto}
+                            alt={profile.name}
+                            fill
+                            className="object-cover"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.style.display = 'none';
+                              if (target.parentElement) {
+                                target.parentElement.innerHTML = '<div class="flex items-center justify-center h-full text-gray-300 text-xs">N/A</div>';
+                              }
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <div className="w-12 h-12 rounded-lg border border-dashed border-gray-300 bg-gray-50 flex items-center justify-center mx-auto">
+                          <span className="text-gray-300 text-xs">-</span>
+                        </div>
+                      )}
+                    </td>
                     <td className="px-6 py-4">
                       <div className="text-sm font-medium text-gray-900">{profile.name}</div>
                       {profile.location && (
@@ -371,7 +398,7 @@ export default function IrrigationProfilesManagementClient() {
                   {/* Expanded Detail Row */}
                   {expandedId === profile.id && (
                     <tr>
-                      <td colSpan={7} className="px-6 py-4 bg-blue-50">
+                      <td colSpan={8} className="px-6 py-4 bg-blue-50">
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                           {/* Detail Profil Section */}
                           <div className="col-span-full">
@@ -460,6 +487,28 @@ export default function IrrigationProfilesManagementClient() {
                             <span className="text-xs text-gray-500">Got Miring</span>
                             <p className="text-sm font-medium text-gray-900">{profile.slopingDrain ?? '-'}</p>
                           </div>
+
+                          {/* Foto Utama */}
+                          {profile.mainPhoto && (
+                            <div className="col-span-full">
+                              <h4 className="text-sm font-bold text-gray-800 mb-3 flex items-center gap-2">
+                                <FileImage size={16} className="text-blue-600" />
+                                Foto Utama
+                              </h4>
+                              <div className="relative w-full h-48 rounded-lg overflow-hidden border border-gray-200 bg-white">
+                                <Image
+                                  src={profile.mainPhoto}
+                                  alt="Foto Utama"
+                                  fill
+                                  className="object-contain"
+                                  onError={(e) => {
+                                    const target = e.target as HTMLImageElement;
+                                    target.style.display = 'none';
+                                  }}
+                                />
+                              </div>
+                            </div>
+                          )}
 
                           {/* Gambar & Dokumen Section */}
                           <div className="col-span-full mt-4">

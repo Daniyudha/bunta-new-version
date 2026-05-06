@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { Pencil, Trash2 } from 'lucide-react';
 import { Farmer } from '@/types/farmer';
 
 export default function FarmerGroupsClient() {
@@ -175,7 +176,7 @@ export default function FarmerGroupsClient() {
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Dicatat Pada
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Aksi
                       </th>
                     </tr>
@@ -195,18 +196,20 @@ export default function FarmerGroupsClient() {
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                           {formatDateTime(farmer.createdAt)}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-center space-x-2">
                           <Link
                             href={`/admin/farmer-groups/edit/${farmer.id}`}
-                            className="text-blue-600 hover:text-blue-900 mr-4"
+                            className="inline-flex items-center justify-center p-2 rounded text-blue-600 hover:bg-blue-100 transition cursor-pointer"
+                            title="Ubah"
                           >
-                            Ubah
+                            <Pencil size={16} />
                           </Link>
                           <button
                             onClick={() => handleDelete(farmer.id)}
-                            className="text-red-600 hover:text-red-900"
+                            className="inline-flex items-center justify-center p-2 rounded text-red-600 hover:bg-red-100 transition cursor-pointer"
+                            title="Hapus"
                           >
-                            Hapus
+                            <Trash2 size={16} />
                           </button>
                         </td>
                       </tr>

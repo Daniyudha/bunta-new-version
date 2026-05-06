@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { LayoutGrid, AlignJustify } from 'lucide-react';
+import { LayoutGrid, AlignJustify, Download, Trash2 } from 'lucide-react';
 
 
 interface FileStorage {
@@ -392,18 +392,20 @@ export default function StoragePage() {
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {new Date(file.createdAt).toLocaleDateString()}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-center space-x-2">
                         <button
                           onClick={() => handleDownload(file)}
-                          className="text-blue-600 hover:text-blue-900 mr-4 cursor-pointer"
+                          className="inline-flex items-center justify-center p-2 rounded text-blue-600 hover:bg-blue-100 transition cursor-pointer"
+                          title="Unduh"
                         >
-                          Unduh
+                          <Download size={16} />
                         </button>
                         <button
                           onClick={() => handleDelete(file.id)}
-                          className="text-red-600 hover:text-red-900 cursor-pointer"
+                          className="inline-flex items-center justify-center p-2 rounded text-red-600 hover:bg-red-100 transition cursor-pointer"
+                          title="Hapus"
                         >
-                          Hapus
+                          <Trash2 size={16} />
                         </button>
                       </td>
                     </tr>
@@ -440,18 +442,20 @@ export default function StoragePage() {
                     </div>
                     
                     {/* Actions */}
-                    <div className="flex space-x-2">
+                    <div className="flex justify-center space-x-2">
                       <button
                         onClick={() => handleDownload(file)}
-                        className="flex-1 px-3 py-2 bg-blue-600 text-white text-xs font-medium rounded-md hover:bg-blue-700 transition-colors"
+                        className="inline-flex items-center justify-center p-2 rounded text-blue-600 hover:bg-blue-100 transition cursor-pointer"
+                        title="Unduh"
                       >
-                        Unduh
+                        <Download size={16} />
                       </button>
                       <button
                         onClick={() => handleDelete(file.id)}
-                        className="px-3 py-2 bg-red-600 text-white text-xs font-medium rounded-md hover:bg-red-700 transition-colors"
+                        className="inline-flex items-center justify-center p-2 rounded text-red-600 hover:bg-red-100 transition cursor-pointer"
+                        title="Hapus"
                       >
-                        Hapus
+                        <Trash2 size={16} />
                       </button>
                     </div>
                   </div>

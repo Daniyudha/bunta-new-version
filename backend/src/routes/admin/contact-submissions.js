@@ -53,4 +53,36 @@ router.post('/', async (req, res) => {
   res.status(501).json({ error: 'Not implemented yet' });
 });
 
+// PATCH /api/admin/contact-submissions/:id - Update submission status
+router.patch('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (!status) {
+      return res.status(400).json({ message: 'Status is required' });
+    }
+
+    const validStatuses = ['unread', 'read', 'replied'];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ message: 'Invalid status value' });
+    }
+
+    const existing = await prisma.contactSubmission.findUnique({ where: { id } });
+    if (!existing) {
+      return res.status(404).json({ message: 'Contact submission not found' });
+    }
+
+    const updated = await prisma.contactSubmission.update({
+      where: { id },
+      data: { status },
+    });
+
+    res.json(updated);
+  } catch (error) {
+    console.error('Error updating contact submission:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 module.exports = router;

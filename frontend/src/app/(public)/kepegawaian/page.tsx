@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import Select from "react-select";
 import {
   Users,
   Search,
@@ -30,13 +31,17 @@ interface Employee {
   status: string;
   photo: string | null;
   department: string | null;
-  age: number | null;
+  tanggalLahir: string | null;
   workRegion: string | null;
   whatsapp: string | null;
   location: string | null;
   pangkat_golongan: string | null;
   nip: string | null;
   order: number | null;
+  jenisKelamin: string | null;
+  agama: string | null;
+  alamat: string | null;
+  noKtp: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -46,13 +51,19 @@ export default function KepegawaianPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [locationFilter, setLocationFilter] = useState("");
+  const [locations, setLocations] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
 
   const filteredEmployees = employees.filter(
-    (emp) =>
-      emp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      emp.position.toLowerCase().includes(searchTerm.toLowerCase()),
+    (emp) => {
+      const matchesSearch =
+        emp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        emp.position.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesLocation = !locationFilter || emp.location === locationFilter;
+      return matchesSearch && matchesLocation;
+    },
   );
 
   const totalPages = Math.ceil(filteredEmployees.length / itemsPerPage);
@@ -65,7 +76,7 @@ export default function KepegawaianPage() {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchTerm]);
+  }, [searchTerm, locationFilter]);
 
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -85,6 +96,14 @@ export default function KepegawaianPage() {
     };
 
     fetchEmployees();
+  }, []);
+
+  // Fetch distinct locations for dropdown
+  useEffect(() => {
+    fetch("/api/employees/locations")
+      .then(res => res.json())
+      .then(data => setLocations(data.locations || []))
+      .catch(() => {});
   }, []);
 
   // Count employees by position (simplified)
@@ -247,15 +266,30 @@ export default function KepegawaianPage() {
                   Total {filteredEmployees.length} pegawai ditemukan
                 </p>
               </div>
-              <div className="relative w-full md:w-80">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Cari pegawai berdasarkan nama atau jabatan..."
-                  className="w-full pl-10 pr-4 py-3 text-gray-700 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
+              <div className="flex items-center gap-3 w-full md:w-auto">
+                {/* Location Filter Dropdown */}
+                <div className="w-full md:w-72 text-black">
+                  <Select
+                    options={locations.map((loc) => ({ value: loc, label: loc }))}
+                    value={locationFilter ? { value: locationFilter, label: locationFilter } : null}
+                    onChange={(selectedOption) => setLocationFilter(selectedOption ? selectedOption.value : '')}
+                    placeholder="Semua Lokasi"
+                    isSearchable={true}
+                    isClearable={true}
+                    className="react-select-container"
+                    classNamePrefix="react-select"
+                  />
+                </div>
+                <div className="relative w-full md:w-72">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Cari pegawai berdasarkan nama atau jabatan..."
+                    className="w-full pl-10 pr-4 py-3 text-gray-700 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                </div>
               </div>
             </div>
 
@@ -342,10 +376,21 @@ export default function KepegawaianPage() {
                                     <span>{pegawai.pangkat_golongan}</span>
                                   </div>
                                 )}
-                                {pegawai.age && (
+                                {pegawai.tanggalLahir && (
                                   <div className="flex items-center gap-2">
                                     <CalendarDays className="w-4 h-4 text-gray-400" />
-                                    <span>{pegawai.age} tahun</span>
+                                    <span>
+                                      {(() => {
+                                        const birth = new Date(pegawai.tanggalLahir);
+                                        const today = new Date();
+                                        let calcAge = today.getFullYear() - birth.getFullYear();
+                                        const monthDiff = today.getMonth() - birth.getMonth();
+                                        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+                                          calcAge--;
+                                        }
+                                        return `${calcAge} tahun`;
+                                      })()}
+                                    </span>
                                   </div>
                                 )}
                                 {pegawai.workRegion && (
@@ -366,9 +411,21 @@ export default function KepegawaianPage() {
                                     <span>{pegawai.location}</span>
                                   </div>
                                 )}
+                                {pegawai.jenisKelamin && (
+                                  <div className="flex items-center gap-2">
+                                    <Users className="w-4 h-4 text-gray-400" />
+                                    <span>{pegawai.jenisKelamin}</span>
+                                  </div>
+                                )}
+                                {pegawai.agama && (
+                                  <div className="flex items-center gap-2">
+                                    <CalendarDays className="w-4 h-4 text-gray-400" />
+                                    <span>{pegawai.agama}</span>
+                                  </div>
+                                )}
                                 {pegawai.nip && (
                                   <div className="flex items-center gap-2 col-span-2">
-                                    <BadgeCheck className="w-4 h-4 text-gray-400" />
+                                    <Briefcase className="w-4 h-4 text-gray-400" />
                                     <span className="text-xs">
                                       NIP: {pegawai.nip}
                                     </span>

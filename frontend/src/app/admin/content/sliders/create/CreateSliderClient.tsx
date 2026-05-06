@@ -188,7 +188,7 @@ export default function CreateSliderClient() {
             />
           </div>
 
-          <div className="md:col-span-2">
+          <div className="md:col-span-2 mb-4">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Gambar *
             </label>

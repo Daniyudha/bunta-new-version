@@ -4,8 +4,9 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Search, X, User, Pencil, Trash2, Bell } from 'lucide-react';
+import { Search, X, User, Pencil, Trash2, Bell, MapPin } from 'lucide-react';
 import Image from 'next/image';
+import Select from 'react-select';
 
 export const dynamic = 'force-dynamic';
 
@@ -17,7 +18,7 @@ interface Employee {
   status: string;
   photo: string | null;
   department: string | null;
-  age: number | null;
+  tanggalLahir: string | null;
   workRegion: string | null;
   pangkat_golongan: string | null;
   nip: string | null;
@@ -25,6 +26,9 @@ interface Employee {
   location: string | null;
   order: number | null;
   tanggalPengangkatan: string | null;
+  jenisKelamin: string | null;
+  agama: string | null;
+  noKtp: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -41,6 +45,8 @@ export default function EmployeesManagementClient() {
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState(searchQuery);
+  const [locationFilter, setLocationFilter] = useState('');
+  const [locations, setLocations] = useState<string[]>([]);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -48,7 +54,16 @@ export default function EmployeesManagementClient() {
     }
   }, [status, router]);
 
-  const fetchEmployees = useCallback(async (page = currentPage, query = debouncedSearchQuery) => {
+  // Fetch distinct locations for dropdown
+  useEffect(() => {
+    if (status !== 'authenticated') return;
+    fetch('/api/admin/employees/locations')
+      .then(res => res.json())
+      .then(data => setLocations(data.locations || []))
+      .catch(() => {});
+  }, [status]);
+
+  const fetchEmployees = useCallback(async (page = currentPage, query = debouncedSearchQuery, location = locationFilter) => {
     try {
       setError('');
       const url = new URL('/api/admin/employees', window.location.origin);
@@ -56,6 +71,9 @@ export default function EmployeesManagementClient() {
       url.searchParams.append('limit', itemsPerPage.toString());
       if (query) {
         url.searchParams.append('search', query);
+      }
+      if (location) {
+        url.searchParams.append('location', location);
       }
 
       const response = await fetch(url.toString());
@@ -73,7 +91,7 @@ export default function EmployeesManagementClient() {
     } finally {
       setLoading(false);
     }
-  }, [currentPage, itemsPerPage, debouncedSearchQuery]);
+  }, [currentPage, itemsPerPage, debouncedSearchQuery, locationFilter]);
 
   useEffect(() => {
     if (status === 'authenticated') {
@@ -95,9 +113,9 @@ export default function EmployeesManagementClient() {
   // Fetch employees when debounced search query or page changes
   useEffect(() => {
     if (status === 'authenticated') {
-      fetchEmployees(currentPage, debouncedSearchQuery);
+      fetchEmployees(currentPage, debouncedSearchQuery, locationFilter);
     }
-  }, [debouncedSearchQuery, currentPage, status, fetchEmployees]);
+  }, [debouncedSearchQuery, currentPage, status, locationFilter, fetchEmployees]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -106,6 +124,11 @@ export default function EmployeesManagementClient() {
 
   const clearSearch = () => {
     setSearchQuery('');
+    setCurrentPage(1);
+  };
+
+  const handleLocationChange = (selectedOption: { value: string; label: string } | null) => {
+    setLocationFilter(selectedOption ? selectedOption.value : '');
     setCurrentPage(1);
   };
 
@@ -153,29 +176,32 @@ export default function EmployeesManagementClient() {
     if (employee.tanggalPengangkatan) {
       const start = new Date(employee.tanggalPengangkatan);
       const now = new Date();
-      let years = now.getFullYear() - start.getFullYear();
-      const monthDiff = now.getMonth() - start.getMonth();
-      if (monthDiff < 0 || (monthDiff === 0 && now.getDate() < start.getDate())) {
-        years--;
+      let totalMonths = (now.getFullYear() - start.getFullYear()) * 12 + (now.getMonth() - start.getMonth());
+      if (now.getDate() < start.getDate()) {
+        totalMonths--;
       }
-      masaKerja = years.toString();
+      const years = Math.floor(totalMonths / 12);
+      const months = totalMonths % 12;
+      if (years > 0 && months > 0) masaKerja = `${years} Tahun ${months} Bulan`;
+      else if (years > 0) masaKerja = `${years} Tahun`;
+      else if (months > 0) masaKerja = `${months} Bulan`;
+      else masaKerja = '0 Bulan';
     }
 
     const message = `PEMBERITAHUAN DATA KEPEGAWAIAN
 
 Yth. Bapak/Ibu ${employee.name}
 
-Kami informasikan bahwa data kepegawaian Anda perlu dilakukan pembaharuan atau mengurus berkas kenaikan Pangkat/Golongan Jabatan. Berikut ringkasan data Anda saat ini:
+Kami informasikan bahwa data kepegawaian Anda perlu dilakukan pembaharuan/update berkas berkala. Berikut ringkasan data Anda saat ini:
 
 Nama: ${employee.name}
-NIP: ${employee.nip || '-'}
 Jabatan: ${employee.department || '-'}
 Posisi: ${employee.position}
 Status: ${employee.status}
 Pangkat/Golongan: ${employee.pangkat_golongan || '-'}
 Masa Kerja : ${masaKerja} Tahun
 
-Untuk informasi detail lebih lanjut, silakan hubungi bagian Sub Bagian Tata Usaha (Sadriyani Anwar, S.P. : 0813-4123-3483).
+Untuk informasi detail lebih lanjut, silakan untuk akses pada link berikut https://bit.ly/DaftarLayananKepegawaian dan apabila memerlukan panduan secara langsung silakan untuk menghubungi Sub Bagian Tata Usaha (Sadriyani Anwar, S.P., MPWP : 0813-4123-3483)
 
 Terima kasih.
 
@@ -229,31 +255,47 @@ Terima kasih.
                 )}
               </p>
             </div>
-            {/* Search Form */}
-            <div className="px-6 py-4 md:w-1/3">
-              <div className="bg-white rounded-lg border border-gray-300">
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Search className="h-5 w-5 text-gray-400" />
-                  </div>
-                  <input
-                    type="text"
-                    placeholder="Cari pegawai berdasarkan nama, posisi, departemen..."
-                    value={searchQuery}
-                    onChange={handleSearchChange}
-                    className="block w-full text-black pl-10 pr-12 py-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
-                  {searchQuery && (
-                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-                      <button
-                        type="button"
-                        onClick={clearSearch}
-                        className="text-gray-400 hover:text-gray-600 transition-colors"
-                      >
-                        <X className="h-4 w-4" />
-                      </button>
+            {/* Filters */}
+            <div className="flex items-center gap-3 px-6 py-4">
+              {/* Location Filter Dropdown */}
+              <div className="w-64 text-black">
+                <Select
+                  options={locations.map((loc) => ({ value: loc, label: loc }))}
+                  value={locationFilter ? { value: locationFilter, label: locationFilter } : null}
+                  onChange={handleLocationChange}
+                  placeholder="Semua Lokasi"
+                  isSearchable={true}
+                  isClearable={true}
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                />
+              </div>
+              {/* Search Form */}
+              <div className="md:w-72">
+                <div className="bg-white rounded-lg border border-gray-300">
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Search className="h-5 w-5 text-gray-400" />
                     </div>
-                  )}
+                    <input
+                      type="text"
+                      placeholder="Cari pegawai berdasarkan nama, posisi, departemen..."
+                      value={searchQuery}
+                      onChange={handleSearchChange}
+                      className="block w-full text-black pl-10 pr-12 py-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                    {searchQuery && (
+                      <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+                        <button
+                          type="button"
+                          onClick={clearSearch}
+                          className="text-gray-400 hover:text-gray-600 transition-colors"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -279,6 +321,15 @@ Terima kasih.
                   NIP
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  No. KTP
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Jenis Kelamin
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Agama
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Pendidikan
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -294,7 +345,7 @@ Terima kasih.
                   Departemen
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Umur
+                  Tgl. Lahir
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Wilayah Kerja
@@ -349,6 +400,15 @@ Terima kasih.
                     {employee.nip || '-'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {employee.noKtp || '-'}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {employee.jenisKelamin || '-'}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {employee.agama || '-'}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {employee.education || '-'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -375,12 +435,16 @@ Terima kasih.
                       ? (() => {
                           const start = new Date(employee.tanggalPengangkatan);
                           const now = new Date();
-                          let years = now.getFullYear() - start.getFullYear();
-                          const monthDiff = now.getMonth() - start.getMonth();
-                          if (monthDiff < 0 || (monthDiff === 0 && now.getDate() < start.getDate())) {
-                            years--;
+                          let totalMonths = (now.getFullYear() - start.getFullYear()) * 12 + (now.getMonth() - start.getMonth());
+                          if (now.getDate() < start.getDate()) {
+                            totalMonths--;
                           }
-                          return `${years} Tahun`;
+                          const years = Math.floor(totalMonths / 12);
+                          const months = totalMonths % 12;
+                          if (years > 0 && months > 0) return `${years} Tahun ${months} Bulan`;
+                          if (years > 0) return `${years} Tahun`;
+                          if (months > 0) return `${months} Bulan`;
+                          return '0 Bulan';
                         })()
                       : '-'}
                   </td>
@@ -388,7 +452,18 @@ Terima kasih.
                     {employee.department || '-'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {employee.age ?? '-'}
+                    {employee.tanggalLahir
+                      ? (() => {
+                          const birth = new Date(employee.tanggalLahir);
+                          const today = new Date();
+                          let calcAge = today.getFullYear() - birth.getFullYear();
+                          const monthDiff = today.getMonth() - birth.getMonth();
+                          if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+                            calcAge--;
+                          }
+                          return `${birth.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })} (${calcAge} thn)`;
+                        })()
+                      : '-'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {employee.workRegion || '-'}

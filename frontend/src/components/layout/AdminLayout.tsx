@@ -110,7 +110,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             {!sidebarMinimized && (
               <div className="flex items-center space-x-2">
                 <Image
-                  src="/images/main-logo.png"
+                  src="/images/header-logo.png"
                   alt="Admin Avatar"
                   width={180}
                   height={40}
