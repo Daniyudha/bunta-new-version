@@ -252,8 +252,9 @@ export default function GalleryManagementClient() {
           </div>
         </div>
 
-        <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-          <table className="min-w-full divide-y divide-gray-200">
+        <div className="bg-white shadow sm:rounded-lg">
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -354,7 +355,8 @@ export default function GalleryManagementClient() {
               ))}
             </tbody>
           </table>
-          
+          </div>
+
           {/* Pagination */}
           {totalPages > 1 && (
             <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex items-center justify-between">

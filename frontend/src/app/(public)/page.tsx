@@ -408,7 +408,7 @@ export default function Home() {
                 dengan cepat dan tepat.
               </p>
               <a
-                href="http://wa.me/6282190983281"
+                href="http://wa.me/6282190160086"
                 target="_blank"
                 className="inline-flex items-center justify-center gap-2 w-full bg-white text-blue-700 px-6 py-3 rounded-xl font-semibold hover:bg-green-500 hover:text-white transition-all duration-300 shadow-lg group/btn"
               >

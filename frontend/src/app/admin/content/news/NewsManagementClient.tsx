@@ -180,7 +180,7 @@ export default function NewsManagementClient() {
           </div>
         )}
 
-        <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div className="bg-white shadow sm:rounded-lg">
           <div className="flex items-center justify-between mx-3">
             {/* Results Info */}
             <div className="px-6 py-4 ">
@@ -226,7 +226,8 @@ export default function NewsManagementClient() {
             </div>
           </div>
 
-          <table className="min-w-full divide-y divide-gray-200">
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -323,6 +324,7 @@ export default function NewsManagementClient() {
               ))}
             </tbody>
           </table>
+          </div>
           {news.length === 0 && !loading && (
             <div className="text-center py-8 text-gray-500">
               {searchQuery

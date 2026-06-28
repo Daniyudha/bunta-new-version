@@ -427,7 +427,7 @@ export default function NewsPage() {
         ) : null}
 
         {/* Newsletter Subscription */}
-        <div className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 rounded-2xl p-8 md:p-12 shadow-xl mt-12">
+        <div className="relative overflow-hidden bg-gradient-to-br from-blue-900 via-blue-900 to-indigo-800 rounded-2xl p-8 md:p-12 shadow-xl mt-12">
           <div
             className="absolute inset-0 opacity-10"
             style={{

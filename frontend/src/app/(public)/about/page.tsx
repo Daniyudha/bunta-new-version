@@ -309,7 +309,7 @@ export default function AboutPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Vision */}
-            <div className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl p-8 text-white">
+            <div className="bg-gradient-to-br from-blue-700 to-indigo-600 rounded-2xl p-8 text-white">
               <div className="inline-flex p-3 bg-white/20 rounded-xl mb-5">
                 <Eye className="w-7 h-7" />
               </div>

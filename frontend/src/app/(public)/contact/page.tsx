@@ -100,11 +100,11 @@ export default function ContactPage() {
     {
       icon: Phone,
       title: "Telepon",
-      content: "+62 821-9098-3281",
+      content: "+62 821-9016-0086",
       color: "emerald",
       action: {
         label: "Hubungi via WhatsApp",
-        href: "https://wa.me/6282190983281",
+        href: "https://wa.me/6282190160086",
       },
     },
     {
@@ -488,11 +488,11 @@ export default function ContactPage() {
               </p>
               <a
                 target="_blank"
-                href="https://wa.me/6282190983281"
+                href="https://wa.me/6282190160086"
                 className="inline-flex items-center gap-2 px-4 py-3 bg-green-50 text-green-700 rounded-xl hover:bg-green-100 transition-colors text-sm font-medium w-full"
               >
                 <Phone className="w-4 h-4" />
-                +62 821-9098-3281 (WhatsApp)
+                +62 821-9016-0086 (WhatsApp)
                 <ExternalLink className="w-3 h-3 ml-auto" />
               </a>
             </div>
