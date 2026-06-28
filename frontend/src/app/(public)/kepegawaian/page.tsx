@@ -51,8 +51,10 @@ export default function KepegawaianPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
   const [locationFilter, setLocationFilter] = useState("");
   const [locations, setLocations] = useState<string[]>([]);
+  const [statuses, setStatuses] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
 
@@ -62,7 +64,8 @@ export default function KepegawaianPage() {
         emp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         emp.position.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesLocation = !locationFilter || emp.location === locationFilter;
-      return matchesSearch && matchesLocation;
+      const matchesStatus = !statusFilter || emp.status === statusFilter;
+      return matchesSearch && matchesLocation && matchesStatus;
     },
   );
 
@@ -76,7 +79,7 @@ export default function KepegawaianPage() {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchTerm, locationFilter]);
+  }, [searchTerm, locationFilter, statusFilter]);
 
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -103,6 +106,14 @@ export default function KepegawaianPage() {
     fetch("/api/employees/locations")
       .then(res => res.json())
       .then(data => setLocations(data.locations || []))
+      .catch(() => {});
+  }, []);
+
+  // Fetch distinct statuses for dropdown
+  useEffect(() => {
+    fetch("/api/employees/statuses")
+      .then(res => res.json())
+      .then(data => setStatuses(data.statuses || []))
       .catch(() => {});
   }, []);
 
@@ -179,14 +190,11 @@ export default function KepegawaianPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 text-white">
-        <div
-          className="absolute inset-0 opacity-30"
-          style={{
-            backgroundImage: `url("${heroPattern}")`,
-            backgroundSize: "60px 60px",
-          }}
-        />
+      <section className="relative overflow-hidden bg-gradient-to-br from-blue-900 via-blue-900 to-indigo-800 text-white">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC40Ij48cGF0aCBkPSJNMzYgMzRjLTEuMSAwLTItLjktMi0ydi00YzAtMS4xLjktMiAyLTJoNGMxLjEgMCAyIC45IDIgMnY0YzAgMS4xLS45IDItMiAyaC00em0wLTIwaC00Yy0xLjEgMC0yLS45LTItMnYtNGMwLTEuMS45LTIgMi0yaDRjMS4xIDAgMiAuOSAyIDJ2NGMwIDEuMS0uOSAyLTIgMnoiLz48cGF0aCBkPSJNMjAgMzRjLTEuMS0uOS0yLTIuOS0yLTR2LTRjMC0xLjEuOS0yIDItMmg0YzEuMSAwIDIgLjkgMiAydjRjMCAxLjEtLjkgMi0yIDJoLTR6bTAtMTBoLTRjLTEuMS0uOS0yLTIuOS0yLTR2LTRjMC0xLjEuOS0yIDItMmg0YzEuMSAwIDIgLjkgMiAydjRjMCAxLjEtLjkgMi0yIDJ6Ii8+PC9nPjwvZz48L3N2Zz4=')]"></div>
+        </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
           <div className="text-center max-w-4xl mx-auto">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-6">
@@ -267,8 +275,21 @@ export default function KepegawaianPage() {
                 </p>
               </div>
               <div className="flex items-center gap-3 w-full md:w-auto">
+                {/* Status Filter Dropdown */}
+                <div className="w-full md:w-56 text-black">
+                  <Select
+                    options={statuses.map((s) => ({ value: s, label: s }))}
+                    value={statusFilter ? { value: statusFilter, label: statusFilter } : null}
+                    onChange={(selectedOption) => setStatusFilter(selectedOption ? selectedOption.value : '')}
+                    placeholder="Semua Status"
+                    isSearchable={true}
+                    isClearable={true}
+                    className="react-select-container"
+                    classNamePrefix="react-select"
+                  />
+                </div>
                 {/* Location Filter Dropdown */}
-                <div className="w-full md:w-72 text-black">
+                <div className="w-full md:w-56 text-black">
                   <Select
                     options={locations.map((loc) => ({ value: loc, label: loc }))}
                     value={locationFilter ? { value: locationFilter, label: locationFilter } : null}

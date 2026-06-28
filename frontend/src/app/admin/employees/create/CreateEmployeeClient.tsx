@@ -236,9 +236,9 @@ export default function CreateEmployeeClient() {
                 className="w-full px-3 py-2 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="PNS">PNS</option>
-                <option value="Honorer/Kontrak">Honorer/Kontrak</option>
                 <option value="PPPK Penuh Waktu">PPPK Penuh Waktu</option>
                 <option value="PPPK Paruh Waktu">PPPK Paruh Waktu</option>
+                <option value="Kontrak/PHL">Kontrak/PHL</option>
               </select>
             </div>
 

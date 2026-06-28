@@ -347,7 +347,7 @@ export default function Home() {
       </section>
 
       {/* Feedback & Complaints Section */}
-      <section className="relative py-20 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 text-white overflow-hidden">
+      <section className="relative py-20 bg-gradient-to-br from-blue-900 via-blue-900 to-indigo-800 text-white overflow-hidden">
         {/* Decorative Background */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-10 left-10 w-72 h-72 bg-white rounded-full blur-3xl"></div>

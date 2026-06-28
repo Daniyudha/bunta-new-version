@@ -26,7 +26,6 @@ interface IrrigationProfile {
   potentialArea: number | null;
   functionalArea: number | null;
   dischargeCapacity: number | null;
-  channelLength: number | null;
   watershedArea: number | null;
   productivity: string | null;
   totalStructures: number | null;
@@ -43,6 +42,10 @@ interface IrrigationProfile {
   rttg?: string | null;
   plantingSchedule?: string | null;
   mainPhoto?: string | null;
+  jumlahPetakTersier?: number | null;
+  nilaiIksi?: number | null;
+  primaryChannelLength?: number | null;
+  secondaryChannelLength?: number | null;
   lastUpdate: string;
   createdAt: string;
   updatedAt: string;
@@ -432,8 +435,20 @@ export default function IrrigationProfilesManagementClient() {
                             <p className="text-sm font-medium text-gray-900">{profile.dischargeCapacity ? `${profile.dischargeCapacity} m³/dtk` : '-'}</p>
                           </div>
                           <div className="bg-white rounded-lg p-3 shadow-sm border border-gray-100">
-                            <span className="text-xs text-gray-500">Panjang Saluran</span>
-                            <p className="text-sm font-medium text-gray-900">{profile.channelLength ? `${profile.channelLength} km` : '-'}</p>
+                            <span className="text-xs text-gray-500">Panjang Saluran Primer</span>
+                            <p className="text-sm font-medium text-gray-900">{profile.primaryChannelLength ? `${profile.primaryChannelLength} km` : '-'}</p>
+                          </div>
+                          <div className="bg-white rounded-lg p-3 shadow-sm border border-gray-100">
+                            <span className="text-xs text-gray-500">Panjang Saluran Sekunder</span>
+                            <p className="text-sm font-medium text-gray-900">{profile.secondaryChannelLength ? `${profile.secondaryChannelLength} km` : '-'}</p>
+                          </div>
+                          <div className="bg-white rounded-lg p-3 shadow-sm border border-gray-100">
+                            <span className="text-xs text-gray-500">Jumlah Petak Tersier</span>
+                            <p className="text-sm font-medium text-gray-900">{profile.jumlahPetakTersier ?? '-'}</p>
+                          </div>
+                          <div className="bg-white rounded-lg p-3 shadow-sm border border-gray-100">
+                            <span className="text-xs text-gray-500">Nilai IKSI</span>
+                            <p className="text-sm font-medium text-gray-900">{profile.nilaiIksi ?? '-'}</p>
                           </div>
                           <div className="bg-white rounded-lg p-3 shadow-sm border border-gray-100">
                             <span className="text-xs text-gray-500">Luas DAS</span>

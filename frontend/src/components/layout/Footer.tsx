@@ -30,7 +30,7 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <div className="mb-5">
               <Image
-                src="/images/second-logo.png"
+                src="/images/Logo-OP-Wil-II.png"
                 alt="Cikasda Logo"
                 width={200}
                 height={200}

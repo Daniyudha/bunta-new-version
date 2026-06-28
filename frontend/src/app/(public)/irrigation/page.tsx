@@ -36,7 +36,6 @@ export interface IrrigationArea {
   potentialArea?: number;
   functionalArea?: number;
   dischargeCapacity?: number;
-  channelLength?: number;
   watershedArea?: number;
   productivity?: string;
   totalStructures?: number;
@@ -55,6 +54,12 @@ export interface IrrigationArea {
   networkScheme?: string;
   rttg?: string;
   plantingSchedule?: string;
+
+  // new fields
+  jumlahPetakTersier?: number;
+  nilaiIksi?: number;
+  primaryChannelLength?: number;
+  secondaryChannelLength?: number;
 }
 
 interface IrrigationProfileApi {
@@ -76,7 +81,6 @@ interface IrrigationProfileApi {
   potentialArea: number | null;
   functionalArea: number | null;
   dischargeCapacity: number | null;
-  channelLength: number | null;
   watershedArea: number | null;
   productivity: string | null;
   totalStructures: number | null;
@@ -93,6 +97,10 @@ interface IrrigationProfileApi {
   networkScheme?: string | null;
   rttg?: string | null;
   plantingSchedule?: string | null;
+  jumlahPetakTersier?: number | null;
+  nilaiIksi?: number | null;
+  primaryChannelLength?: number | null;
+  secondaryChannelLength?: number | null;
   lastUpdate: string;
 }
 
@@ -164,8 +172,11 @@ export default function IrrigationPage() {
             potentialArea: p.potentialArea || undefined,
             functionalArea: p.functionalArea || undefined,
             dischargeCapacity: p.dischargeCapacity || undefined,
-            channelLength: p.channelLength || undefined,
             watershedArea: p.watershedArea || undefined,
+            jumlahPetakTersier: p.jumlahPetakTersier || undefined,
+            nilaiIksi: p.nilaiIksi || undefined,
+            primaryChannelLength: p.primaryChannelLength || undefined,
+            secondaryChannelLength: p.secondaryChannelLength || undefined,
             productivity: p.productivity || undefined,
             totalStructures: p.totalStructures || undefined,
             mainStructure: p.mainStructure || undefined,
@@ -206,7 +217,8 @@ export default function IrrigationPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 text-white">
+      <section className="relative overflow-hidden bg-gradient-to-br from-blue-900 via-blue-900 to-indigo-800 text-white">
+        {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC40Ij48cGF0aCBkPSJNMzYgMzRjLTEuMSAwLTItLjktMi0ydi00YzAtMS4xLjktMiAyLTJoNGMxLjEgMCAyIC45IDIgMnY0YzAgMS4xLS45IDItMiAyaC00em0wLTIwaC00Yy0xLjEgMC0yLS45LTItMnYtNGMwLTEuMS45LTIgMi0yaDRjMS4xIDAgMiAuOSAyIDJ2NGMwIDEuMS0uOSAyLTIgMnoiLz48cGF0aCBkPSJNMjAgMzRjLTEuMS0uOS0yLTIuOS0yLTR2LTRjMC0xLjEuOS0yIDItMmg0YzEuMSAwIDIgLjkgMiAydjRjMCAxLjEtLjkgMi0yIDJoLTR6bTAtMTBoLTRjLTEuMS0uOS0yLTIuOS0yLTR2LTRjMC0xLjEuOS0yIDItMmg0YzEuMSAwIDIgLjkgMiAydjRjMCAxLjEtLjkgMi0yIDJ6Ii8+PC9nPjwvZz48L3N2Zz4=')]"></div>
         </div>
@@ -396,7 +408,7 @@ export default function IrrigationPage() {
                     </div>
 
                     {/* MAIN STATS */}
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
                       {[
                         {
                           icon: Droplets,
@@ -421,6 +433,22 @@ export default function IrrigationPage() {
                           label: "Pintu",
                           value: `${area.gates}`,
                           color: "purple",
+                        },
+                        {
+                          icon: LayoutGrid,
+                          label: "Petak Tersier",
+                          value: area.jumlahPetakTersier
+                            ? `${area.jumlahPetakTersier}`
+                            : '-',
+                          color: "teal",
+                        },
+                        {
+                          icon: LayoutGrid,
+                          label: "Nilai IKSI",
+                          value: area.nilaiIksi
+                            ? `${area.nilaiIksi}`
+                            : '-',
+                          color: "indigo",
                         },
                       ].map((stat) => (
                         <div
@@ -468,9 +496,15 @@ export default function IrrigationPage() {
                             : null,
                         },
                         {
-                          label: "Panjang Saluran",
-                          value: area.channelLength
-                            ? `${area.channelLength} km`
+                          label: "Panjang Saluran Primer",
+                          value: area.primaryChannelLength
+                            ? `${area.primaryChannelLength} km`
+                            : null,
+                        },
+                        {
+                          label: "Panjang Saluran Sekunder",
+                          value: area.secondaryChannelLength
+                            ? `${area.secondaryChannelLength} km`
                             : null,
                         },
                         {
@@ -488,7 +522,7 @@ export default function IrrigationPage() {
                           <span className="text-sm text-gray-500">
                             {item.label}
                           </span>
-                          <span className="text-sm font-medium text-gray-900">
+                          <span className="text-sm text-right font-medium text-gray-900">
                             {item.value || "-"}
                           </span>
                         </div>

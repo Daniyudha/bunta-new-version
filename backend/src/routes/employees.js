@@ -159,6 +159,26 @@ router.get('/locations', async (req, res) => {
   }
 });
 
+// GET /api/employees/statuses - public endpoint to get distinct statuses
+router.get('/statuses', async (req, res) => {
+  try {
+    const employees = await prisma.employee.findMany({
+      select: { status: true },
+      distinct: ['status'],
+      orderBy: { status: 'asc' },
+    });
+
+    const statuses = employees
+      .map(e => e.status)
+      .filter(Boolean);
+
+    res.json({ statuses });
+  } catch (error) {
+    console.error('Error fetching employee statuses:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 /**
  * @openapi
  * /api/employees/{id}:

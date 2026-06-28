@@ -128,6 +128,17 @@ const upload = multer({
  *                 type: integer
  *               waterSource:
  *                 type: string
+ *               jumlahPetakTersier:
+ *                 type: integer
+ *               nilaiIksi:
+ *                 type: number
+ *                 format: float
+ *               primaryChannelLength:
+ *                 type: number
+ *                 format: float
+ *               secondaryChannelLength:
+ *                 type: number
+ *                 format: float
  *     responses:
  *       201:
  *         description: Irrigation profile created
@@ -180,6 +191,17 @@ const upload = multer({
  *                 type: integer
  *               waterSource:
  *                 type: string
+ *               jumlahPetakTersier:
+ *                 type: integer
+ *               nilaiIksi:
+ *                 type: number
+ *                 format: float
+ *               primaryChannelLength:
+ *                 type: number
+ *                 format: float
+ *               secondaryChannelLength:
+ *                 type: number
+ *                 format: float
  *     responses:
  *       200:
  *         description: Irrigation profile updated
@@ -286,7 +308,6 @@ router.post('/', async (req, res) => {
       potentialArea,
       functionalArea,
       dischargeCapacity,
-      channelLength,
       watershedArea,
       productivity,
       totalStructures,
@@ -305,6 +326,10 @@ router.post('/', async (req, res) => {
       farmingBusinessAnalysis,
       rttg,
       plantingSchedule,
+      jumlahPetakTersier,
+      nilaiIksi,
+      primaryChannelLength,
+      secondaryChannelLength,
     } = req.body;
 
     if (!name || !area) {
@@ -330,7 +355,6 @@ router.post('/', async (req, res) => {
         potentialArea: potentialArea ? parseFloat(potentialArea) : null,
         functionalArea: functionalArea ? parseFloat(functionalArea) : null,
         dischargeCapacity: dischargeCapacity ? parseFloat(dischargeCapacity) : null,
-        channelLength: channelLength ? parseFloat(channelLength) : null,
         watershedArea: watershedArea ? parseFloat(watershedArea) : null,
         productivity: productivity || null,
         totalStructures: totalStructures ? parseInt(totalStructures) : null,
@@ -349,6 +373,10 @@ router.post('/', async (req, res) => {
         farmingBusinessAnalysis: farmingBusinessAnalysis || null,
         rttg: rttg || null,
         plantingSchedule: plantingSchedule || null,
+        jumlahPetakTersier: jumlahPetakTersier ? parseInt(jumlahPetakTersier) : null,
+        nilaiIksi: nilaiIksi ? parseFloat(nilaiIksi) : null,
+        primaryChannelLength: primaryChannelLength ? parseFloat(primaryChannelLength) : null,
+        secondaryChannelLength: secondaryChannelLength ? parseFloat(secondaryChannelLength) : null,
       },
     });
 
@@ -381,7 +409,6 @@ router.put('/:id', async (req, res) => {
       potentialArea,
       functionalArea,
       dischargeCapacity,
-      channelLength,
       watershedArea,
       productivity,
       totalStructures,
@@ -400,6 +427,10 @@ router.put('/:id', async (req, res) => {
       farmingBusinessAnalysis,
       rttg,
       plantingSchedule,
+      jumlahPetakTersier,
+      nilaiIksi,
+      primaryChannelLength,
+      secondaryChannelLength,
     } = req.body;
 
     const existing = await prisma.irrigationProfile.findUnique({ where: { id } });
@@ -431,7 +462,6 @@ router.put('/:id', async (req, res) => {
         potentialArea: potentialArea !== undefined ? (potentialArea ? parseFloat(potentialArea) : null) : existing.potentialArea,
         functionalArea: functionalArea !== undefined ? (functionalArea ? parseFloat(functionalArea) : null) : existing.functionalArea,
         dischargeCapacity: dischargeCapacity !== undefined ? (dischargeCapacity ? parseFloat(dischargeCapacity) : null) : existing.dischargeCapacity,
-        channelLength: channelLength !== undefined ? (channelLength ? parseFloat(channelLength) : null) : existing.channelLength,
         watershedArea: watershedArea !== undefined ? (watershedArea ? parseFloat(watershedArea) : null) : existing.watershedArea,
         productivity: productivity !== undefined ? productivity : existing.productivity,
         totalStructures: totalStructures !== undefined ? (totalStructures ? parseInt(totalStructures) : null) : existing.totalStructures,
@@ -450,6 +480,10 @@ router.put('/:id', async (req, res) => {
         farmingBusinessAnalysis: farmingBusinessAnalysis !== undefined ? farmingBusinessAnalysis : existing.farmingBusinessAnalysis,
         rttg: rttg !== undefined ? rttg : existing.rttg,
         plantingSchedule: plantingSchedule !== undefined ? plantingSchedule : existing.plantingSchedule,
+        jumlahPetakTersier: jumlahPetakTersier !== undefined ? (jumlahPetakTersier ? parseInt(jumlahPetakTersier) : null) : existing.jumlahPetakTersier,
+        nilaiIksi: nilaiIksi !== undefined ? (nilaiIksi ? parseFloat(nilaiIksi) : null) : existing.nilaiIksi,
+        primaryChannelLength: primaryChannelLength !== undefined ? (primaryChannelLength ? parseFloat(primaryChannelLength) : null) : existing.primaryChannelLength,
+        secondaryChannelLength: secondaryChannelLength !== undefined ? (secondaryChannelLength ? parseFloat(secondaryChannelLength) : null) : existing.secondaryChannelLength,
       },
     });
 

@@ -40,6 +40,21 @@
  *         waterSource:
  *           type: string
  *           nullable: true
+ *         jumlahPetakTersier:
+ *           type: integer
+ *           nullable: true
+ *         nilaiIksi:
+ *           type: number
+ *           format: float
+ *           nullable: true
+ *         primaryChannelLength:
+ *           type: number
+ *           format: float
+ *           nullable: true
+ *         secondaryChannelLength:
+ *           type: number
+ *           format: float
+ *           nullable: true
  *         lastUpdate:
  *           type: string
  *           format: date-time

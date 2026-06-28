@@ -10,6 +10,6 @@ export default function AdminRootLayout({ children }: AdminRootLayoutProps) {
 }
 
 export const metadata = {
-  title: "Panel Admin - DIMENSI",
+  title: "Panel Admin - UVEMPOI",
   description: "DIGITALISASI MANAJEMEN KEPEGAWAIAN DAN PENDAMPING SISTEM IRIGASI UNTUK MENDUKUNG PENGELOLAAN IRIGASI YANG LEBIH EFEKTIF DAN EFISIEN DI WILAYAH PROVINSI SULAWESI TENGAH.",
 };

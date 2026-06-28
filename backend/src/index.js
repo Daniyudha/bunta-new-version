@@ -86,7 +86,7 @@ app.get('/api/health', (req, res) => {
 
 // Swagger API Documentation
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
-  customSiteTitle: 'DIMENSI API Documentation',
+  customSiteTitle: 'UVEMPOI API Documentation',
   customfavIcon: 'https://irigasibunta.com/favicon.ico',
   customCss: '.swagger-ui .topbar { display: none }',
   swaggerOptions: {

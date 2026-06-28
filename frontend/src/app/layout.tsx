@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DIMENSI - Cikasda UPT PSDA Wilayah II",
+  title: "UVEMPOI - Cikasda UPT PSDA Wilayah II",
   description: "DIGITALISASI MANAJEMEN KEPEGAWAIAN DAN PENDAMPING SISTEM IRIGASI UNTUK MENDUKUNG PENGELOLAAN IRIGASI YANG LEBIH EFEKTIF DAN EFISIEN DI WILAYAH PROVINSI SULAWESI TENGAH.",
 };
 

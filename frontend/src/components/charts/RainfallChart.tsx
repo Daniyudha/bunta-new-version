@@ -42,18 +42,19 @@ export default function RainfallChart({ data }: RainfallChartProps) {
   const colors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
 
   return (
-    <div className="w-full h-80">
+    <div className="w-full" style={{ minHeight: '400px' }}>
       <h3 className="text-lg font-semibold text-black mb-4 text-center">Data Curah Hujan (mm)</h3>
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart
-          data={chartData}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
+      <div style={{ width: '100%', height: '350px' }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart
+            data={chartData}
+            margin={{
+              top: 5,
+              right: 30,
+              left: 20,
+              bottom: 20,
+            }}
+          >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="date" />
           <YAxis />
@@ -68,6 +69,7 @@ export default function RainfallChart({ data }: RainfallChartProps) {
           ))}
         </BarChart>
       </ResponsiveContainer>
+      </div>
     </div>
   );
 }

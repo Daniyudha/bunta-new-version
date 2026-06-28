@@ -25,7 +25,6 @@ interface FormData {
   potentialArea: string;
   functionalArea: string;
   dischargeCapacity: string;
-  channelLength: string;
   watershedArea: string;
   productivity: string;
   totalStructures: string;
@@ -43,6 +42,11 @@ interface FormData {
   networkScheme: string;
   rttg: string;
   plantingSchedule: string;
+  // New fields
+  jumlahPetakTersier: string;
+  nilaiIksi: string;
+  primaryChannelLength: string;
+  secondaryChannelLength: string;
 }
 
 const imageFields = [
@@ -77,8 +81,11 @@ export default function CreateIrrigationProfileClient() {
     potentialArea: "",
     functionalArea: "",
     dischargeCapacity: "",
-    channelLength: "",
     watershedArea: "",
+    jumlahPetakTersier: "",
+    nilaiIksi: "",
+    primaryChannelLength: "",
+    secondaryChannelLength: "",
     productivity: "",
     totalStructures: "",
     mainStructure: "",
@@ -170,8 +177,11 @@ export default function CreateIrrigationProfileClient() {
         body.functionalArea = formData.functionalArea;
       if (formData.dischargeCapacity)
         body.dischargeCapacity = formData.dischargeCapacity;
-      if (formData.channelLength) body.channelLength = formData.channelLength;
       if (formData.watershedArea) body.watershedArea = formData.watershedArea;
+      if (formData.jumlahPetakTersier) body.jumlahPetakTersier = formData.jumlahPetakTersier;
+      if (formData.nilaiIksi) body.nilaiIksi = formData.nilaiIksi;
+      if (formData.primaryChannelLength) body.primaryChannelLength = formData.primaryChannelLength;
+      if (formData.secondaryChannelLength) body.secondaryChannelLength = formData.secondaryChannelLength;
       if (formData.productivity) body.productivity = formData.productivity;
       if (formData.totalStructures)
         body.totalStructures = formData.totalStructures;
@@ -609,23 +619,82 @@ export default function CreateIrrigationProfileClient() {
                 />
               </div>
 
-              {/* Channel Length */}
+              {/* Primary Channel Length */}
               <div>
                 <label
-                  htmlFor="channelLength"
+                  htmlFor="primaryChannelLength"
                   className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                  Panjang Saluran (km)
+                  Panjang Saluran Primer (km)
                 </label>
                 <input
                   type="number"
                   step="any"
-                  id="channelLength"
-                  name="channelLength"
-                  value={formData.channelLength}
+                  id="primaryChannelLength"
+                  name="primaryChannelLength"
+                  value={formData.primaryChannelLength}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Contoh: 15"
+                  placeholder="Contoh: 8"
+                />
+              </div>
+
+              {/* Secondary Channel Length */}
+              <div>
+                <label
+                  htmlFor="secondaryChannelLength"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Panjang Saluran Sekunder (km)
+                </label>
+                <input
+                  type="number"
+                  step="any"
+                  id="secondaryChannelLength"
+                  name="secondaryChannelLength"
+                  value={formData.secondaryChannelLength}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Contoh: 7"
+                />
+              </div>
+
+              {/* Jumlah Petak Tersier */}
+              <div>
+                <label
+                  htmlFor="jumlahPetakTersier"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Jumlah Petak Tersier
+                </label>
+                <input
+                  type="number"
+                  id="jumlahPetakTersier"
+                  name="jumlahPetakTersier"
+                  value={formData.jumlahPetakTersier}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Contoh: 50"
+                />
+              </div>
+
+              {/* Nilai IKSI */}
+              <div>
+                <label
+                  htmlFor="nilaiIksi"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Nilai IKSI
+                </label>
+                <input
+                  type="number"
+                  step="any"
+                  id="nilaiIksi"
+                  name="nilaiIksi"
+                  value={formData.nilaiIksi}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Contoh: 75.5"
                 />
               </div>
 
