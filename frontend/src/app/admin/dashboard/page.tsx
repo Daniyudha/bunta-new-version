@@ -18,7 +18,7 @@ async function fetchJson(url: string) {
 
 async function fetchDashboardStats() {
   // Fetch all counts in parallel using existing endpoints
-  const [newsData, galleryData, usersData, rainfallCount, waterLevelCount, cropsData, farmersData] = await Promise.all([
+  const [newsData, galleryData, usersData, rainfallCount, waterLevelCount, cropsData, farmersData, employeesData] = await Promise.all([
     fetchJson(`${BACKEND_URL}/api/admin/news?limit=1`),     // returns { totalCount, ... }
     fetchJson(`${BACKEND_URL}/api/admin/gallery?limit=1`),   // returns { pagination: { total, ... } }
     fetchJson(`${BACKEND_URL}/api/admin/users`),              // returns array
@@ -26,7 +26,15 @@ async function fetchDashboardStats() {
     fetchJson(`${BACKEND_URL}/api/data/water-level/count`),   // returns { count }
     fetchJson(`${BACKEND_URL}/api/data/crops`),               // returns array
     fetchJson(`${BACKEND_URL}/api/data/farmers`),             // returns array
+    fetchJson(`${BACKEND_URL}/api/employees?limit=500`),      // returns { employees: [...] }
   ]);
+
+  // Count employees by status
+  const employeeList = employeesData?.employees || [];
+  const employeePns = employeeList.filter((e: any) => e.status === 'PNS').length;
+  const employeePppkPenuh = employeeList.filter((e: any) => e.status === 'PPPK Penuh Waktu').length;
+  const employeePppkParuh = employeeList.filter((e: any) => e.status === 'PPPK Paruh Waktu').length;
+  const employeeKontrak = employeeList.filter((e: any) => e.status === 'Kontrak/PHL').length;
 
   return {
     newsCount: newsData?.totalCount ?? 0,
@@ -36,6 +44,11 @@ async function fetchDashboardStats() {
     waterLevelCount: waterLevelCount?.count ?? 0,
     cropCount: Array.isArray(cropsData) ? cropsData.length : 0,
     farmerCount: Array.isArray(farmersData) ? farmersData.length : 0,
+    employeePns,
+    employeePppkPenuh,
+    employeePppkParuh,
+    employeeKontrak,
+    totalEmployees: employeeList.length,
   };
 }
 
@@ -46,7 +59,7 @@ export default async function AdminDashboard() {
     redirect('/login');
   }
 
-  const { newsCount, userCount, galleryCount, rainfallCount, waterLevelCount, cropCount, farmerCount } = await fetchDashboardStats();
+  const { newsCount, userCount, galleryCount, rainfallCount, waterLevelCount, cropCount, farmerCount, employeePns, employeePppkPenuh, employeePppkParuh, employeeKontrak, totalEmployees } = await fetchDashboardStats();
 
   const dataEntriesCount = rainfallCount + waterLevelCount + cropCount + farmerCount;
 
@@ -162,6 +175,51 @@ export default async function AdminDashboard() {
             </div>
           </div>
         </div>
+
+        {/* Employee Stats */}
+        {totalEmployees > 0 && (
+          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 col-span-full">
+            <h2 className="text-xl font-semibold mb-4 text-gray-800">Rekapitulasi Pegawai</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="flex items-center p-3 bg-blue-50 rounded-lg">
+                <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
+                  <span className="text-white text-sm font-bold">PNS</span>
+                </div>
+                <div>
+                  <div className="text-lg font-bold text-blue-700">{employeePns}</div>
+                  <div className="text-xs text-blue-600">Pegawai</div>
+                </div>
+              </div>
+              <div className="flex items-center p-3 bg-indigo-50 rounded-lg">
+                <div className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
+                  <span className="text-white text-sm font-bold">PPPK</span>
+                </div>
+                <div>
+                  <div className="text-lg font-bold text-indigo-700">{employeePppkPenuh}</div>
+                  <div className="text-xs text-indigo-600">Penuh Waktu</div>
+                </div>
+              </div>
+              <div className="flex items-center p-3 bg-purple-50 rounded-lg">
+                <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
+                  <span className="text-white text-sm font-bold">PWH</span>
+                </div>
+                <div>
+                  <div className="text-lg font-bold text-purple-700">{employeePppkParuh}</div>
+                  <div className="text-xs text-purple-600">Paruh Waktu</div>
+                </div>
+              </div>
+              <div className="flex items-center p-3 bg-amber-50 rounded-lg">
+                <div className="w-10 h-10 bg-amber-600 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
+                  <span className="text-white text-sm font-bold">KTR</span>
+                </div>
+                <div>
+                  <div className="text-lg font-bold text-amber-700">{employeeKontrak}</div>
+                  <div className="text-xs text-amber-600">Kontrak/PHL</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

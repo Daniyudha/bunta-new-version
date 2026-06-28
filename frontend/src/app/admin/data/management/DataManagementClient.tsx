@@ -509,7 +509,7 @@ export default function DataManagementClient() {
               className="w-full px-3 py-2 bg-white text-black border border-gray-400 rounded-md focus:outline-none focus:ring-1 focus:ring-black"
             >
               <option value="all">Semua Data</option>
-              <option value="water-level">Data Ketinggian Air (TMA)</option>
+              <option value="water-level">Debit Andalan</option>
               <option value="rainfall">Data Curah Hujan</option>
               <option value="crop">Data Tanaman</option>
               <option value="farmer">Data Kelompok Tani</option>

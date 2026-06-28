@@ -87,10 +87,10 @@ const emptyAddForm: AddFormData = {
 // ─── Tab Configuration ──────────────────────────────────────────────────────
 
 const tabs: { id: DataType; label: string; color: string }[] = [
-  { id: 'water-level', label: 'Level Air (TMA)', color: 'bg-cyan-600' },
+  { id: 'water-level', label: 'Debit Andalan', color: 'bg-cyan-600' },
   { id: 'rainfall', label: 'Curah Hujan', color: 'bg-green-600' },
   { id: 'crops', label: 'Data Tanaman', color: 'bg-amber-600' },
-  { id: 'farmers', label: 'Data Petani', color: 'bg-indigo-600' },
+  { id: 'farmers', label: 'Data Kelompok Tani', color: 'bg-indigo-600' },
 ];
 
 // ─── Main Component ──────────────────────────────────────────────────────────

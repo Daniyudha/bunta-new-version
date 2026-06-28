@@ -126,9 +126,9 @@ export default async function AdminData() {
               <svg className="w-8 h-8 text-indigo-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
               </svg>
-              <h3 className="text-xl font-semibold text-indigo-600">Data Petani</h3>
+              <h3 className="text-xl font-semibold text-indigo-600">Data Kelompok Tani</h3>
             </div>
-            <p className="text-gray-600 mb-4">Kelola data petani dan statistik</p>
+            <p className="text-gray-600 mb-4">Kelola data kelompok tani dan statistik</p>
             <a href="/admin/data/input?type=farmer" className="block w-full bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700 transition-colors text-center mb-2">
               Input Data
             </a>

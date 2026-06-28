@@ -179,10 +179,10 @@ export default function DataInputClient() {
               onChange={(e) => setDataType(e.target.value as DataType)}
               className="w-full px-3 py-2 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="water-level">Water Level (TMA)</option>
-              <option value="rainfall">Rainfall</option>
-              <option value="crop">Crop Data</option>
-              <option value="farmer">Farmer Data</option>
+              <option value="water-level">Debit Andalan</option>
+              <option value="rainfall">Curah Hujan</option>
+              <option value="crop">Data Tanaman</option>
+              <option value="farmer">Data Kelompok Tani</option>
             </select>
           </div>
 

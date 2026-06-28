@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import WaterLevelChart from '@/components/charts/WaterLevelChart';
 import RainfallChart from '@/components/charts/RainfallChart';
 import { WaterLevelData as ChartWaterLevelData, RainfallData as ChartRainfallData } from '@/types/data';
-import { Search, ChevronDown, Check, BarChart3, CloudRain, Sprout, Users, Droplets, ChartBar, Map, Image as ImageIcon, Table2 } from 'lucide-react';
+import { Search, ChevronDown, Check, BarChart3, CloudRain, Sprout, Users, Droplets, ChartBar, Map, Image as ImageIcon, Table2, BadgeCheck, Briefcase, ShieldCheck, Building2, Gauge, Ruler, Layers } from 'lucide-react';
 import Image from 'next/image';
 
 interface DbWaterLevelData { id: string; location: string; value: number; unit: string; measuredAt: string; }
@@ -16,6 +16,31 @@ interface IrrigationProfileApi {
   name: string;
   description?: string;
   location?: string;
+  area?: number;
+  canals?: number | null;
+  gates?: number | null;
+  potentialArea?: number | null;
+  functionalArea?: number | null;
+  dischargeCapacity?: number | null;
+  watershedArea?: number | null;
+  totalStructures?: number | null;
+  jumlahPetakTersier?: number | null;
+  nilaiIksi?: number | null;
+  primaryChannelLength?: number | null;
+  secondaryChannelLength?: number | null;
+  waterSource?: string | null;
+  regency?: string | null;
+  constructionYear?: number | null;
+  servedVillages?: string | null;
+  productivity?: string | null;
+  mainStructure?: string | null;
+  divisionStructure?: number | null;
+  intakeStructure?: number | null;
+  dropStructure?: number | null;
+  aqueduct?: number | null;
+  drainageCulvert?: number | null;
+  roadCulvert?: number | null;
+  slopingDrain?: number | null;
   buildingScheme?: string | null;
   networkScheme?: string | null;
   mainPhoto?: string | null;
@@ -24,20 +49,22 @@ interface IrrigationProfileApi {
   rttg?: string | null;
   plantingSchedule?: string | null;
 }
+interface Employee { id: string; name: string; position: string; status: string; }
 
 const tabConfig = [
-  { id: 'water', label: 'Level Air', icon: Droplets, color: 'blue' },
+  { id: 'water', label: 'Debit Andalan', icon: Droplets, color: 'blue' },
   { id: 'rainfall', label: 'Curah Hujan', icon: CloudRain, color: 'cyan' },
   { id: 'crops', label: 'Data Tanaman', icon: Sprout, color: 'green' },
-  { id: 'farmers', label: 'Data Petani', icon: Users, color: 'orange' },
+  { id: 'farmers', label: 'Data Kelompok Tani', icon: Users, color: 'orange' },
   { id: 'irrigationData', label: 'Data Irigasi', icon: Map, color: 'indigo' },
 ];
 
 const quickStats = [
-  { icon: Droplets, label: 'Level Air', color: 'blue' },
-  { icon: CloudRain, label: 'Curah Hujan', color: 'green' },
-  { icon: Sprout, label: 'Area Tanam', color: 'orange' },
+  { icon: Droplets, label: 'Debit Andalan', color: 'blue' },
+  { icon: CloudRain, label: 'Curah Hujan', color: 'cyan' },
+  { icon: Sprout, label: 'Area Tanam', color: 'green' },
   { icon: ChartBar, label: 'Produksi', color: 'purple' },
+  { icon: Users, label: 'Kelompok Tani', color: 'orange' },
 ];
 
 export default function DataPage() {
@@ -50,6 +77,13 @@ export default function DataPage() {
   const [error, setError] = useState('');
   const [locations, setLocations] = useState<{ id: string; name: string; description: string; location?: string }[]>([]);
 
+  // State untuk data profil irigasi lengkap (rekapitulasi)
+  const [profiles, setProfiles] = useState<IrrigationProfileApi[]>([]);
+  const [profilesLoading, setProfilesLoading] = useState(true);
+
+  // State untuk data pegawai (rekapitulasi status kepegawaian)
+  const [employees, setEmployees] = useState<Employee[]>([]);
+
   // State untuk data irigasi detail
   const [irrigationDetail, setIrrigationDetail] = useState<IrrigationProfileApi | null>(null);
   const [irrigationLoading, setIrrigationLoading] = useState(false);
@@ -59,17 +93,26 @@ export default function DataPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedLocationId, setSelectedLocationId] = useState('all');
 
+  // Employee counts by status
+  const employeePns = employees.filter(e => e.status === 'PNS').length;
+  const employeePppkPenuh = employees.filter(e => e.status === 'PPPK Penuh Waktu').length;
+  const employeePppkParuh = employees.filter(e => e.status === 'PPPK Paruh Waktu').length;
+  const employeeKontrak = employees.filter(e => e.status === 'Kontrak/PHL').length;
+  const totalEmployees = employees.length;
+
   // Fetch irrigation profiles (locations) on mount
   useEffect(() => {
     const fetchLocations = async () => {
       try {
+        setProfilesLoading(true);
         const response = await fetch('/api/irrigation-profiles?limit=100');
         if (response.ok) {
           const result = await response.json();
-          const profiles = result.profiles || [];
+          const profileList: IrrigationProfileApi[] = result.profiles || [];
+          setProfiles(profileList);
           const locationItems = [
             { id: 'all', name: 'Semua Lokasi', description: 'Menampilkan data gabungan' },
-            ...profiles.map((profile: IrrigationProfileApi) => ({
+            ...profileList.map((profile) => ({
               id: profile.id,
               name: profile.name,
               description: profile.description || profile.location || '',
@@ -80,9 +123,43 @@ export default function DataPage() {
         }
       } catch (error) {
         console.error('Error fetching locations:', error);
+      } finally {
+        setProfilesLoading(false);
       }
     };
     fetchLocations();
+  }, []);
+
+  // ─── Aggregate computations for irrigation profiles ─────────────────────────
+  const totalLocations = profiles.length;
+  const totalArea = profiles.reduce((sum, p) => sum + (p.area || 0), 0);
+  const totalCanals = profiles.reduce((sum, p) => sum + (p.canals || 0), 0);
+  const totalGates = profiles.reduce((sum, p) => sum + (p.gates || 0), 0);
+  const totalPotentialArea = profiles.reduce((sum, p) => sum + (p.potentialArea || 0), 0);
+  const totalFunctionalArea = profiles.reduce((sum, p) => sum + (p.functionalArea || 0), 0);
+  const totalPetakTersier = profiles.reduce((sum, p) => sum + (p.jumlahPetakTersier || 0), 0);
+  const totalPrimaryChannel = profiles.reduce((sum, p) => sum + (p.primaryChannelLength || 0), 0);
+  const totalSecondaryChannel = profiles.reduce((sum, p) => sum + (p.secondaryChannelLength || 0), 0);
+
+  // Find max values for bar scaling
+  const maxArea = Math.max(...profiles.map(p => p.area || 0), 1);
+  const maxCanals = Math.max(...profiles.map(p => p.canals || 0), 1);
+  const maxGates = Math.max(...profiles.map(p => p.gates || 0), 1);
+
+  // Fetch employees for stats
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      try {
+        const response = await fetch('/api/employees?limit=200');
+        if (response.ok) {
+          const data = await response.json();
+          setEmployees(data.employees || []);
+        }
+      } catch (error) {
+        console.error('Error fetching employees:', error);
+      }
+    };
+    fetchEmployees();
   }, []);
 
   const filteredLocations = useMemo(() => {
@@ -417,17 +494,273 @@ export default function DataPage() {
       {/* Content */}
       <div className="bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          {/* Quick Stats Cards */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            {quickStats.map((stat) => (
-              <div key={stat.label} className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 text-center">
-                <div className={`w-12 h-12 bg-${stat.color}-50 rounded-xl flex items-center justify-center mx-auto mb-3`}>
-                  <stat.icon className={`w-6 h-6 text-${stat.color}-600`} />
+
+          {/* Employee Stats Recap Section */}
+          {totalEmployees > 0 && (
+            <div className="mb-8">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-emerald-50 rounded-lg">
+                  <Briefcase className="w-5 h-5 text-emerald-600" />
                 </div>
-                <h3 className="text-sm font-semibold text-gray-900">{stat.label}</h3>
+                <div>
+                  <h2 className="text-lg font-bold text-gray-900">Rekapitulasi Pegawai</h2>
+                  <p className="text-sm text-gray-500">Total {totalEmployees} pegawai</p>
+                </div>
               </div>
-            ))}
-          </div>
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                {/* PNS */}
+                <div className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <BadgeCheck className="w-6 h-6 text-blue-600" />
+                    </div>
+                    <div>
+                      <p className="text-2xl font-bold text-gray-900">{employeePns}</p>
+                      <p className="text-xs text-gray-500">PNS</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* PPPK Penuh Waktu */}
+                <div className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <ShieldCheck className="w-6 h-6 text-indigo-600" />
+                    </div>
+                    <div>
+                      <p className="text-2xl font-bold text-gray-900">{employeePppkPenuh}</p>
+                      <p className="text-xs text-gray-500">PPPK Penuh Waktu</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* PPPK Paruh Waktu */}
+                <div className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <ShieldCheck className="w-6 h-6 text-purple-600" />
+                    </div>
+                    <div>
+                      <p className="text-2xl font-bold text-gray-900">{employeePppkParuh}</p>
+                      <p className="text-xs text-gray-500">PPPK Paruh Waktu</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Kontrak/PHL */}
+                <div className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <Briefcase className="w-6 h-6 text-amber-600" />
+                    </div>
+                    <div>
+                      <p className="text-2xl font-bold text-gray-900">{employeeKontrak}</p>
+                      <p className="text-xs text-gray-500">Kontrak/PHL</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Rekapitulasi Profil Irigasi */}
+          {!profilesLoading && profiles.length > 0 && (
+            <div className="mb-8">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-rose-50 rounded-lg">
+                  <Building2 className="w-5 h-5 text-rose-600" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold text-gray-900">Rekapitulasi Profil Irigasi</h2>
+                  <p className="text-sm text-gray-500">Ringkasan data dari {totalLocations} lokasi irigasi</p>
+                </div>
+              </div>
+
+              {/* Summary Cards */}
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+                <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4 border border-blue-200">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Building2 className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-xl font-bold text-blue-700">{totalLocations}</p>
+                      <p className="text-xs text-blue-600">Total Lokasi</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-xl p-4 border border-emerald-200">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Layers className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-xl font-bold text-emerald-700">{totalArea.toLocaleString()} Ha</p>
+                      <p className="text-xs text-emerald-600">Total Luas Area</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl p-4 border border-amber-200">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-amber-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Droplets className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-xl font-bold text-amber-700">{totalCanals}</p>
+                      <p className="text-xs text-amber-600">Total Saluran</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl p-4 border border-indigo-200">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-indigo-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Gauge className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-xl font-bold text-indigo-700">{totalGates}</p>
+                      <p className="text-xs text-indigo-600">Total Pintu Air</p>
+                    </div>
+                  </div>
+                </div>
+                {totalPetakTersier > 0 && (
+                  <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4 border border-purple-200">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Layers className="w-5 h-5 text-white" />
+                      </div>
+                      <div>
+                        <p className="text-xl font-bold text-purple-700">{totalPetakTersier}</p>
+                        <p className="text-xs text-purple-600">Petak Tersier</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {totalPrimaryChannel > 0 && (
+                  <div className="bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl p-4 border border-cyan-200">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-cyan-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Ruler className="w-5 h-5 text-white" />
+                      </div>
+                      <div>
+                        <p className="text-xl font-bold text-cyan-700">{(totalPrimaryChannel + totalSecondaryChannel).toFixed(1)} km</p>
+                        <p className="text-xs text-cyan-600">Panjang Saluran</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {totalPotentialArea > 0 && (
+                  <div className="bg-gradient-to-br from-teal-50 to-teal-100 rounded-xl p-4 border border-teal-200">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-teal-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Layers className="w-5 h-5 text-white" />
+                      </div>
+                      <div>
+                        <p className="text-xl font-bold text-teal-700">{totalFunctionalArea.toLocaleString()} Ha</p>
+                        <p className="text-xs text-teal-600">Area Fungsional</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Visual Bar Chart: Perbandingan per Lokasi */}
+              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-4">
+                <h3 className="text-sm font-semibold text-gray-700 mb-4 flex items-center gap-2">
+                  <BarChart3 className="w-4 h-4 text-blue-500" />
+                  Perbandingan Antar Lokasi
+                </h3>
+                <div className="space-y-3">
+                  {profiles.map((profile) => {
+                    const areaWidth = maxArea > 0 ? ((profile.area || 0) / maxArea) * 100 : 0;
+                    const canalsWidth = maxCanals > 0 ? ((profile.canals || 0) / maxCanals) * 100 : 0;
+                    const gatesWidth = maxGates > 0 ? ((profile.gates || 0) / maxGates) * 100 : 0;
+                    return (
+                      <div key={profile.id} className="border-b border-gray-50 pb-3 last:border-b-0 last:pb-0">
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="text-sm font-medium text-gray-800 truncate max-w-[200px]">{profile.name}</span>
+                          <span className="text-xs text-gray-400">{profile.area || 0} Ha</span>
+                        </div>
+                        <div className="flex gap-2 items-center">
+                          {/* Area bar */}
+                          <div className="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden">
+                            <div
+                              className="h-full bg-gradient-to-r from-blue-400 to-blue-500 rounded-full transition-all duration-500"
+                              style={{ width: `${areaWidth}%` }}
+                            />
+                          </div>
+                          {/* Canals bar */}
+                          {(profile.canals || 0) > 0 && (
+                            <div className="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden">
+                              <div
+                                className="h-full bg-gradient-to-r from-amber-400 to-amber-500 rounded-full transition-all duration-500"
+                                style={{ width: `${canalsWidth}%` }}
+                              />
+                            </div>
+                          )}
+                          {/* Gates bar */}
+                          {(profile.gates || 0) > 0 && (
+                            <div className="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden">
+                              <div
+                                className="h-full bg-gradient-to-r from-indigo-400 to-indigo-500 rounded-full transition-all duration-500"
+                                style={{ width: `${gatesWidth}%` }}
+                              />
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex gap-2 mt-1">
+                          <span className="text-[10px] text-blue-500 flex-1">Luas</span>
+                          {(profile.canals || 0) > 0 && <span className="text-[10px] text-amber-500 flex-1">Saluran</span>}
+                          {(profile.gates || 0) > 0 && <span className="text-[10px] text-indigo-500 flex-1">Pintu Air</span>}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Tabel Perbandingan Lokasi */}
+              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                <div className="p-4 border-b border-gray-100 bg-gray-50/50">
+                  <h3 className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                    <Table2 className="w-4 h-4 text-gray-500" />
+                    Detail Data Profil Irigasi
+                  </h3>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Lokasi</th>
+                        <th className="px-4 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">Luas (Ha)</th>
+                        <th className="px-4 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">Saluran</th>
+                        <th className="px-4 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">Pintu Air</th>
+                        <th className="px-4 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">Area Potensial</th>
+                        <th className="px-4 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">Area Fungsional</th>
+                        <th className="px-4 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">Petak Tersier</th>
+                        <th className="px-4 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">Saluran Primer (km)</th>
+                        <th className="px-4 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">Saluran Sekunder (km)</th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {profiles.map((profile, idx) => (
+                        <tr key={profile.id} className={`${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'} hover:bg-blue-50/50 transition-colors`}>
+                          <td className="px-4 py-3 text-sm font-medium text-gray-900 whitespace-nowrap">{profile.name}</td>
+                          <td className="px-4 py-3 text-sm text-gray-700 text-right whitespace-nowrap">{profile.area || '-'}</td>
+                          <td className="px-4 py-3 text-sm text-gray-700 text-right whitespace-nowrap">{profile.canals ?? '-'}</td>
+                          <td className="px-4 py-3 text-sm text-gray-700 text-right whitespace-nowrap">{profile.gates ?? '-'}</td>
+                          <td className="px-4 py-3 text-sm text-gray-700 text-right whitespace-nowrap">{profile.potentialArea ?? '-'}</td>
+                          <td className="px-4 py-3 text-sm text-gray-700 text-right whitespace-nowrap">{profile.functionalArea ?? '-'}</td>
+                          <td className="px-4 py-3 text-sm text-gray-700 text-right whitespace-nowrap">{profile.jumlahPetakTersier ?? '-'}</td>
+                          <td className="px-4 py-3 text-sm text-gray-700 text-right whitespace-nowrap">{profile.primaryChannelLength ? profile.primaryChannelLength.toFixed(2) : '-'}</td>
+                          <td className="px-4 py-3 text-sm text-gray-700 text-right whitespace-nowrap">{profile.secondaryChannelLength ? profile.secondaryChannelLength.toFixed(2) : '-'}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Main Data Visualization Card */}
           <div className="bg-white rounded-2xl shadow-lg border border-gray-100">
