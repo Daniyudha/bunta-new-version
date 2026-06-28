@@ -122,10 +122,16 @@ export default function KepegawaianPage() {
     employees.filter((emp) => emp.position === pos).length;
 
   const pengamatCount = countByPosition("Pengamat");
-  const petugasTeknisCount = employees.filter((emp) =>
-    emp.position.includes("Petugas"),
-  ).length;
   const juruOperasiCount = countByPosition("Juru Operasi dan Pemeliharaan");
+
+  // Petugas Teknis: positions containing petugas, penjaga, or staf (case-insensitive)
+  // This ensures "Petugas Operasi Bendung", "Penjaga Pintu Air", "petugas operasi bendung",
+  // "Staf Operasi", "Staf Pemeliharaan" are all counted as Petugas Teknis
+  const petugasTeknisKeywords = ["petugas", "penjaga", "staf"];
+  const petugasTeknisCount = employees.filter((emp) => {
+    const pos = emp.position.toLowerCase();
+    return petugasTeknisKeywords.some((keyword) => pos.includes(keyword));
+  }).length;
 
   const heroPattern = `data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E`;
 
@@ -135,28 +141,28 @@ export default function KepegawaianPage() {
       value: employees.length,
       icon: Users,
       color: "blue",
-      desc: "Seluruh staff aktif",
+      desc: "Seluruh Pegawai Aktif",
     },
     {
       label: "Pengamat",
       value: pengamatCount,
       icon: Star,
       color: "amber",
-      desc: "Pimpinan tertinggi",
+      desc: "Kepala Operasi & Pemeliharaan",
     },
     {
       label: "Juru Operasi",
       value: juruOperasiCount,
       icon: Briefcase,
       color: "emerald",
-      desc: "Operasi & pemeliharaan",
+      desc: "Operasi & Pemeliharaan",
     },
     {
       label: "Petugas Teknis",
       value: petugasTeknisCount,
       icon: ShieldCheck,
       color: "rose",
-      desc: "Petugas lapangan",
+      desc: "Petugas Lapangan & Staff",
     },
   ];
 
