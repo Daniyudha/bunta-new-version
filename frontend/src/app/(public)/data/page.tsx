@@ -403,7 +403,13 @@ export default function DataPage() {
                   <tr key={farmer.id} className={`${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'} border-b border-gray-100`}>
                     <td className="px-4 py-3 text-sm text-gray-900 font-medium">{farmer.group}</td>
                     <td className="px-4 py-3 text-sm text-gray-600">{farmer.chairman}</td>
-                    <td className="px-4 py-3 text-sm text-gray-600">{farmer.members?.length || 0}</td>
+                    <td className="px-4 py-3 text-sm text-gray-600">
+                    <ul className="list-decimal list-inside space-y-1">
+                      {farmer.members?.map((member, index) => (
+                        <li key={index} className="text-xs">{member}</li>
+                      ))}
+                    </ul>
+                  </td>
                     <td className="px-4 py-3 text-sm text-gray-600">{new Date(farmer.createdAt).toLocaleDateString('id-ID')}</td>
                   </tr>
                 ))}

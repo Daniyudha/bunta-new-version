@@ -47,6 +47,8 @@ export default function EmployeesManagementClient() {
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState(searchQuery);
   const [locationFilter, setLocationFilter] = useState('');
   const [locations, setLocations] = useState<string[]>([]);
+  const [statusFilter, setStatusFilter] = useState('');
+  const [statuses, setStatuses] = useState<string[]>([]);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -63,7 +65,16 @@ export default function EmployeesManagementClient() {
       .catch(() => {});
   }, [status]);
 
-  const fetchEmployees = useCallback(async (page = currentPage, query = debouncedSearchQuery, location = locationFilter) => {
+  // Fetch distinct statuses for dropdown
+  useEffect(() => {
+    if (status !== 'authenticated') return;
+    fetch('/api/admin/employees/statuses')
+      .then(res => res.json())
+      .then(data => setStatuses(data.statuses || []))
+      .catch(() => {});
+  }, [status]);
+
+  const fetchEmployees = useCallback(async (page = currentPage, query = debouncedSearchQuery, location = locationFilter, status = statusFilter) => {
     try {
       setError('');
       const url = new URL('/api/admin/employees', window.location.origin);
@@ -74,6 +85,9 @@ export default function EmployeesManagementClient() {
       }
       if (location) {
         url.searchParams.append('location', location);
+      }
+      if (status) {
+        url.searchParams.append('status', status);
       }
 
       const response = await fetch(url.toString());
@@ -91,7 +105,7 @@ export default function EmployeesManagementClient() {
     } finally {
       setLoading(false);
     }
-  }, [currentPage, itemsPerPage, debouncedSearchQuery, locationFilter]);
+  }, [currentPage, itemsPerPage, debouncedSearchQuery, locationFilter, statusFilter]);
 
   useEffect(() => {
     if (status === 'authenticated') {
@@ -113,9 +127,9 @@ export default function EmployeesManagementClient() {
   // Fetch employees when debounced search query or page changes
   useEffect(() => {
     if (status === 'authenticated') {
-      fetchEmployees(currentPage, debouncedSearchQuery, locationFilter);
+      fetchEmployees(currentPage, debouncedSearchQuery, locationFilter, statusFilter);
     }
-  }, [debouncedSearchQuery, currentPage, status, locationFilter, fetchEmployees]);
+  }, [debouncedSearchQuery, currentPage, status, locationFilter, statusFilter, fetchEmployees]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -129,6 +143,11 @@ export default function EmployeesManagementClient() {
 
   const handleLocationChange = (selectedOption: { value: string; label: string } | null) => {
     setLocationFilter(selectedOption ? selectedOption.value : '');
+    setCurrentPage(1);
+  };
+
+  const handleStatusChange = (selectedOption: { value: string; label: string } | null) => {
+    setStatusFilter(selectedOption ? selectedOption.value : '');
     setCurrentPage(1);
   };
 
@@ -257,6 +276,19 @@ Terima kasih.
             </div>
             {/* Filters */}
             <div className="flex items-center gap-3 px-6 py-4">
+              {/* Status Filter Dropdown */}
+              <div className="w-48 text-black">
+                <Select
+                  options={statuses.map((stat) => ({ value: stat, label: stat }))}
+                  value={statusFilter ? { value: statusFilter, label: statusFilter } : null}
+                  onChange={handleStatusChange}
+                  placeholder="Semua Status"
+                  isSearchable={true}
+                  isClearable={true}
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                />
+              </div>
               {/* Location Filter Dropdown */}
               <div className="w-64 text-black">
                 <Select

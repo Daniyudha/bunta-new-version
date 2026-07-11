@@ -476,10 +476,10 @@ export default function AboutPage() {
                       <span className="text-2xl font-bold text-white">N</span>
                     </div>
                     <h4 className="font-bold text-blue-700 mb-1">Kepala Seksi Hidrologi dan SIM</h4>
-                    <p className="text-gray-800 font-semibold">Nyoman Resmiati, S.T., M.P.W</p>
+                    <p className="text-gray-800 font-semibold">Wayan Suardana, S.T.</p>
                     <div className="mt-3 space-y-1 text-xs text-gray-500">
-                      <p className="bg-blue-50 rounded-lg px-3 py-1 inline-block">Pembina (IV/a)</p>
-                      <p className="text-gray-400">NIP: 19670910 199803 2 004</p>
+                      <p className="bg-blue-50 rounded-lg px-3 py-1 inline-block">Penata Tk.I, III/d</p>
+                      <p className="text-gray-400">NIP. 19710804 200701 1 024</p>
                     </div>
                   </div>
                 </div>

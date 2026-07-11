@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Trash2, Search, ChevronDown, Check } from 'lucide-react';
+import { Trash2, Search, ChevronDown, Check, Pencil } from 'lucide-react';
 import * as XLSX from 'xlsx';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -118,6 +118,12 @@ export default function IrrigationDataClient() {
   const [addFormData, setAddFormData] = useState<AddFormData>(emptyAddForm);
   const [addSubmitting, setAddSubmitting] = useState(false);
 
+  // Edit form state
+  const [showEditForm, setShowEditForm] = useState(false);
+  const [editFormData, setEditFormData] = useState<AddFormData>(emptyAddForm);
+  const [editSubmitting, setEditSubmitting] = useState(false);
+  const [editingItemId, setEditingItemId] = useState<string | null>(null);
+
   // Import/Export state
   const [showImportModal, setShowImportModal] = useState(false);
 
@@ -217,6 +223,81 @@ export default function IrrigationDataClient() {
       setAddFormData(prev => ({ ...prev, location: dataLocation }));
     }
     setShowAddForm(!showAddForm);
+  };
+
+  // Handle edit form
+  const handleEditFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setEditFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleEdit = (item: any) => {
+    setEditingItemId(item.id);
+    const measuredAt = item.measuredAt ? new Date(item.measuredAt).toISOString().slice(0, 16) : '';
+    setEditFormData({
+      location: item.location || '',
+      value: item.value?.toString() || '',
+      unit: item.unit || '',
+      measuredAt: measuredAt,
+      recordedBy: item.recordedBy || '',
+      crop: item.crop || '',
+      area: item.area?.toString() || '',
+      production: item.production?.toString() || '',
+      season: item.season || '',
+      name: item.name || '',
+      group: item.group || '',
+      chairman: item.chairman || '',
+      members: item.members?.join(', ') || '',
+    });
+    setShowEditForm(true);
+  };
+
+  const handleEditSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setEditSubmitting(true);
+    setError('');
+    try {
+      let body: any;
+      let endpoint: string;
+
+      switch (activeTab) {
+        case 'water-level':
+          body = { id: editingItemId, location: editFormData.location, value: parseFloat(editFormData.value), unit: editFormData.unit, measuredAt: editFormData.measuredAt, recordedBy: editFormData.recordedBy };
+          endpoint = '/api/admin/data/water-level';
+          break;
+        case 'rainfall':
+          body = { id: editingItemId, location: editFormData.location, value: parseFloat(editFormData.value), unit: editFormData.unit, measuredAt: editFormData.measuredAt, recordedBy: editFormData.recordedBy };
+          endpoint = '/api/admin/data/rainfall';
+          break;
+        case 'crops':
+          body = { id: editingItemId, crop: editFormData.crop, area: parseFloat(editFormData.area), production: parseFloat(editFormData.production), season: editFormData.season, location: editFormData.location || undefined, recordedBy: editFormData.recordedBy };
+          endpoint = '/api/admin/data/crops';
+          break;
+        case 'farmers':
+          body = { id: editingItemId, name: editFormData.name, group: editFormData.group, chairman: editFormData.chairman, members: editFormData.members ? editFormData.members.split(',').map((m: string) => m.trim()) : [], location: editFormData.location || undefined };
+          endpoint = '/api/admin/farmers';
+          break;
+        default: throw new Error('Unknown tab');
+      }
+
+      const res = await fetch(endpoint, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message || 'Failed to update');
+      }
+      setShowEditForm(false);
+      setEditFormData(emptyAddForm);
+      setEditingItemId(null);
+      fetchData();
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setEditSubmitting(false);
+    }
   };
 
   const handleAddSubmit = async (e: React.FormEvent) => {
@@ -378,6 +459,113 @@ export default function IrrigationDataClient() {
     return t ? t.label : '';
   };
 
+  const renderEditForm = () => {
+    switch (activeTab) {
+      case 'water-level':
+      case 'rainfall':
+        return (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Lokasi</label>
+              {locations.length > 0 ? (
+                <select name="location" value={editFormData.location} onChange={handleEditFormChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 text-sm">
+                  <option value="">-- Pilih --</option>
+                  {locations.map(l => <option key={l.id} value={l.name}>{l.name}</option>)}
+                </select>
+              ) : (
+                <input type="text" name="location" value={editFormData.location} onChange={handleEditFormChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 text-sm" />
+              )}
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Nilai</label>
+              <input type="number" name="value" value={editFormData.value} onChange={handleEditFormChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 text-sm" required />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Satuan</label>
+              <input type="text" name="unit" value={editFormData.unit} onChange={handleEditFormChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 text-sm" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Tanggal Ukur</label>
+              <input type="datetime-local" name="measuredAt" value={editFormData.measuredAt} onChange={handleEditFormChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 text-sm" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Dicatat Oleh</label>
+              <input type="text" name="recordedBy" value={editFormData.recordedBy} onChange={handleEditFormChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 text-sm" />
+            </div>
+          </div>
+        );
+      case 'crops':
+        return (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Tanaman</label>
+              <input type="text" name="crop" value={editFormData.crop} onChange={handleEditFormChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 text-sm" required />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Luas (ha)</label>
+              <input type="number" name="area" value={editFormData.area} onChange={handleEditFormChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 text-sm" required />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Produksi (ton)</label>
+              <input type="number" name="production" value={editFormData.production} onChange={handleEditFormChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 text-sm" required />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Musim</label>
+              <input type="text" name="season" value={editFormData.season} onChange={handleEditFormChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 text-sm" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Lokasi</label>
+              {locations.length > 0 ? (
+                <select name="location" value={editFormData.location} onChange={handleEditFormChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 text-sm">
+                  <option value="">-- Pilih --</option>
+                  {locations.map(l => <option key={l.id} value={l.name}>{l.name}</option>)}
+                </select>
+              ) : (
+                <input type="text" name="location" value={editFormData.location} onChange={handleEditFormChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 text-sm" />
+              )}
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Dicatat Oleh</label>
+              <input type="text" name="recordedBy" value={editFormData.recordedBy} onChange={handleEditFormChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 text-sm" />
+            </div>
+          </div>
+        );
+      case 'farmers':
+        return (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Lokasi</label>
+              {locations.length > 0 ? (
+                <select name="location" value={editFormData.location} onChange={handleEditFormChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 text-sm">
+                  <option value="">-- Pilih --</option>
+                  {locations.map(l => <option key={l.id} value={l.name}>{l.name}</option>)}
+                </select>
+              ) : (
+                <input type="text" name="location" value={editFormData.location} onChange={handleEditFormChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 text-sm" />
+              )}
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Nama Petani</label>
+              <input type="text" name="name" value={editFormData.name} onChange={handleEditFormChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 text-sm" required />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Kelompok Tani</label>
+              <input type="text" name="group" value={editFormData.group} onChange={handleEditFormChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 text-sm" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Ketua</label>
+              <input type="text" name="chairman" value={editFormData.chairman} onChange={handleEditFormChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 text-sm" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Anggota (pisahkan dengan koma)</label>
+              <input type="text" name="members" value={editFormData.members} onChange={handleEditFormChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 text-sm" />
+            </div>
+          </div>
+        );
+      default: return null;
+    }
+  };
+
   const renderAddForm = () => {
     switch (activeTab) {
       case 'water-level':
@@ -525,7 +713,14 @@ export default function IrrigationDataClient() {
                   <td className="px-4 py-3 text-sm text-gray-500">{item.unit}</td>
                   <td className="px-4 py-3 text-sm text-gray-500">{formatDateTime(item.measuredAt)}</td>
                   <td className="px-4 py-3 text-sm text-gray-500">{item.recordedBy || '-'}</td>
-                  <td className="px-4 py-3 text-sm text-center">
+                  <td className="px-4 py-3 text-sm text-center space-x-1">
+                    <button
+                      onClick={() => handleEdit(item)}
+                      className="inline-flex items-center justify-center p-2 rounded text-blue-600 hover:bg-blue-100 transition cursor-pointer"
+                      title="Edit"
+                    >
+                      <Pencil className="w-4 h-4" />
+                    </button>
                     <button
                       onClick={() => handleDelete(item.id)}
                       className="inline-flex items-center justify-center p-2 rounded text-red-600 hover:bg-red-100 transition cursor-pointer"
@@ -560,7 +755,14 @@ export default function IrrigationDataClient() {
                   <td className="px-4 py-3 text-sm text-gray-500">{item.unit}</td>
                   <td className="px-4 py-3 text-sm text-gray-500">{formatDateTime(item.measuredAt)}</td>
                   <td className="px-4 py-3 text-sm text-gray-500">{item.recordedBy || '-'}</td>
-                  <td className="px-4 py-3 text-sm text-center">
+                  <td className="px-4 py-3 text-sm text-center space-x-1">
+                    <button
+                      onClick={() => handleEdit(item)}
+                      className="inline-flex items-center justify-center p-2 rounded text-blue-600 hover:bg-blue-100 transition cursor-pointer"
+                      title="Edit"
+                    >
+                      <Pencil className="w-4 h-4" />
+                    </button>
                     <button
                       onClick={() => handleDelete(item.id)}
                       className="inline-flex items-center justify-center p-2 rounded text-red-600 hover:bg-red-100 transition cursor-pointer"
@@ -595,7 +797,14 @@ export default function IrrigationDataClient() {
                   <td className="px-4 py-3 text-sm text-gray-900">{item.production}</td>
                   <td className="px-4 py-3 text-sm text-gray-500">{item.season}</td>
                   <td className="px-4 py-3 text-sm text-gray-500">{item.location || '-'}</td>
-                  <td className="px-4 py-3 text-sm text-center">
+                  <td className="px-4 py-3 text-sm text-center space-x-1">
+                    <button
+                      onClick={() => handleEdit(item)}
+                      className="inline-flex items-center justify-center p-2 rounded text-blue-600 hover:bg-blue-100 transition cursor-pointer"
+                      title="Edit"
+                    >
+                      <Pencil className="w-4 h-4" />
+                    </button>
                     <button
                       onClick={() => handleDelete(item.id)}
                       className="inline-flex items-center justify-center p-2 rounded text-red-600 hover:bg-red-100 transition cursor-pointer"
@@ -629,8 +838,21 @@ export default function IrrigationDataClient() {
                   <td className="px-4 py-3 text-sm text-gray-900">{item.name}</td>
                   <td className="px-4 py-3 text-sm text-gray-500">{item.group || '-'}</td>
                   <td className="px-4 py-3 text-sm text-gray-500">{item.chairman || '-'}</td>
-                  <td className="px-4 py-3 text-sm text-gray-500">{item.members?.length || 0} anggota</td>
-                  <td className="px-4 py-3 text-sm text-center">
+                  <td className="px-4 py-3 text-sm text-gray-500">
+                    <ul className="list-decimal list-inside space-y-1">
+                      {item.members?.map((member, index) => (
+                        <li key={index} className="text-xs">{member}</li>
+                      ))}
+                    </ul>
+                  </td>
+                  <td className="px-4 py-3 text-sm text-center space-x-1">
+                    <button
+                      onClick={() => handleEdit(item)}
+                      className="inline-flex items-center justify-center p-2 rounded text-blue-600 hover:bg-blue-100 transition cursor-pointer"
+                      title="Edit"
+                    >
+                      <Pencil className="w-4 h-4" />
+                    </button>
                     <button
                       onClick={() => handleDelete(item.id)}
                       className="inline-flex items-center justify-center p-2 rounded text-red-600 hover:bg-red-100 transition cursor-pointer"
@@ -834,6 +1056,22 @@ export default function IrrigationDataClient() {
                 <button type="button" onClick={() => setShowAddForm(false)} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">Batal</button>
                 <button type="submit" disabled={addSubmitting} className="px-6 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:bg-blue-400">
                   {addSubmitting ? 'Menyimpan...' : 'Simpan'}
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
+
+        {/* Edit Form */}
+        {showEditForm && (
+          <div className="bg-white shadow-md rounded-lg p-6 mb-6 border-t-4 border-amber-500">
+            <h3 className="text-lg font-bold text-gray-900 mb-4">Edit {getTabTitle()}</h3>
+            <form onSubmit={handleEditSubmit}>
+              {renderEditForm()}
+              <div className="mt-6 flex justify-end gap-3">
+                <button type="button" onClick={() => setShowEditForm(false)} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">Batal</button>
+                <button type="submit" disabled={editSubmitting} className="px-6 py-2 bg-amber-600 text-white text-sm font-medium rounded-lg hover:bg-amber-700 disabled:bg-amber-400">
+                  {editSubmitting ? 'Menyimpan...' : 'Update'}
                 </button>
               </div>
             </form>

@@ -142,7 +142,7 @@ const upload = multer({
 // GET /api/admin/employees
 router.get('/', async (req, res) => {
   try {
-    const { page = 1, limit = 10, search = '', location = '' } = req.query;
+    const { page = 1, limit = 10, search = '', location = '', status = '' } = req.query;
     const skip = (parseInt(page) - 1) * parseInt(limit);
     const take = parseInt(limit);
 
@@ -161,6 +161,10 @@ router.get('/', async (req, res) => {
 
     if (location) {
       where.location = location;
+    }
+
+    if (status) {
+      where.status = status;
     }
 
     const [employees, totalCount] = await Promise.all([
@@ -211,6 +215,26 @@ router.get('/locations', async (req, res) => {
     res.json({ locations });
   } catch (error) {
     console.error('Error fetching employee locations:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+// GET /api/admin/employees/statuses - admin endpoint to get distinct statuses
+router.get('/statuses', async (req, res) => {
+  try {
+    const employees = await prisma.employee.findMany({
+      select: { status: true },
+      distinct: ['status'],
+      orderBy: { status: 'asc' },
+    });
+
+    const statuses = employees
+      .map(e => e.status)
+      .filter(Boolean);
+
+    res.json({ statuses });
+  } catch (error) {
+    console.error('Error fetching employee statuses:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 });

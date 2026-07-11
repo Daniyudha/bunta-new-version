@@ -53,7 +53,7 @@ const router = express.Router();
  *         name: limit
  *         schema:
  *           type: integer
- *           default: 100
+ *           default: 1000
  *         description: Number of items per page
  *       - in: query
  *         name: search
@@ -88,7 +88,7 @@ const router = express.Router();
 // GET /api/employees - public endpoint
 router.get('/', async (req, res) => {
   try {
-    const { page = 1, limit = 100, search = '', location = '' } = req.query;
+    const { page = 1, limit = 1000, search = '', location = '' } = req.query;
     const skip = (parseInt(page) - 1) * parseInt(limit);
     const take = parseInt(limit);
 

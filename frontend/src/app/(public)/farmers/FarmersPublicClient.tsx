@@ -105,10 +105,17 @@ export default function FarmersPublicClient() {
                     <span className="font-medium text-gray-700">Jumlah Anggota: </span>
                     <span className="text-gray-600">{farmer.members.length} orang</span>
                   </div>
-                  <div>
-                    <span className="font-medium text-gray-700">Anggota: </span>
-                    <span className="text-gray-600 text-sm">{farmer.members.join(', ')}</span>
-                  </div>
+                   <div>
+                     <span className="font-medium text-gray-700">Anggota: </span>
+                     <ul className="text-gray-600 text-sm mt-1 space-y-1">
+                       {farmer.members.map((member, index) => (
+                         <li key={index} className="flex items-start">
+                           <span className="font-medium text-gray-500 mr-2">{index + 1}.</span>
+                           <span>{member}</span>
+                         </li>
+                       ))}
+                     </ul>
+                   </div>
                 </div>
               </div>
             ))}
