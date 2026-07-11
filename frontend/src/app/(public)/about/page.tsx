@@ -444,7 +444,7 @@ export default function AboutPage() {
                       <span className="text-2xl font-bold text-white">S</span>
                     </div>
                     <h4 className="font-bold text-amber-700 mb-1">Kepala Sub Bagian Tata Usaha</h4>
-                    <p className="text-gray-800 font-semibold">Sadriyani Anwar, S.P</p>
+                    <p className="text-gray-800 font-semibold">Sadriyani Anwar, S.P., MPWP</p>
                     <div className="mt-3 space-y-1 text-xs text-gray-500">
                       <p className="bg-amber-50 rounded-lg px-3 py-1 inline-block">Penata Tingkat I (III/d)</p>
                       <p className="text-gray-400">NIP: 19830523 201001 2 010</p>
